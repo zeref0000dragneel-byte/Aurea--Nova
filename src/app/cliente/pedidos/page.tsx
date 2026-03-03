@@ -147,7 +147,6 @@ export default async function ClientePedidosPage({
                 </TableHeader>
                 <TableBody>
                   {list.map((pedido) => {
-                    const porPagar = Number(pedido.total) - Number(pedido.paid_amount)
                     return (
                       <TableRow key={pedido.id} className="border-gray-100 hover:bg-muted/30">
                         <TableCell className="font-mono text-sm font-medium">
@@ -167,12 +166,14 @@ export default async function ClientePedidosPage({
                           ${Number(pedido.total).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                         </TableCell>
                         <TableCell className="text-right">
-                          {porPagar > 0 ? (
-                            <span className="text-destructive font-medium">
-                              ${porPagar.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
-                            </span>
+                          {pedido.status === 'cancelado' ? (
+                            <span className="text-muted-foreground">—</span>
+                          ) : pedido.payment_status === 'pagado' ? (
+                            <span className="text-muted-foreground">—</span>
                           ) : (
-                            <span className="text-green-600 font-medium">—</span>
+                            <span className="text-red-600">
+                              ${(Number(pedido.total) - Number(pedido.paid_amount)).toFixed(2)}
+                            </span>
                           )}
                         </TableCell>
                         <TableCell className="text-muted-foreground text-sm">

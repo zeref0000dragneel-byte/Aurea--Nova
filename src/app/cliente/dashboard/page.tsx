@@ -85,6 +85,7 @@ export default async function ClienteDashboardPage() {
       .from('orders')
       .select('total, paid_amount, payment_status')
       .eq('customer_id', customerId)
+      .neq('status', 'cancelado')
       .neq('payment_status', 'pagado'),
     supabase
       .from('orders')
