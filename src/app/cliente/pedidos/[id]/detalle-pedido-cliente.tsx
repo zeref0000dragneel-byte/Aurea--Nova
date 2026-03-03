@@ -133,12 +133,14 @@ export default function DetallePedidoCliente({
                 <Badge variant={statusColor[order.status] as 'secondary' | 'default' | 'destructive'}>
                   {statusLabel[order.status]}
                 </Badge>
-                <Badge
-                  variant={paymentColor[order.payment_status] as 'secondary' | 'default' | 'destructive'}
-                  className={cn(order.payment_status === 'pagado' && 'bg-green-600 hover:bg-green-600')}
-                >
-                  {paymentLabel[order.payment_status]}
-                </Badge>
+                {order.status !== 'cancelado' && (
+                  <Badge
+                    variant={paymentColor[order.payment_status] as 'secondary' | 'default' | 'destructive'}
+                    className={cn(order.payment_status === 'pagado' && 'bg-green-600 hover:bg-green-600')}
+                  >
+                    {paymentLabel[order.payment_status]}
+                  </Badge>
+                )}
               </div>
             </div>
           </div>
