@@ -44,11 +44,11 @@ export default async function EmpleadoPedidosPage({
     `)
     .order('created_at', { ascending: false })
 
-  // Empleado no ve borradores: excluir si no hay filtro de estado
+  // Empleado no ve borradores ni cancelados: excluir en vista "Todos"
   if (filtroStatus !== 'todos') {
     query = query.eq('status', filtroStatus)
   } else {
-    query = query.neq('status', 'borrador')
+    query = query.not('status', 'in', ['borrador', 'cancelado'])
   }
 
   const { data: pedidosData } = await query

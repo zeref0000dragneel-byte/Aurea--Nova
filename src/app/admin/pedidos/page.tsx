@@ -28,6 +28,12 @@ const paymentColor: Record<string, 'default' | 'secondary' | 'destructive' | 'ou
   pagado: 'default',
 }
 
+const paymentLabel: Record<string, string> = {
+  pendiente: 'Pendiente',
+  parcial: 'Parcial',
+  pagado: 'Pagado',
+}
+
 type PedidoRow = {
   id: string
   order_number: string
@@ -142,9 +148,13 @@ export default async function PedidosPage({
                       </Badge>
                     </td>
                     <td className="p-3">
-                      <Badge variant={paymentColor[pedido.payment_status]}>
-                        {pedido.payment_status.charAt(0).toUpperCase() + pedido.payment_status.slice(1)}
-                      </Badge>
+                      {pedido.status === 'cancelado' ? (
+                        <span className="text-muted-foreground text-sm">—</span>
+                      ) : (
+                        <Badge variant={paymentColor[pedido.payment_status] ?? 'default'}>
+                          {paymentLabel[pedido.payment_status] ?? pedido.payment_status}
+                        </Badge>
+                      )}
                     </td>
                     <td className="p-3 text-right font-medium">
                       ${Number(pedido.total).toLocaleString('es-MX', { minimumFractionDigits: 2 })}

@@ -258,9 +258,13 @@ export function DashboardFinanciero({
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <Badge variant={paymentVariant[p.payment_status] ?? 'default'}>
-                            {paymentLabel[p.payment_status] ?? p.payment_status}
-                          </Badge>
+                          {p.status === 'cancelado' ? (
+                            <span className="text-muted-foreground">—</span>
+                          ) : (
+                            <Badge variant={paymentVariant[p.payment_status] ?? 'default'}>
+                              {paymentLabel[p.payment_status] ?? p.payment_status}
+                            </Badge>
+                          )}
                         </TableCell>
                         <TableCell className="text-right font-medium">
                           {formatMoneda(Number(p.total))}

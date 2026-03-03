@@ -29,7 +29,7 @@ export default async function FinanzasPage() {
       .lte('created_at', finMesAnterior),
     supabase
       .from('payments')
-      .select('amount')
+      .select('amount, order_id, orders(status)')
       .gte('created_at', inicioMesActual),
     supabase
       .from('orders')
@@ -59,7 +59,14 @@ export default async function FinanzasPage() {
   const ticketPromedio = pedidosMesActual > 0 ? ventasMesActual / pedidosMesActual : 0
 
   // ─── Métricas de cobranza ─────────────────────────────────────────────────
-  const totalCobrado = (paymentsMesActual ?? []).reduce((sum, p) => sum + Number(p.amount), 0)
+  const paymentsConOrden = (paymentsMesActual ?? []) as Array<{
+    amount: number
+    order_id: string
+    orders: { status: string } | null
+  }>
+  const totalCobrado = paymentsConOrden
+    .filter((p) => p.orders?.status !== 'cancelado')
+    .reduce((sum, p) => sum + Number(p.amount), 0)
   const ordersConDeudaList = (ordersConDeuda ?? []) as unknown as Array<{
     total: number
     paid_amount: number

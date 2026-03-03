@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import { loginAction } from './actions'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -10,16 +10,17 @@ import { Eye, EyeOff, Hexagon, Loader2 } from 'lucide-react'
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [isPending, startTransition] = useTransition()
+  const [isPending, setIsPending] = useState(false)
 
   async function handleSubmit(formData: FormData) {
     setError(null)
-    startTransition(async () => {
-      const result = await loginAction(formData)
-      if (result?.error) {
-        setError(result.error)
-      }
-    })
+    setIsPending(true)
+    const result = await loginAction(formData)
+    if (result?.error) {
+      setError(result.error)
+      setIsPending(false)
+    }
+    // Si hay redirect, el componente se desmonta — no necesita setIsPending(false)
   }
 
   return (
