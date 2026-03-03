@@ -36,7 +36,6 @@ export default async function AdminDashboardPage() {
 
   const thirtyDaysFromNow = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
   const todayStart = new Date().toISOString()
-  const startOfMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString()
 
   const [
     { count: ordersActiveCount },
@@ -45,7 +44,6 @@ export default async function AdminDashboardPage() {
     { count: lotsInStockCount },
     { data: purchasesDeudaData },
     { data: ordersPorCobrarData },
-    { data: purchasesMesData },
   ] = await Promise.all([
     supabase
       .from('production_orders')
@@ -75,10 +73,6 @@ export default async function AdminDashboardPage() {
       .select('total, paid_amount')
       .neq('payment_status', 'pagado')
       .neq('status', 'cancelado'),
-    supabaseAdmin
-      .from('purchases')
-      .select('id, total')
-      .gte('created_at', startOfMonth),
   ])
 
   const mpEnAlerta = (rawMaterialsData ?? []).filter(
@@ -96,7 +90,6 @@ export default async function AdminDashboardPage() {
       sum + (Number(p.total) - Number(p.paid_amount)),
     0
   )
-  const comprasDelMes = purchasesMesData ?? []
 
   const sevenDaysFromNow = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
   const lotesVencenEn7Dias = lotesPorVencer.filter(
