@@ -230,10 +230,14 @@ export default function DetallePedidoCliente({
             <span
               className={cn(
                 'font-medium',
-                saldo > 0 ? 'text-destructive' : 'text-green-600'
+                order.status !== 'cancelado' && (saldo > 0 ? 'text-destructive' : 'text-green-600')
               )}
             >
-              {saldo > 0 ? formatMoney(saldo) : 'Pagado'}
+              {order.status === 'cancelado'
+                ? '—'
+                : saldo > 0
+                  ? formatMoney(saldo)
+                  : 'Pagado'}
             </span>
           </div>
           {pagos.length > 0 && (

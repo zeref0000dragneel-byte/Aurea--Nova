@@ -38,6 +38,10 @@ const paymentColor: Record<string, string> = {
   pagado: 'default',
 }
 
+function formatMoney(n: number) {
+  return '$' + n.toLocaleString('es-MX', { minimumFractionDigits: 2 })
+}
+
 export default async function ClientePedidosPage({
   searchParams,
 }: {
@@ -158,9 +162,13 @@ export default async function ClientePedidosPage({
                           </Badge>
                         </TableCell>
                         <TableCell>
-                          <Badge variant={paymentColor[pedido.payment_status] as 'secondary' | 'default' | 'destructive'}>
-                            {pedido.payment_status.charAt(0).toUpperCase() + pedido.payment_status.slice(1)}
-                          </Badge>
+                          {pedido.status === 'cancelado' ? (
+                            <span className="text-muted-foreground text-sm">—</span>
+                          ) : (
+                            <Badge variant={paymentColor[pedido.payment_status] as 'secondary' | 'default' | 'destructive'}>
+                              {pedido.payment_status.charAt(0).toUpperCase() + pedido.payment_status.slice(1)}
+                            </Badge>
+                          )}
                         </TableCell>
                         <TableCell className="text-right font-medium">
                           ${Number(pedido.total).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
@@ -168,12 +176,8 @@ export default async function ClientePedidosPage({
                         <TableCell className="text-right">
                           {pedido.status === 'cancelado' ? (
                             <span className="text-muted-foreground">—</span>
-                          ) : pedido.payment_status === 'pagado' ? (
-                            <span className="text-muted-foreground">—</span>
                           ) : (
-                            <span className="text-red-600">
-                              ${(Number(pedido.total) - Number(pedido.paid_amount)).toFixed(2)}
-                            </span>
+                            formatMoney(Number(pedido.total) - Number(pedido.paid_amount))
                           )}
                         </TableCell>
                         <TableCell className="text-muted-foreground text-sm">
