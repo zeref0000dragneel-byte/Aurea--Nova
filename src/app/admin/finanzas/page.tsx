@@ -59,7 +59,7 @@ export default async function FinanzasPage() {
   const ticketPromedio = pedidosMesActual > 0 ? ventasMesActual / pedidosMesActual : 0
 
   // ─── Métricas de cobranza ─────────────────────────────────────────────────
-  const paymentsConOrden = (paymentsMesActual ?? []) as Array<{
+  const paymentsConOrden = (paymentsMesActual ?? []) as unknown as Array<{
     amount: number
     order_id: string
     orders: { status: string } | null
