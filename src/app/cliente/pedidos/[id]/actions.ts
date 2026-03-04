@@ -17,7 +17,8 @@ export async function confirmarEntregaCliente(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user?.email) return { error: 'No has iniciado sesión' }
 
-  const { data: customer } = await supabase
+  const adminSupabase = createAdminClient()
+  const { data: customer } = await adminSupabase
     .from('customers')
     .select('id')
     .eq('email', user.email)
@@ -26,7 +27,7 @@ export async function confirmarEntregaCliente(
 
   if (!customer) return { error: 'Cliente no encontrado' }
 
-  const { data: order, error: orderError } = await supabase
+  const { data: order, error: orderError } = await adminSupabase
     .from('orders')
     .select('id, customer_id, confirmed_by_employee, confirmed_by_customer, status')
     .eq('id', order_id)
@@ -45,7 +46,6 @@ export async function confirmarEntregaCliente(
 
     // Solo ejecutar cierre si el pedido NO está ya entregado (evita descontar inventario dos veces)
     if (order.status !== 'entregado') {
-      const adminSupabase = createAdminClient()
       const { data: items, error: itemsError } = await adminSupabase
         .from('order_items')
         .select('id, lot_id, product_id, quantity, unit_price')
@@ -89,7 +89,7 @@ export async function confirmarEntregaCliente(
     }
   }
 
-  const { error: updateError } = await supabase
+  const { error: updateError } = await adminSupabase
     .from('orders')
     .update(update)
     .eq('id', order_id)
