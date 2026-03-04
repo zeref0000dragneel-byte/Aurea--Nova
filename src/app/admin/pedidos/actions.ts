@@ -28,6 +28,7 @@ export async function crearPedido(prevState: unknown, formData: FormData) {
 
   // ── Calcular precio final por item ──
   const orderItemsToInsert = []
+  const productLinesForTelegram: string[] = []
   let subtotal = 0
 
   for (const item of items) {
@@ -48,6 +49,8 @@ export async function crearPedido(prevState: unknown, formData: FormData) {
       .single()
 
     if (!product) return { error: `Producto no encontrado: ${item.product_id}` }
+
+    productLinesForTelegram.push(`${(product as { name: string }).name} x ${item.quantity}`)
 
     let unit_price = Number(product.base_price)
     let discount_pct = 0
@@ -110,12 +113,24 @@ export async function crearPedido(prevState: unknown, formData: FormData) {
 
   if (itemsError) return { error: itemsError.message }
 
+  const { data: customerRow } = await supabase
+    .from('customers')
+    .select('business_name')
+    .eq('id', customer_id)
+    .single()
+
+  const businessName = (customerRow as { business_name?: string } | null)?.business_name ?? 'Cliente'
+  const deliveryDateFormatted = delivery_date
+    ? new Date(delivery_date + 'T00:00:00').toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' })
+    : 'Sin fecha'
+
   await sendTelegram(
     `🛒 <b>Nuevo Pedido</b>\n` +
-      `📋 ${order_number}\n` +
-      `👤 Cliente ID: ${customer_id}\n` +
+      `📋 Pedido: ${order_number}\n` +
+      `👤 Cliente: ${businessName}\n` +
+      `📦 Productos: ${productLinesForTelegram.join(', ')}\n` +
       `💰 Total: $${total.toLocaleString('es-MX', { minimumFractionDigits: 2 })}\n` +
-      `📅 Creado: ${new Date().toLocaleString('es-MX')}`
+      `📅 Entrega: ${deliveryDateFormatted}`
   )
   redirect('/admin/pedidos')
 }
@@ -174,11 +189,21 @@ export async function confirmarPedido(prevState: unknown, formData: FormData) {
 
   if (orderError) return { error: orderError.message }
 
+  const { data: ordenRow } = await supabase
+    .from('orders')
+    .select('order_number, customers(business_name)')
+    .eq('id', order_id)
+    .single()
+
+  const orderNumber = (ordenRow as { order_number?: string } | null)?.order_number ?? order_id
+  const cust = (ordenRow as { customers?: { business_name: string } | null } | null)?.customers
+  const businessNameConfirm = (Array.isArray(cust) ? cust[0]?.business_name : cust?.business_name) ?? 'Cliente'
+
   await sendTelegram(
     `✅ <b>Pedido Confirmado</b>\n` +
-      `📋 Orden ID: ${order_id}\n` +
-      `📦 Lotes FIFO asignados automáticamente\n` +
-      `📅 ${new Date().toLocaleString('es-MX')}`
+      `📋 Pedido: ${orderNumber}\n` +
+      `👤 Cliente: ${businessNameConfirm}\n` +
+      `📦 Lotes FIFO asignados correctamente`
   )
   revalidatePath('/admin/pedidos')
   revalidatePath(`/admin/pedidos/${order_id}`)
@@ -271,16 +296,22 @@ export async function registrarPago(prevState: unknown, formData: FormData) {
 
   const totalPagado = pagos?.reduce((acc, p) => acc + Number(p.amount), 0) ?? 0
 
-  // Obtener total de la orden para calcular payment_status
-  const { data: order } = await supabase
+  // Obtener total, order_number y cliente para Telegram
+  const { data: orderRow } = await supabase
     .from('orders')
-    .select('total')
+    .select('total, order_number, customers(business_name)')
     .eq('id', order_id)
     .single()
 
+  const orderTotal = orderRow ? Number(orderRow.total) : 0
+  const orderNumberPago = (orderRow as { order_number?: string } | null)?.order_number ?? order_id
+  const custPago = (orderRow as { customers?: { business_name: string } | null } | null)?.customers
+  const businessNamePago = (Array.isArray(custPago) ? custPago[0]?.business_name : custPago?.business_name) ?? 'Cliente'
+  const saldoPendiente = orderTotal - totalPagado
+
   let payment_status = 'pendiente'
-  if (order) {
-    if (totalPagado >= Number(order.total)) payment_status = 'pagado'
+  if (orderRow) {
+    if (totalPagado >= Number(orderRow.total)) payment_status = 'pagado'
     else if (totalPagado > 0) payment_status = 'parcial'
   }
 
@@ -292,11 +323,12 @@ export async function registrarPago(prevState: unknown, formData: FormData) {
   if (updateError) return { error: updateError.message }
 
   await sendTelegram(
-    `💵 <b>Pago Registrado</b>\n` +
-      `📋 Orden ID: ${order_id}\n` +
-      `💰 Monto: $${amount.toLocaleString('es-MX', { minimumFractionDigits: 2 })}\n` +
-      `💳 Método: ${payment_method}\n` +
-      `📅 ${new Date().toLocaleString('es-MX')}`
+    `💳 <b>Pago Registrado</b>\n` +
+      `📋 Pedido: ${orderNumberPago}\n` +
+      `👤 Cliente: ${businessNamePago}\n` +
+      `💵 Abono: $${amount.toLocaleString('es-MX', { minimumFractionDigits: 2 })}\n` +
+      `✅ Total pagado: $${totalPagado.toLocaleString('es-MX', { minimumFractionDigits: 2 })}\n` +
+      `⏳ Saldo pendiente: $${saldoPendiente.toLocaleString('es-MX', { minimumFractionDigits: 2 })}`
   )
   revalidatePath(`/admin/pedidos/${order_id}`)
   return { success: true }

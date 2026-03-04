@@ -1,6 +1,7 @@
 'use server'
 
 import { createAdminClient } from '@/lib/supabase/admin'
+import { sendTelegram } from '@/lib/telegram'
 import { revalidatePath } from 'next/cache'
 
 export async function confirmarEntregaEmpleado(prevState: unknown, formData: FormData) {
@@ -72,6 +73,21 @@ export async function confirmarEntregaEmpleado(prevState: unknown, formData: For
       .eq('id', order_id)
 
     if (updateError) return { error: updateError.message }
+
+    const { data: ordenEntregado } = await supabase
+      .from('orders')
+      .select('order_number, customers(business_name)')
+      .eq('id', order_id)
+      .single()
+    const orderNum = (ordenEntregado as { order_number?: string } | null)?.order_number ?? order_id
+    const custEnt = (ordenEntregado as { customers?: { business_name: string } | null } | null)?.customers
+    const businessNameEnt = (Array.isArray(custEnt) ? custEnt[0]?.business_name : custEnt?.business_name) ?? 'Cliente'
+    await sendTelegram(
+      `🚚 <b>Pedido Entregado</b>\n` +
+        `📋 Pedido: ${orderNum}\n` +
+        `👤 Cliente: ${businessNameEnt}\n` +
+        `✔️ Confirmado por empleado y cliente`
+    )
   }
 
   revalidatePath('/empleado/pedidos')

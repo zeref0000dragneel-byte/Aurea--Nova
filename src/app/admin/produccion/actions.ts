@@ -161,11 +161,12 @@ export async function completarOrden(
 
   // Paso D: INSERT inventory_lots y guardar id del lote
   // Lo producido (actual_quantity) entra al lote; la merma solo se registra en la orden.
+  const lotNumber = `LOTE-${Date.now()}`
   const { data: nuevoLote, error: errLote } = await supabase
     .from('inventory_lots')
     .insert({
       product_id,
-      lot_number: `LOTE-${Date.now()}`,
+      lot_number: lotNumber,
       production_date: new Date().toISOString(),
       initial_quantity: actual_quantity,
       current_quantity: actual_quantity,
@@ -215,12 +216,37 @@ export async function completarOrden(
     return { error: errUpdateOrden.message }
   }
 
-  const order_number = (orden as { order_number?: string })?.order_number
+  const { data: productRow } = await supabase
+    .from('products')
+    .select('name, unit')
+    .eq('id', product_id)
+    .single()
+  const productName = (productRow as { name?: string; unit?: string } | null)?.name ?? 'Producto'
+  const productUnit = (productRow as { name?: string; unit?: string } | null)?.unit ?? ''
+
+  const { data: ordenCompleta } = await supabase
+    .from('production_orders')
+    .select('assigned_to')
+    .eq('id', orden_id)
+    .single()
+  const assignedToId = (ordenCompleta as { assigned_to?: string | null } | null)?.assigned_to ?? null
+  let completedByName = '—'
+  if (assignedToId) {
+    const { data: profileRow } = await supabase
+      .from('profiles')
+      .select('full_name')
+      .eq('id', assignedToId)
+      .single()
+    completedByName = (profileRow as { full_name?: string } | null)?.full_name ?? '—'
+  }
+
   await sendTelegram(
     `🏭 <b>Producción Completada</b>\n` +
-      `📋 Orden: ${order_number ?? 'N/A'}\n` +
-      `📦 Lote creado en inventario\n` +
-      `📅 ${new Date().toLocaleString('es-MX')}`
+      `📦 Producto: ${productName}\n` +
+      `🔢 Cantidad producida: ${actual_quantity} ${productUnit}\n` +
+      `⚠️ Merma: ${waste_quantity} ${productUnit}\n` +
+      `🏷️ Lote creado: ${lotNumber}\n` +
+      `👤 Completado por: ${completedByName}`
   )
   const redirectTo = (formData.get('redirect_to') as string)?.trim() || '/admin/produccion'
   redirect(redirectTo)
