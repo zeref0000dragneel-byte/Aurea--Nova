@@ -127,9 +127,6 @@ export default async function EmpleadoOrdenProduccionDetallePage({
   }
 
   const orden = order as unknown as OrderData
-  if (orden.assigned_to !== user.id) {
-    notFound()
-  }
 
   const consumosList = (consumos ?? []) as unknown as ConsumoRow[]
   const materiasPrimas = (rawMaterials ?? []).map((r) => ({
