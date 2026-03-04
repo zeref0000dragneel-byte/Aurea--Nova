@@ -160,15 +160,15 @@ export async function completarOrden(
   }
 
   // Paso D: INSERT inventory_lots y guardar id del lote
-  const cantidadNeta = actual_quantity - waste_quantity
+  // Lo producido (actual_quantity) entra al lote; la merma solo se registra en la orden.
   const { data: nuevoLote, error: errLote } = await supabase
     .from('inventory_lots')
     .insert({
       product_id,
       lot_number: `LOTE-${Date.now()}`,
       production_date: new Date().toISOString(),
-      initial_quantity: cantidadNeta,
-      current_quantity: cantidadNeta,
+      initial_quantity: actual_quantity,
+      current_quantity: actual_quantity,
       committed_quantity: 0,
       expiry_date: expiry_date && expiry_date.trim() !== '' ? expiry_date : null,
       notes: `Orden de producción completada`,
@@ -190,7 +190,7 @@ export async function completarOrden(
     lot_id: nuevoLote.id,
     product_id: product_id,
     movement_type: 'entrada',
-    quantity: cantidadNeta,
+    quantity: actual_quantity,
     notes: 'Orden de producción completada',
   })
 
