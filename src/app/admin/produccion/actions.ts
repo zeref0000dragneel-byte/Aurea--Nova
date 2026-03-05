@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { createAdminClient } from '@/lib/supabase/admin'
+import { createClient } from '@/lib/supabase/server'
 import { sendTelegram } from '@/lib/telegram'
 
 const STATUS_VALIDOS = ['pendiente', 'en_proceso', 'cancelada'] as const
@@ -248,8 +249,17 @@ export async function completarOrden(
       `🏷️ Lote creado: ${lotNumber}\n` +
       `👤 Completado por: ${completedByName}`
   )
-  const redirectTo = (formData.get('redirect_to') as string)?.trim() || '/admin/produccion'
-  redirect(redirectTo)
+  const serverClient = await createClient()
+  const { data: { user } } = await serverClient.auth.getUser()
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('role')
+    .eq('id', user?.id ?? '')
+    .single()
+  if (profile?.role === 'empleado') {
+    redirect('/empleado/produccion')
+  }
+  redirect('/admin/produccion')
 }
 
 export async function agregarConsumoMP(
@@ -265,6 +275,16 @@ export async function agregarConsumoMP(
   }
 
   const supabase = createAdminClient()
+  const { data: orden } = await supabase
+    .from('production_orders')
+    .select('status')
+    .eq('id', production_order_id)
+    .single()
+
+  if (!orden || orden.status === 'completada' || orden.status === 'cancelada') {
+    return { error: 'No se puede modificar una orden completada o cancelada' }
+  }
+
   const { error } = await supabase.from('production_raw_material_usage').insert({
     production_order_id,
     raw_material_id,
@@ -292,6 +312,22 @@ export async function eliminarConsumoMP(
   }
 
   const supabase = createAdminClient()
+  const { data: consumo } = await supabase
+    .from('production_raw_material_usage')
+    .select('production_order_id')
+    .eq('id', usage_id)
+    .single()
+
+  const { data: orden } = await supabase
+    .from('production_orders')
+    .select('status')
+    .eq('id', consumo?.production_order_id ?? '')
+    .single()
+
+  if (!orden || orden.status === 'completada' || orden.status === 'cancelada') {
+    return { error: 'No se puede modificar una orden completada o cancelada' }
+  }
+
   const { error } = await supabase
     .from('production_raw_material_usage')
     .delete()
@@ -302,5 +338,6 @@ export async function eliminarConsumoMP(
   }
 
   revalidatePath('/admin/produccion/' + production_order_id)
+  revalidatePath('/empleado/produccion/' + production_order_id)
   return { success: true }
 }

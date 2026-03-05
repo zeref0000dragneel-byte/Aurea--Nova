@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { notFound } from 'next/navigation'
-import { redirect } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -13,6 +12,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { BotonEliminarConsumoMP } from '@/app/admin/produccion/[id]/boton-eliminar-consumo-mp'
 import { FormAgregarConsumoMP } from '@/app/admin/produccion/[id]/form-agregar-consumo-mp'
 import { FormCompletarOrden } from '@/app/admin/produccion/[id]/form-completar-orden'
 import { BotonPonerEnProceso } from './boton-poner-en-proceso'
@@ -33,13 +33,13 @@ type OrderData = {
   waste_notes: string | null
   waste_photo_url: string | null
   completed_at: string | null
-  products: { name: string } | null
-  profiles: { full_name: string } | null
+  products: { name: string; unit: string } | null
+  assigned_profile: { full_name: string } | null
+  production_raw_material_usage: ConsumoRow[]
 }
 
 type ConsumoRow = {
   id: string
-  raw_material_id: string
   planned_quantity: number
   raw_materials: { name: string; unit: string } | null
 }
@@ -76,77 +76,58 @@ export default async function EmpleadoOrdenProduccionDetallePage({
     redirect('/login')
   }
 
-  const [
-    { data: order, error: orderError },
-    { data: consumos },
-    { data: rawMaterials },
-  ] = await Promise.all([
-    supabase
-      .from('production_orders')
-      .select(
-        `
-        id,
-        product_id,
-        planned_quantity,
-        status,
-        assigned_to,
-        created_at,
-        notes,
-        actual_quantity,
-        waste_quantity,
-        waste_notes,
-        waste_photo_url,
-        completed_at,
-        products ( name ),
-        profiles ( full_name )
+  const { data: orden, error: orderError } = await supabase
+    .from('production_orders')
+    .select(
       `
-      )
-      .eq('id', id)
-      .single(),
-    supabase
-      .from('production_raw_material_usage')
-      .select(
-        `
+      *,
+      products(name, unit),
+      assigned_profile:profiles!production_orders_assigned_to_fkey(full_name),
+      production_raw_material_usage(
         id,
-        raw_material_id,
         planned_quantity,
-        raw_materials ( name, unit )
-      `
+        raw_materials(name, unit)
       )
-      .eq('production_order_id', id)
-      .order('raw_material_id'),
-    supabase
-      .from('raw_materials')
-      .select('id, name, unit')
-      .eq('is_active', true)
-      .order('name'),
-  ])
+    `
+    )
+    .eq('id', id)
+    .single()
 
-  if (orderError || !order) {
+  if (orderError || !orden) {
     notFound()
   }
 
-  const orden = order as unknown as OrderData
+  const ordenTyped = orden as unknown as OrderData
+  if (ordenTyped.assigned_to !== user.id) {
+    redirect('/empleado/produccion')
+  }
 
-  const consumosList = (consumos ?? []) as unknown as ConsumoRow[]
+  const { data: rawMaterials } = await supabase
+    .from('raw_materials')
+    .select('id, name, unit')
+    .eq('is_active', true)
+    .order('name')
+
+  const consumosList = ordenTyped.production_raw_material_usage ?? []
   const materiasPrimas = (rawMaterials ?? []).map((r) => ({
     id: (r as { id: string }).id,
     name: (r as { name: string }).name,
     unit: (r as { unit: string }).unit,
-  })) as unknown as RawMaterialOption[]
+  })) as RawMaterialOption[]
 
-  const productName = orden.products?.name ?? '—'
-  const assignedName = orden.profiles?.full_name ?? '—'
-  const status = orden.status ?? 'pendiente'
-  const createdDate = orden.created_at
-    ? new Date(orden.created_at).toLocaleDateString('es-MX', {
+  const productName = ordenTyped.products?.name ?? '—'
+  const productUnit = ordenTyped.products?.unit ?? ''
+  const status = ordenTyped.status ?? 'pendiente'
+  const createdDate = ordenTyped.created_at
+    ? new Date(ordenTyped.created_at).toLocaleDateString('es-MX', {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
       })
     : '—'
-  const canComplete = status === 'pendiente' || status === 'en_proceso'
   const isFinished = status === 'completada' || status === 'cancelada'
+  const canEditConsumos = !isFinished
+  const showFormCompletar = status === 'en_proceso'
 
   return (
     <div className="p-8">
@@ -160,14 +141,15 @@ export default async function EmpleadoOrdenProduccionDetallePage({
         </Link>
       </div>
 
-      {/* Sección 1 — Cabecera de la orden */}
       <Card className="mb-8 border-gray-200">
         <CardHeader>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <h1 className="text-2xl font-bold tracking-tight text-gray-900">
               Orden de producción
             </h1>
-            {status === 'pendiente' && <BotonPonerEnProceso ordenId={id} />}
+            {status === 'pendiente' && (
+              <BotonPonerEnProceso ordenId={id} />
+            )}
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -196,14 +178,9 @@ export default async function EmpleadoOrdenProduccionDetallePage({
                 Cantidad planificada
               </p>
               <p className="mt-0.5 font-medium text-gray-900">
-                {Number(orden.planned_quantity).toLocaleString('es-MX')}
+                {Number(ordenTyped.planned_quantity).toLocaleString('es-MX')}
+                {productUnit ? ` ${productUnit}` : ''}
               </p>
-            </div>
-            <div>
-              <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                Asignado a
-              </p>
-              <p className="mt-0.5 text-gray-900">{assignedName}</p>
             </div>
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
@@ -212,18 +189,17 @@ export default async function EmpleadoOrdenProduccionDetallePage({
               <p className="mt-0.5 text-gray-900">{createdDate}</p>
             </div>
           </div>
-          {orden.notes && (
+          {ordenTyped.notes && (
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                 Notas
               </p>
-              <p className="mt-0.5 text-gray-700 whitespace-pre-wrap">{orden.notes}</p>
+              <p className="mt-0.5 text-gray-700 whitespace-pre-wrap">{ordenTyped.notes}</p>
             </div>
           )}
         </CardContent>
       </Card>
 
-      {/* Sección 2 — Materias primas a consumir (sin botón eliminar) */}
       <Card className="mb-8 border-gray-200">
         <CardHeader>
           <h2 className="text-lg font-semibold text-gray-900">
@@ -238,9 +214,14 @@ export default async function EmpleadoOrdenProduccionDetallePage({
                   <TableRow className="border-gray-200 hover:bg-transparent">
                     <TableHead className="font-semibold text-gray-700">Nombre</TableHead>
                     <TableHead className="font-semibold text-gray-700">
-                      Cantidad a usar
+                      Cantidad planificada
                     </TableHead>
                     <TableHead className="font-semibold text-gray-700">Unidad</TableHead>
+                    {canEditConsumos && (
+                      <TableHead className="w-14 font-semibold text-gray-700 text-right">
+                        Acciones
+                      </TableHead>
+                    )}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -255,6 +236,14 @@ export default async function EmpleadoOrdenProduccionDetallePage({
                       <TableCell className="text-gray-600 uppercase">
                         {c.raw_materials?.unit ?? '—'}
                       </TableCell>
+                      {canEditConsumos && (
+                        <TableCell className="text-right">
+                          <BotonEliminarConsumoMP
+                            usageId={c.id}
+                            productionOrderId={id}
+                          />
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -265,15 +254,16 @@ export default async function EmpleadoOrdenProduccionDetallePage({
               No hay materias primas registradas para esta orden.
             </p>
           )}
-          <FormAgregarConsumoMP
-            produccionOrdenId={id}
-            materialesPrimas={materiasPrimas}
-          />
+          {canEditConsumos && (
+            <FormAgregarConsumoMP
+              produccionOrdenId={id}
+              materialesPrimas={materiasPrimas}
+            />
+          )}
         </CardContent>
       </Card>
 
-      {/* Sección 3 — Completar orden o resumen */}
-      {canComplete && (
+      {showFormCompletar && (
         <Card className="mb-8 border-gray-200">
           <CardHeader>
             <h2 className="text-lg font-semibold text-gray-900">Completar orden</h2>
@@ -287,82 +277,57 @@ export default async function EmpleadoOrdenProduccionDetallePage({
         </Card>
       )}
 
-      {isFinished && (
+      {isFinished && status === 'completada' && (
         <Card className="mb-8 border-gray-200">
           <CardHeader>
             <h2 className="text-lg font-semibold text-gray-900">Resumen</h2>
           </CardHeader>
           <CardContent className="space-y-4">
-            {status === 'completada' && (
-              <>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                      Cantidad real producida
-                    </p>
-                    <p className="mt-0.5 font-medium text-gray-900">
-                      {orden.actual_quantity != null
-                        ? Number(orden.actual_quantity).toLocaleString('es-MX')
-                        : '—'}
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                      Merma
-                    </p>
-                    <p className="mt-0.5 font-medium text-gray-900">
-                      {orden.waste_quantity != null
-                        ? Number(orden.waste_quantity).toLocaleString('es-MX')
-                        : '0'}
-                    </p>
-                  </div>
-                </div>
-                {orden.waste_notes && (
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
-                      Notas de merma
-                    </p>
-                    <p className="mt-0.5 text-gray-700 whitespace-pre-wrap">
-                      {orden.waste_notes}
-                    </p>
-                  </div>
-                )}
-                {orden.waste_photo_url && (
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wide text-gray-500 mb-2">
-                      Foto de merma
-                    </p>
-                    <a
-                      href={orden.waste_photo_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block rounded-lg border border-gray-200 overflow-hidden max-w-xs"
-                    >
-                      <img
-                        src={orden.waste_photo_url}
-                        alt="Foto de merma"
-                        className="h-auto w-full object-cover"
-                      />
-                    </a>
-                  </div>
-                )}
-                {orden.completed_at && (
-                  <p className="text-sm text-gray-500">
-                    Completada el{' '}
-                    {new Date(orden.completed_at).toLocaleDateString('es-MX', {
-                      day: '2-digit',
-                      month: 'short',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
-                  </p>
-                )}
-              </>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                  Cantidad real producida
+                </p>
+                <p className="mt-0.5 font-medium text-gray-900">
+                  {ordenTyped.actual_quantity != null
+                    ? Number(ordenTyped.actual_quantity).toLocaleString('es-MX')
+                    : '—'}
+                </p>
+              </div>
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
+                  Merma
+                </p>
+                <p className="mt-0.5 font-medium text-gray-900">
+                  {ordenTyped.waste_quantity != null
+                    ? Number(ordenTyped.waste_quantity).toLocaleString('es-MX')
+                    : '0'}
+                </p>
+              </div>
+            </div>
+            {ordenTyped.completed_at && (
+              <p className="text-sm text-gray-500">
+                Completada el{' '}
+                {new Date(ordenTyped.completed_at).toLocaleDateString('es-MX', {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </p>
             )}
-            {status === 'cancelada' && (
-              <p className="text-sm text-gray-600">Esta orden fue cancelada.</p>
-            )}
+          </CardContent>
+        </Card>
+      )}
+
+      {isFinished && status === 'cancelada' && (
+        <Card className="mb-8 border-gray-200">
+          <CardHeader>
+            <h2 className="text-lg font-semibold text-gray-900">Resumen</h2>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-gray-600">Esta orden fue cancelada.</p>
           </CardContent>
         </Card>
       )}

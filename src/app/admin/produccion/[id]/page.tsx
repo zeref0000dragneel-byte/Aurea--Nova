@@ -116,6 +116,7 @@ export default async function OrdenProduccionDetallePage({
     : '—'
   const canComplete = status === 'pendiente' || status === 'en_proceso'
   const isFinished = status === 'completada' || status === 'cancelada'
+  const puedeEditar = status !== 'completada' && status !== 'cancelada'
 
   return (
     <div className="p-8">
@@ -215,9 +216,11 @@ export default async function OrdenProduccionDetallePage({
                       Cantidad a usar
                     </TableHead>
                     <TableHead className="font-semibold text-gray-700">Unidad</TableHead>
-                    <TableHead className="w-14 font-semibold text-gray-700 text-right">
-                      Acciones
-                    </TableHead>
+                    {puedeEditar && (
+                      <TableHead className="w-14 font-semibold text-gray-700 text-right">
+                        Acciones
+                      </TableHead>
+                    )}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -232,12 +235,14 @@ export default async function OrdenProduccionDetallePage({
                       <TableCell className="text-gray-600 uppercase">
                         {c.raw_materials?.unit ?? '—'}
                       </TableCell>
-                      <TableCell className="text-right">
-                        <BotonEliminarConsumoMP
-                          usageId={c.id}
-                          productionOrderId={id}
-                        />
-                      </TableCell>
+                      {puedeEditar && (
+                        <TableCell className="text-right">
+                          <BotonEliminarConsumoMP
+                            usageId={c.id}
+                            productionOrderId={id}
+                          />
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -248,15 +253,17 @@ export default async function OrdenProduccionDetallePage({
               No hay materias primas registradas para esta orden.
             </p>
           )}
-          <FormAgregarConsumoMP
-            produccionOrdenId={id}
-            materialesPrimas={materiasPrimas}
-          />
+          {puedeEditar && (
+            <FormAgregarConsumoMP
+              produccionOrdenId={id}
+              materialesPrimas={materiasPrimas}
+            />
+          )}
         </CardContent>
       </Card>
 
       {/* Sección 3 — Completar orden o resumen */}
-      {canComplete && (
+      {status === 'en_proceso' && (
         <Card className="mb-8 border-gray-200">
           <CardHeader>
             <h2 className="text-lg font-semibold text-gray-900">Completar orden</h2>
