@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Plus, ShoppingCart } from 'lucide-react'
+import { EmptyState } from '@/components/admin/empty-state'
 
 const statusLabel: Record<string, string> = {
   borrador: 'Borrador',
@@ -113,10 +114,11 @@ export default async function PedidosPage({
 
       {/* Tabla */}
       {!pedidos || pedidos.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-muted-foreground gap-2">
-          <ShoppingCart className="w-10 h-10" />
-          <p>No hay pedidos en esta categoría</p>
-        </div>
+        <EmptyState
+          icon={ShoppingCart}
+          title="Aún no hay registros."
+          description="Comienza creando uno nuevo."
+        />
       ) : (
         <div className="border rounded-lg overflow-hidden">
           <table className="w-full text-sm">

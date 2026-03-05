@@ -20,7 +20,7 @@ function BotonAgregarPrecio({ disabledWhen }: { disabledWhen: boolean }) {
     <Button
       type="submit"
       disabled={pending || disabledWhen}
-      className="bg-amber-500 font-medium text-white hover:bg-amber-600 disabled:opacity-50"
+      className="disabled:opacity-50"
     >
       {pending ? 'Agregando...' : 'Agregar Precio'}
     </Button>

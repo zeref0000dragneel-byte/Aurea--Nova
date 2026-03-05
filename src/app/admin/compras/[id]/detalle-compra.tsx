@@ -91,7 +91,7 @@ function SubmitPagoButton() {
     <Button
       type="submit"
       disabled={pending}
-      className="w-full bg-amber-500 font-medium text-white hover:bg-amber-600 disabled:opacity-60"
+      className="w-full disabled:opacity-60"
     >
       {pending ? 'Registrando…' : 'Registrar Pago'}
     </Button>

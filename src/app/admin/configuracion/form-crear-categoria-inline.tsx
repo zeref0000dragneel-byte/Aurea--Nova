@@ -9,7 +9,7 @@ import { crearCategoria } from './actions'
 function BotonAgregarCategoria() {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" className="shrink-0 bg-amber-500 font-medium text-white hover:bg-amber-600" disabled={pending}>
+    <Button type="submit" className="shrink-0" disabled={pending}>
       {pending ? 'Agregando...' : 'Agregar'}
     </Button>
   )

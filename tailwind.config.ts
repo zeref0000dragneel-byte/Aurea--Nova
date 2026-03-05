@@ -21,7 +21,7 @@ const config: Config = {
   				foreground: 'hsl(var(--popover-foreground))'
   			},
   			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
+  				DEFAULT: '#B45309',
   				foreground: 'hsl(var(--primary-foreground))'
   			},
   			secondary: {
@@ -55,6 +55,25 @@ const config: Config = {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
+  		},
+  		borderWidth: {
+  			'0.5': '0.5px'
+  		},
+  		borderOpacity: {
+  			'50': '0.5'
+  		},
+  		boxShadow: {
+  			'premium': '0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 8px rgba(15, 23, 42, 0.06), 0 12px 24px rgba(15, 23, 42, 0.08)',
+  			'inner-glow': 'inset 0 1px 1px rgba(255,255,255,0.6)'
+  		},
+  		keyframes: {
+  			'pulse-slow': {
+  				'0%, 100%': { opacity: '1' },
+  				'50%': { opacity: '0.5' }
+  			}
+  		},
+  		animation: {
+  			'pulse-slow': 'pulse-slow 1s ease-in-out infinite'
   		}
   	}
   },

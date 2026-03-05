@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { BotonEliminarCliente } from '@/components/admin/boton-eliminar-cliente'
+import { EmptyState } from '@/components/admin/empty-state'
+import { TooltipTrigger } from '@/components/ui/tooltip'
 
 export default async function AdminClientesPage() {
   const supabase = await createClient()
@@ -36,10 +38,7 @@ export default async function AdminClientesPage() {
             Gestión de clientes mayoristas
           </p>
         </div>
-        <Button
-          asChild
-          className="mt-2 shrink-0 bg-amber-500 font-medium text-white hover:bg-amber-600 sm:mt-0"
-        >
+        <Button asChild className="mt-2 shrink-0 sm:mt-0">
           <Link href="/admin/clientes/nuevo">
             <Plus className="mr-2 h-4 w-4" />
             Nuevo cliente
@@ -97,30 +96,35 @@ export default async function AdminClientesPage() {
                   </TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="text-gray-500 hover:bg-amber-50 hover:text-amber-700"
-                        asChild
-                      >
-                        <Link
-                          href={`/admin/clientes/${c.id}/precios`}
-                          title="Precios"
+                      <TooltipTrigger content="Precios">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                          asChild
                         >
-                          <Tag className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-gray-500 hover:bg-amber-50 hover:text-amber-700"
-                        asChild
-                      >
-                        <Link href={`/admin/clientes/${c.id}/editar`}>
-                          <Pencil className="h-4 w-4" />
-                        </Link>
-                      </Button>
-                      <BotonEliminarCliente customerId={c.id} />
+                          <Link href={`/admin/clientes/${c.id}/precios`}>
+                            <Tag className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipTrigger content="Editar">
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                          asChild
+                        >
+                          <Link href={`/admin/clientes/${c.id}/editar`}>
+                            <Pencil className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipTrigger content="Eliminar">
+                        <span className="inline-flex group">
+                          <BotonEliminarCliente customerId={c.id} />
+                        </span>
+                      </TooltipTrigger>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -129,17 +133,11 @@ export default async function AdminClientesPage() {
           </Table>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-gray-50/50 py-16">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
-            <Users className="h-7 w-7 text-gray-400" />
-          </div>
-          <p className="mt-4 text-sm font-medium text-gray-600">
-            No hay clientes registrados
-          </p>
-          <p className="mt-1 text-xs text-gray-500">
-            Agrega el primer cliente con el botón superior
-          </p>
-        </div>
+        <EmptyState
+          icon={Users}
+          title="Aún no hay registros."
+          description="Comienza creando uno nuevo."
+        />
       )}
     </div>
   )

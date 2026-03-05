@@ -24,32 +24,32 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(ellipse_at_30%_20%,_var(--tw-gradient-stops))] from-slate-50 to-slate-100">
       <div className="w-full max-w-md">
 
         {/* Logo y marca */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-500 rounded-2xl mb-4 shadow-lg shadow-amber-200">
-            <Hexagon className="w-8 h-8 text-white fill-white" />
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-[#B45309] rounded-2xl mb-6 shadow-[0_20px_50px_rgba(15,23,42,0.1)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)]">
+            <Hexagon className="w-8 h-8 text-white fill-white" strokeWidth={1.5} />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+          <h1 className="text-3xl font-light tracking-[0.3em] uppercase text-slate-800">
             Colmena OS
           </h1>
-          <p className="text-gray-500 mt-1 text-sm">
+          <p className="text-slate-500 mt-2 text-sm">
             Colmena OS — Amor de Colmena
           </p>
         </div>
 
         {/* Card del formulario */}
-        <div className="bg-white rounded-2xl shadow-xl shadow-gray-200/60 border border-gray-100 p-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-6">
+        <div className="bg-white/70 backdrop-blur-2xl rounded-2xl border border-white/40 shadow-[0_20px_50px_rgba(15,23,42,0.1)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] p-10">
+          <h2 className="text-xl font-light tracking-tight text-slate-800 mb-8">
             Iniciar sesión
           </h2>
 
-          <form action={handleSubmit} className="space-y-5">
+          <form action={handleSubmit} className="space-y-6">
             {/* Email */}
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+              <Label htmlFor="email" className="text-sm font-medium text-slate-700">
                 Correo electrónico
               </Label>
               <Input
@@ -59,13 +59,13 @@ export default function LoginPage() {
                 placeholder="correo@ejemplo.com"
                 required
                 autoComplete="email"
-                className="h-11 border-gray-200 focus:border-amber-400 focus:ring-amber-400"
+                className="h-11 rounded-xl bg-slate-50/50 border-slate-200/50 focus-visible:ring-[#B45309] focus-visible:border-[#B45309]"
               />
             </div>
 
             {/* Password */}
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+              <Label htmlFor="password" className="text-sm font-medium text-slate-700">
                 Contraseña
               </Label>
               <div className="relative">
@@ -76,12 +76,12 @@ export default function LoginPage() {
                   placeholder="••••••••"
                   required
                   autoComplete="current-password"
-                  className="h-11 pr-10 border-gray-200 focus:border-amber-400 focus:ring-amber-400"
+                  className="h-11 pr-10 rounded-xl bg-slate-50/50 border-slate-200/50 focus-visible:ring-[#B45309] focus-visible:border-[#B45309]"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
                 >
                   {showPassword
                     ? <EyeOff className="w-4 h-4" />
@@ -93,16 +93,16 @@ export default function LoginPage() {
 
             {/* Error */}
             {error && (
-              <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+              <div className="bg-red-500/10 border border-red-200/50 rounded-xl px-4 py-3">
                 <p className="text-sm text-red-600 font-medium">{error}</p>
               </div>
             )}
 
-            {/* Submit */}
+            {/* Submit — único acento dorado en login */}
             <Button
               type="submit"
               disabled={isPending}
-              className="w-full h-11 bg-amber-500 hover:bg-amber-600 text-white font-medium rounded-xl transition-all shadow-md shadow-amber-200 hover:shadow-amber-300 mt-2"
+              className="w-full h-12 mt-2"
             >
               {isPending
                 ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Entrando...</>
@@ -113,7 +113,7 @@ export default function LoginPage() {
         </div>
 
         {/* Footer */}
-        <p className="text-center text-xs text-gray-400 mt-6">
+        <p className="text-center text-xs text-slate-400 mt-10">
           Acceso restringido. Solo personal autorizado.
         </p>
       </div>

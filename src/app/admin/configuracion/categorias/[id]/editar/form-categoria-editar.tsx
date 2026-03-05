@@ -17,7 +17,7 @@ type Category = {
 function BotonGuardarCategoria() {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" className="bg-amber-500 font-medium text-white hover:bg-amber-600" disabled={pending}>
+    <Button type="submit" disabled={pending}>
       {pending ? 'Guardando...' : 'Guardar cambios'}
     </Button>
   )

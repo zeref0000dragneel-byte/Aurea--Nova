@@ -18,7 +18,7 @@ function SubmitButton() {
     <Button
       type="submit"
       disabled={pending}
-      className="bg-amber-500 font-medium text-white hover:bg-amber-600 disabled:opacity-60"
+      className="disabled:opacity-60"
     >
       {pending ? 'Guardando…' : 'Crear orden'}
     </Button>

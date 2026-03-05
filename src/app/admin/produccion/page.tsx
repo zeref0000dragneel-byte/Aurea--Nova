@@ -11,6 +11,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { EmptyState } from '@/components/admin/empty-state'
 import { cn } from '@/lib/utils'
 
 type OrderStatus = 'pendiente' | 'en_proceso' | 'completada' | 'cancelada'
@@ -93,7 +94,7 @@ export default async function AdminProduccionPage({
         </div>
         <Button
           asChild
-          className="shrink-0 bg-amber-500 font-medium text-white hover:bg-amber-600"
+          className="shrink-0"
         >
           <Link href="/admin/produccion/nuevo">
             <Plus className="mr-2 h-4 w-4" />
@@ -207,19 +208,15 @@ export default async function AdminProduccionPage({
           </Table>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-gray-50/50 py-16">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
-            <Factory className="h-7 w-7 text-gray-400" />
-          </div>
-          <p className="mt-4 text-sm font-medium text-gray-600">
-            No hay órdenes de producción
-          </p>
-          <p className="mt-1 text-xs text-gray-500">
-            {filter !== 'todos'
+        <EmptyState
+          icon={Factory}
+          title="Aún no hay registros."
+          description={
+            filter !== 'todos'
               ? 'Prueba otro filtro o crea una nueva orden'
-              : 'Crea la primera orden con el botón superior'}
-          </p>
-        </div>
+              : 'Comienza creando uno nuevo.'
+          }
+        />
       )}
     </div>
   )

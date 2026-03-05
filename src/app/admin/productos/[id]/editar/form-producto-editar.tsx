@@ -38,7 +38,7 @@ function BotonGuardarProductoEditar() {
   return (
     <Button
       type="submit"
-      className="bg-amber-500 font-medium text-white hover:bg-amber-600"
+      className="disabled:opacity-50"
       disabled={pending}
     >
       {pending ? 'Guardando...' : 'Guardar producto'}

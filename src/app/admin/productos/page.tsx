@@ -12,6 +12,8 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { BotonEliminarProducto } from '@/components/admin/boton-eliminar-producto'
+import { EmptyState } from '@/components/admin/empty-state'
+import { TooltipTrigger } from '@/components/ui/tooltip'
 
 export default async function AdminProductosPage() {
   const supabase = await createClient()
@@ -34,21 +36,17 @@ export default async function AdminProductosPage() {
   const hasProducts = productList.length > 0
 
   return (
-    <div className="p-8">
-      {/* Header */}
-      <div className="mb-8 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+    <div className="p-16">
+      <div className="mb-16 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-4xl font-light tracking-tight text-slate-900">
             Productos
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="mt-2 text-sm text-slate-500">
             Gestión del catálogo
           </p>
         </div>
-        <Button
-          asChild
-          className="mt-2 shrink-0 bg-amber-500 font-medium text-white hover:bg-amber-600 sm:mt-0"
-        >
+        <Button asChild className="shrink-0 sm:mt-0">
           <Link href="/admin/productos/nuevo">
             <Plus className="mr-2 h-4 w-4" />
             Nuevo producto
@@ -58,18 +56,18 @@ export default async function AdminProductosPage() {
 
       {/* Table or empty state */}
       {hasProducts ? (
-        <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
+        <div className="rounded-xl border border-slate-200/50 bg-white shadow-premium shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)]">
           <Table>
             <TableHeader>
-              <TableRow className="border-gray-200 hover:bg-transparent">
-                <TableHead className="h-11 font-semibold text-gray-700">SKU</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Nombre</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Categoría</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Precio Base</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Unidad</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Stock Mínimo</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Estado</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700 text-right">Acciones</TableHead>
+              <TableRow className="border-slate-200/50 hover:bg-transparent">
+                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">SKU</TableHead>
+                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Nombre</TableHead>
+                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Categoría</TableHead>
+                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Precio Base</TableHead>
+                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Unidad</TableHead>
+                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Stock Mínimo</TableHead>
+                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Estado</TableHead>
+                <TableHead className="text-right py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Acciones</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -86,50 +84,56 @@ export default async function AdminProductosPage() {
                 }
                 const categoryName = product.product_categories?.name ?? '—'
                 return (
-                  <TableRow key={product.id} className="border-gray-100">
-                    <TableCell className="font-mono text-gray-600">
+                  <TableRow key={product.id} className="hover:bg-slate-50/80">
+                    <TableCell className="py-5 font-mono text-[12px] text-slate-500">
                       {product.sku ?? '—'}
                     </TableCell>
-                    <TableCell className="font-medium text-gray-900">
+                    <TableCell className="py-5 font-medium text-slate-900">
                       {product.name}
                     </TableCell>
-                    <TableCell className="text-gray-600">
+                    <TableCell className="py-5 text-slate-600">
                       {categoryName}
                     </TableCell>
-                    <TableCell className="text-gray-700">
+                    <TableCell className="py-5 font-mono tabular-nums text-slate-700">
                       ${Number(product.base_price).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                     </TableCell>
-                    <TableCell className="text-gray-600 uppercase">
+                    <TableCell className="py-5 font-mono text-[12px] uppercase text-slate-500">
                       {product.unit}
                     </TableCell>
-                    <TableCell className="text-gray-700">
+                    <TableCell className="py-5 text-slate-700 font-mono tabular-nums">
                       {product.min_stock}
                     </TableCell>
-                    <TableCell>
+                    <TableCell className="py-5">
                       <Badge
                         variant={product.is_active ? 'default' : 'secondary'}
                         className={
                           product.is_active
-                            ? 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
-                            : 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-100'
+                            ? 'bg-emerald-500/10 text-emerald-800 border-emerald-200/50 hover:bg-emerald-500/10'
+                            : 'bg-slate-500/10 text-slate-600 border-slate-200/50 hover:bg-slate-500/10'
                         }
                       >
                         {product.is_active ? 'Activo' : 'Inactivo'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="py-5 text-right">
                       <div className="flex items-center justify-end gap-1">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-gray-500 hover:bg-amber-50 hover:text-amber-700"
-                          asChild
-                        >
-                          <Link href={`/admin/productos/${product.id}/editar`}>
-                            <Pencil className="h-4 w-4" />
-                          </Link>
-                        </Button>
-                        <BotonEliminarProducto productId={product.id} />
+                        <TooltipTrigger content="Editar">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-8 w-8 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                            asChild
+                          >
+                            <Link href={`/admin/productos/${product.id}/editar`}>
+                              <Pencil className="h-4 w-4" />
+                            </Link>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipTrigger content="Eliminar">
+                          <span className="inline-flex group">
+                            <BotonEliminarProducto productId={product.id} />
+                          </span>
+                        </TooltipTrigger>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -139,17 +143,11 @@ export default async function AdminProductosPage() {
           </Table>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-gray-50/50 py-16">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
-            <Package className="h-7 w-7 text-gray-400" />
-          </div>
-          <p className="mt-4 text-sm font-medium text-gray-600">
-            No hay productos registrados
-          </p>
-          <p className="mt-1 text-xs text-gray-500">
-            Agrega el primer producto con el botón superior
-          </p>
-        </div>
+        <EmptyState
+          icon={Package}
+          title="Aún no hay registros."
+          description="Comienza creando uno nuevo."
+        />
       )}
     </div>
   )

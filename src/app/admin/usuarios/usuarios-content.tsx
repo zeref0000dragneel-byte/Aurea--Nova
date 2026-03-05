@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { UserPlus, Key } from 'lucide-react'
+import { UserPlus, Key, Users } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -12,6 +12,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { EmptyState } from '@/components/admin/empty-state'
 import { FormCrearEmpleado } from './form-crear-empleado'
 import { FormDarAccesoCliente } from './form-dar-acceso-cliente'
 import { BotonToggleUsuario } from './boton-toggle-usuario'
@@ -107,8 +108,8 @@ export function UsuariosContent({
             <TableBody className="divide-y">
               {empleados.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-8 text-center text-gray-500">
-                    No hay empleados registrados
+                  <TableCell colSpan={5} className="p-0">
+                    <EmptyState icon={Users} variant="cell" />
                   </TableCell>
                 </TableRow>
               ) : (
@@ -171,8 +172,8 @@ export function UsuariosContent({
             <TableBody className="divide-y">
               {clientesAcceso.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="py-8 text-center text-gray-500">
-                    No hay clientes con acceso
+                  <TableCell colSpan={5} className="p-0">
+                    <EmptyState icon={Users} variant="cell" />
                   </TableCell>
                 </TableRow>
               ) : (

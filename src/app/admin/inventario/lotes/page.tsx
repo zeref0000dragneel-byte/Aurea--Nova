@@ -9,6 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
+import { EmptyState } from '@/components/admin/empty-state'
 import { FormFilterProductoLotes } from './form-filter-producto-lotes'
 
 type LotRow = {
@@ -146,17 +147,15 @@ export default async function AdminInventarioLotesPage({
           </Table>
         </div>
       ) : (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-gray-50/50 py-16">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
-            <Package className="h-7 w-7 text-gray-400" />
-          </div>
-          <p className="mt-4 text-sm font-medium text-gray-600">
-            No hay lotes registrados
-          </p>
-          <p className="mt-1 text-xs text-gray-500">
-            {productId ? 'No hay lotes para este producto' : 'Los lotes aparecerán al completar órdenes de producción'}
-          </p>
-        </div>
+        <EmptyState
+          icon={Package}
+          title="Aún no hay registros."
+          description={
+            productId
+              ? 'No hay lotes para este producto'
+              : 'Los lotes aparecerán al completar órdenes de producción'
+          }
+        />
       )}
     </div>
   )
