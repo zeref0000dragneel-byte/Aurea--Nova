@@ -1,0 +1,115 @@
+---
+description: Schema de Supabase, tablas, columnas exactas y lógicas críticas
+globs: ["**/actions.ts", "**/page.tsx", "**/*.ts"]
+alwaysApply: true
+---
+
+# Base de Datos — Schema Exacto Áurea Flow
+
+## REGLA DE ORO
+Antes de hacer cualquier query o insert, consulta este archivo.
+Las columnas aquí listadas son las que EXISTEN en la BD real.
+No inventes columnas. No asumas nombres.
+
+## Tablas y columnas verificadas
+
+### profiles
+id, full_name, role, phone, avatar_url, is_active, created_at, updated_at
+role CHECK IN ('admin', 'empleado', 'cliente')
+
+### products
+id, category_id, sku, name, description, unit, base_price, cost_price,
+min_stock, is_active, image_url, created_at, updated_at
+CAMPO: name (NO nombre)
+
+### customers
+id, business_name, contact_name, email, phone, address, notes, 
+is_active, created_at, updated_at
+CRÍTICO: email debe coincidir EXACTAMENTE (case-sensitive) con auth.users.email
+
+### raw_materials
+id, name, unit, current_stock, min_stock, unit_cost, supplier, 
+is_active, created_at, updated_at
+
+### production_orders
+id, order_number, product_id, planned_quantity, actual_quantity,
+waste_quantity, waste_notes, waste_photo_url, production_date, lot_id,
+status CHECK IN ('pendiente','en_proceso','completada','cancelada'),
+notes, created_by, assigned_to, completed_at, created_at, updated_at
+FK ambigua — SIEMPRE usar: profiles!production_orders_assigned_to_fkey(full_name)
+
+### production_raw_material_usage
+id, production_order_id, raw_material_id, planned_quantity, actual_quantity, created_at
+CAMPO: planned_quantity (NO quantity_used)
+
+### inventory_lots
+id, product_id, lot_number, production_date, expiry_date,
+initial_quantity, current_quantity, committed_quantity, 
+unit_cost, notes, created_at, updated_at
+SIN columnas: production_order_id, is_active (no existen)
+
+### inventory_movements
+id, lot_id, product_id,
+movement_type CHECK IN ('entrada','salida','ajuste','merma'),
+quantity, unit_cost, reference_id, reference_type, notes, created_by, created_at
+movement_type entrada al completar producción
+movement_type salida al entregar pedido
+
+### orders
+id, order_number, customer_id,
+status CHECK IN ('borrador','confirmado','en_preparacion','listo','entregado','cancelado'),
+payment_status CHECK IN ('pendiente','parcial','pagado'),
+total, paid_amount, delivery_date, delivery_address, notes,
+confirmed_by_customer, confirmed_by_employee, created_by, created_at, updated_at
+
+### order_items
+id, order_id, product_id, lot_id, quantity, unit_price, discount_pct, subtotal, created_at
+
+### payments
+id, order_id, amount, payment_method, reference, notes, created_by, created_at
+
+### customer_prices
+id, customer_id, product_id, fixed_price, discount_pct, notes, is_active, created_at, updated_at
+
+### purchases
+id, raw_material_id, supplier, quantity, unit_cost, total,
+paid_amount, payment_status CHECK IN ('pendiente', 'parcial', 'pagado', 'cancelado'),
+purchase_date, invoice_number, notes,
+received_quantity, reception_notes,
+reception_status CHECK IN ('pendiente', 'recibido_completo', 'recibido_parcial', 'cancelado'),
+created_by, created_at, updated_at
+
+### purchase_payments
+id, purchase_id, amount,
+payment_method CHECK IN ('efectivo', 'transferencia', 'cheque', 'tarjeta'),
+reference, notes, created_by, created_at
+
+## Lógicas críticas de negocio — NUNCA violar
+
+### FIFO sagrado
+Al confirmar pedido: query inventory_lots ORDER BY production_date ASC
+con current_quantity > committed_quantity suficiente.
+El PRIMER resultado es siempre el lote más antiguo.
+
+### Merma en producción
+cantidad_neta = actual_quantity - waste_quantity
+inventory_lots.current_quantity = cantidad_neta (NO actual_quantity)
+inventory_movements.quantity = cantidad_neta
+
+### Doble confirmación de entrega
+status = 'entregado' SOLO cuando:
+confirmed_by_customer = true AND confirmed_by_employee = true
+Al confirmar: descontar current_quantity, limpiar committed_quantity,
+registrar movimientos tipo 'salida'
+
+### Cancelar pedido
+SIEMPRE liberar committed_quantity de todos los lotes asignados
+
+### Deuda de compras
+SOLO payment_status IN ('pendiente', 'parcial')
+NUNCA filtrar con != 'pagado' — eso incluiría canceladas (BUG)
+
+### Precios por cliente (prioridad estricta)
+1. customer_prices.fixed_price (si existe y is_active = true)
+2. base_price * (1 - discount_pct/100) (si existe descuento)
+3. products.base_price (precio estándar)

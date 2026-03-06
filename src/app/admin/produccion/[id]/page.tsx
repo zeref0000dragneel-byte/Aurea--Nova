@@ -118,6 +118,12 @@ export default async function OrdenProduccionDetallePage({
   const isFinished = status === 'completada' || status === 'cancelada'
   const puedeEditar = status !== 'completada' && status !== 'cancelada'
 
+  let displayWastePhotoUrl: string | null = orden.waste_photo_url ?? null
+  if (displayWastePhotoUrl && !displayWastePhotoUrl.startsWith('http')) {
+    const { data } = supabase.storage.from('waste-photos').getPublicUrl(displayWastePhotoUrl)
+    displayWastePhotoUrl = data.publicUrl
+  }
+
   return (
     <div className="p-8">
       <div className="mb-6">
@@ -317,25 +323,18 @@ export default async function OrdenProduccionDetallePage({
                     </p>
                   </div>
                 )}
-                {orden.waste_photo_url && (
-                  <div>
-                    <p className="text-xs font-medium uppercase tracking-wide text-gray-500 mb-2">
-                      Foto de merma
+                {displayWastePhotoUrl && (
+                  <div className="mt-4">
+                    <p className="text-xs font-medium uppercase tracking-wider text-stone-500 mb-2">
+                      FOTO DE MERMA
                     </p>
-                    <a
-                      href={orden.waste_photo_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block rounded-lg border border-gray-200 overflow-hidden max-w-xs"
-                    >
-                      <Image
-                        src={orden.waste_photo_url}
-                        alt="Foto de merma"
-                        width={400}
-                        height={300}
-                        className="rounded-lg object-cover"
-                      />
-                    </a>
+                    <Image
+                      src={displayWastePhotoUrl}
+                      alt="Evidencia fotográfica de merma"
+                      width={400}
+                      height={300}
+                      className="rounded-lg object-cover border border-stone-200"
+                    />
                   </div>
                 )}
                 {orden.completed_at && (

@@ -1,0 +1,51 @@
+---
+description: Flujos de negocio críticos y restricciones por rol
+globs: ["**/actions.ts", "**/pedidos/**", "**/produccion/**", "**/compras/**"]
+alwaysApply: false
+---
+
+# Lógica de Negocio — Restricciones Críticas
+
+## Lo que NUNCA debe ocurrir
+
+### Inventario
+- current_quantity de un lote NUNCA debe ser negativo
+- committed_quantity NUNCA debe superar current_quantity
+- Al cancelar pedido SIEMPRE liberar committed_quantity
+
+### Producción
+- NUNCA crear lote con actual_quantity como current_quantity
+  SIEMPRE usar: actual_quantity - waste_quantity
+- NUNCA insertar en inventory_movements sin product_id (NOT NULL)
+- NUNCA insertar en inventory_lots con production_order_id o is_active
+
+### Compras
+- NUNCA calcular deuda incluyendo compras canceladas
+- SIEMPRE filtrar: payment_status IN ('pendiente', 'parcial')
+- Al cancelar compra: SIEMPRE poner AMBOS campos:
+  reception_status = 'cancelado' AND payment_status = 'cancelado'
+
+### Pedidos
+- NUNCA cambiar status a 'entregado' con una sola confirmación
+- SIEMPRE verificar ambas: confirmed_by_customer AND confirmed_by_employee
+- Al entregar: descontar current_quantity, committed_quantity = 0,
+  registrar movimiento tipo 'salida' en inventory_movements
+
+## Restricciones por rol en UI
+
+### Empleado NO puede ver:
+- Precios de productos
+- Totales de pedidos
+- Abonos registrados
+- Información de deuda o cobros
+- Márgenes o costos
+
+### Cliente NO puede ver:
+- Pedidos de otros clientes
+- Precios de otros clientes
+- Información interna de la empresa
+
+## Telegram — regla crítica
+La función sendTelegram() NUNCA debe bloquear operaciones principales.
+SIEMPRE usar try/catch, SOLO console.error en fallo.
+NUNCA throw desde sendTelegram().

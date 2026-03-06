@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
 import { notFound, redirect } from 'next/navigation'
 import { ArrowLeft } from 'lucide-react'
@@ -128,6 +129,12 @@ export default async function EmpleadoOrdenProduccionDetallePage({
   const isFinished = status === 'completada' || status === 'cancelada'
   const canEditConsumos = !isFinished
   const showFormCompletar = status === 'en_proceso'
+
+  let displayWastePhotoUrl: string | null = ordenTyped.waste_photo_url ?? null
+  if (displayWastePhotoUrl && !displayWastePhotoUrl.startsWith('http')) {
+    const { data } = supabase.storage.from('waste-photos').getPublicUrl(displayWastePhotoUrl)
+    displayWastePhotoUrl = data.publicUrl
+  }
 
   return (
     <div className="p-8">
@@ -316,6 +323,20 @@ export default async function EmpleadoOrdenProduccionDetallePage({
                   minute: '2-digit',
                 })}
               </p>
+            )}
+            {displayWastePhotoUrl && (
+              <div className="mt-4">
+                <p className="text-xs font-medium uppercase tracking-wider text-stone-500 mb-2">
+                  FOTO DE MERMA
+                </p>
+                <Image
+                  src={displayWastePhotoUrl}
+                  alt="Evidencia fotográfica de merma"
+                  width={400}
+                  height={300}
+                  className="rounded-lg object-cover border border-stone-200"
+                />
+              </div>
             )}
           </CardContent>
         </Card>

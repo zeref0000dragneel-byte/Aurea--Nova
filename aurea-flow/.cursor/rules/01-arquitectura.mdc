@@ -1,0 +1,52 @@
+---
+description: Arquitectura, stack y convenciones del proyecto Áurea Flow
+globs: ["**/*.tsx", "**/*.ts", "**/actions.ts", "**/page.tsx", "**/layout.tsx"]
+alwaysApply: true
+---
+
+# Áurea Flow — Arquitectura Master
+
+## Identidad del proyecto
+ERP empresarial para Amor de Colmena, productora y distribuidora 
+de miel en Oaxaca, México. Sistema de $50,000 USD — calidad agencia senior.
+
+## Stack OBLIGATORIO
+- Next.js 14 App Router + React Server Components
+- TypeScript estricto — sin any, sin @ts-ignore
+- Supabase (PostgreSQL + Auth + Storage + RLS)
+- Tailwind CSS + shadcn/ui
+- Lucide React para TODOS los iconos
+- Vercel para despliegue
+
+## Roles del sistema
+- admin: acceso total incluyendo información financiera
+- empleado: acceso operativo SIN precios ni finanzas
+- cliente: solo sus propios pedidos y precios personalizados
+
+## Patrón de acceso a datos — NUNCA romper esto
+- Lectura en Server Components: createClient() de src/lib/supabase/server.ts
+- Escritura en Server Actions: createAdminClient() de src/lib/supabase/admin.ts
+- Auth admin (crear/listar usuarios): createAdminClient() OBLIGATORIO
+
+## Estructura de Server Actions
+- Archivo: actions.ts dentro de cada módulo
+- Firma: async function nombre(prevState, formData)
+- Error: return { error: 'mensaje' }
+- Éxito: redirect() o revalidatePath()
+- NUNCA lanzar excepciones que rompan la UI
+
+## Convenciones de IDs visibles al usuario
+- order_number: PED-${Date.now()} — mostrar solo últimos 6 dígitos: PED-XXXXXX
+- lot_number: LOTE-${Date.now()} — mostrar solo últimos 6 dígitos: LOTE-XXXXXX
+- NUNCA mostrar UUIDs al usuario final
+
+## Rutas del sistema
+/admin/* — solo rol admin
+/empleado/* — solo rol empleado  
+/cliente/* — solo rol cliente
+Middleware protege todas las rutas — verificar siempre
+
+## Componentes: cuándo usar "use client"
+SOLO cuando se necesite: useState, useEffect, useFormState, 
+event handlers interactivos, o acceso a APIs del navegador.
+TODO lo demás: Server Component por defecto.
