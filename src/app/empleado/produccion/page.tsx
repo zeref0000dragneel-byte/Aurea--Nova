@@ -29,7 +29,7 @@ export default async function EmpleadoProduccionPage() {
     .eq('assigned_to', user.id)
     .order('created_at', { ascending: false })
 
-  const ordenes = (orders ?? []) as OrderRow[]
+  const ordenes = (orders ?? []) as unknown as OrderRow[]
 
   return <TabsOrdenes ordenes={ordenes} />
 }

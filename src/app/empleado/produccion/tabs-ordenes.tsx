@@ -17,7 +17,7 @@ export type OrderRow = {
   status: OrderStatus
   created_at: string
   completed_at: string | null
-  products: { name: string } | null
+  products: { name: string } | { name: string }[] | null
 }
 
 const STATUS_BADGE_CLASS: Record<OrderStatus, string> = {
@@ -87,7 +87,9 @@ export function TabsOrdenes({ ordenes }: { ordenes: OrderRow[] }) {
           {hasActivas ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {activas.map((row) => {
-                const productName = row.products?.name ?? '—'
+                const productName = Array.isArray(row.products)
+                  ? row.products[0]?.name ?? '—'
+                  : row.products?.name ?? '—'
                 const status = row.status
                 const createdDate = row.created_at
                   ? new Date(row.created_at).toLocaleDateString('es-MX', {
@@ -154,7 +156,9 @@ export function TabsOrdenes({ ordenes }: { ordenes: OrderRow[] }) {
           {hasHistorial ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {historial.map((row) => {
-                const productName = row.products?.name ?? '—'
+                const productName = Array.isArray(row.products)
+                  ? row.products[0]?.name ?? '—'
+                  : row.products?.name ?? '—'
                 const status = row.status
                 const completedDate = row.completed_at
                   ? new Date(row.completed_at).toLocaleDateString('es-MX', {
