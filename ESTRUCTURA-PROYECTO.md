@@ -1,4 +1,4 @@
-# Estructura del proyecto Aurea Flow (Colmena-OS)
+# Estructura del proyecto Colmena OS
 
 Estructura actual del proyecto. Raíz: repositorio Colmena-OS. Excluye `node_modules/`, `.next/`, `.git/`. Las rutas de admin incluyen listados, formularios nuevo/editar y Server Actions donde aplica.
 

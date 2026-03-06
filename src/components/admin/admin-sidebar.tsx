@@ -42,7 +42,7 @@ export function AdminSidebar() {
           <Hexagon className="h-5 w-5 text-white fill-white" strokeWidth={1.5} />
         </div>
         <span className="text-lg font-bold tracking-widest text-slate-900 drop-shadow-sm">
-          Áurea
+          Colmena OS
         </span>
       </header>
       <hr className="border-slate-200/50" />

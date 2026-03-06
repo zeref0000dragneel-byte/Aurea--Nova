@@ -1,4 +1,4 @@
-# Guía maestra del proyecto Aurea Flow (visión para asistente)
+# Guía maestra del proyecto Colmena OS (visión para asistente)
 
 Este documento da una visión general del proyecto para que un asistente (p. ej. Claude) sepa **qué es el proyecto**, **dónde está cada cosa** y **cómo está organizado**. El proyecto vive en el repositorio **Colmena-OS** (raíz del repo). No contiene código: solo descripciones, rutas de archivos y convenciones. El código real está en el repositorio; no se debe asumir que fragmentos en otros contextos representan el estado actual del proyecto.
 
@@ -6,7 +6,7 @@ Este documento da una visión general del proyecto para que un asistente (p. ej.
 
 ## 1. Qué es el proyecto
 
-- **Nombre:** Aurea Flow.
+- **Nombre:** Colmena OS.
 - **Tipo:** Aplicación web de gestión (ERP / negocio): productos, inventario de materias primas y producto terminado (lotes), clientes mayoristas, pedidos, producción.
 - **Stack:** Next.js (App Router), React, TypeScript, Supabase (BD y auth), Tailwind CSS, componentes UI (shadcn/ui).
 - **Roles de usuario:** admin, empleado, cliente. Cada rol tiene un segmento de rutas y un layout propio.
