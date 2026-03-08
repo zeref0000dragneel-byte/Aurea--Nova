@@ -51,10 +51,10 @@ export function UsuariosContent({
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+        <h1 className="font-display text-2xl font-bold tracking-wide text-neutral-700">
           Gestión de Usuarios
         </h1>
-        <p className="text-sm text-gray-500">
+        <p className="text-sm font-medium text-neutral-700/80">
           Empleados y clientes con acceso al sistema
         </p>
       </div>
@@ -63,7 +63,7 @@ export function UsuariosContent({
         <Button
           type="button"
           variant="outline"
-          className="border-amber-200 text-amber-800 hover:bg-amber-50"
+          className="rounded-2xl border-primary/30 text-primary hover:bg-primary/10 hover:border-accent-miel/40"
           onClick={() => {
             setFormEmpleadoVisible((v) => !v)
             setFormClienteVisible(false)
@@ -75,7 +75,7 @@ export function UsuariosContent({
         <Button
           type="button"
           variant="outline"
-          className="border-amber-200 text-amber-800 hover:bg-amber-50"
+          className="rounded-2xl border-primary/30 text-primary hover:bg-primary/10 hover:border-accent-miel/40"
           onClick={() => {
             setFormClienteVisible((v) => !v)
             setFormEmpleadoVisible(false)
@@ -93,19 +93,19 @@ export function UsuariosContent({
 
       {/* Sección Empleados */}
       <section className="mb-10">
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Empleados</h2>
-        <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
+        <h2 className="mb-4 text-lg font-semibold text-neutral-700">Empleados</h2>
+        <div className="premium-table-wrap">
           <Table>
-            <TableHeader className="bg-muted/50">
-              <TableRow className="border-gray-200 hover:bg-transparent">
-                <TableHead className="h-11 font-semibold text-gray-700">Nombre completo</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Teléfono</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Estado</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Fecha de creación</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700 text-right">Acciones</TableHead>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead>Nombre completo</TableHead>
+                <TableHead>Teléfono</TableHead>
+                <TableHead>Estado</TableHead>
+                <TableHead>Fecha de creación</TableHead>
+                <TableHead className="text-right">Acciones</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody className="divide-y">
+            <TableBody>
               {empleados.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className="p-0">
@@ -114,24 +114,24 @@ export function UsuariosContent({
                 </TableRow>
               ) : (
                 empleados.map((e) => (
-                  <TableRow key={e.id} className="border-gray-100 hover:bg-muted/30">
-                    <TableCell className="font-medium text-gray-900">
+                  <TableRow key={e.id}>
+                    <TableCell className="font-medium text-neutral-700">
                       {e.full_name ?? '—'}
                     </TableCell>
-                    <TableCell className="text-gray-600">{e.phone ?? '—'}</TableCell>
+                    <TableCell className="text-neutral-700">{e.phone ?? '—'}</TableCell>
                     <TableCell>
                       <Badge
-                        variant={e.is_active ? 'default' : 'secondary'}
+                        variant="pill"
                         className={
                           e.is_active
-                            ? 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
-                            : 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-100'
+                            ? 'bg-emerald-500/10 text-emerald-700 border-0 hover:bg-emerald-500/10'
+                            : 'bg-neutral-200/80 text-neutral-700 border-0 hover:bg-neutral-500/10'
                         }
                       >
                         {e.is_active ? 'Activo' : 'Inactivo'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-gray-600">
+                    <TableCell className="text-neutral-700">
                       {e.created_at
                         ? new Date(e.created_at).toLocaleDateString('es-MX', {
                             day: '2-digit',
@@ -157,19 +157,19 @@ export function UsuariosContent({
 
       {/* Sección Clientes con acceso */}
       <section>
-        <h2 className="mb-4 text-lg font-semibold text-gray-900">Clientes con acceso</h2>
-        <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
+        <h2 className="mb-4 text-lg font-semibold text-neutral-700">Clientes con acceso</h2>
+        <div className="premium-table-wrap">
           <Table>
-            <TableHeader className="bg-muted/50">
-              <TableRow className="border-gray-200 hover:bg-transparent">
-                <TableHead className="h-11 font-semibold text-gray-700">Nombre completo</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Email</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Cliente vinculado</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Estado</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700 text-right">Acciones</TableHead>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead>Nombre completo</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Cliente vinculado</TableHead>
+                <TableHead>Estado</TableHead>
+                <TableHead className="text-right">Acciones</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody className="divide-y">
+            <TableBody>
               {clientesAcceso.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={5} className="p-0">
@@ -178,19 +178,19 @@ export function UsuariosContent({
                 </TableRow>
               ) : (
                 clientesAcceso.map((c) => (
-                  <TableRow key={c.id} className="border-gray-100 hover:bg-muted/30">
-                    <TableCell className="font-medium text-gray-900">
+                  <TableRow key={c.id}>
+                    <TableCell className="font-medium text-neutral-700">
                       {c.full_name ?? '—'}
                     </TableCell>
-                    <TableCell className="text-gray-600">{c.email}</TableCell>
-                    <TableCell className="text-gray-600">{c.business_name}</TableCell>
+                    <TableCell className="text-neutral-700">{c.email}</TableCell>
+                    <TableCell className="text-neutral-700">{c.business_name}</TableCell>
                     <TableCell>
                       <Badge
-                        variant={c.is_active ? 'default' : 'secondary'}
+                        variant="pill"
                         className={
                           c.is_active
-                            ? 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
-                            : 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-100'
+                            ? 'bg-emerald-500/10 text-emerald-700 border-0 hover:bg-emerald-500/10'
+                            : 'bg-neutral-200/80 text-neutral-700 border-0 hover:bg-neutral-500/10'
                         }
                       >
                         {c.is_active ? 'Activo' : 'Inactivo'}

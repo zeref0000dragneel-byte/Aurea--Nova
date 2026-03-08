@@ -27,24 +27,24 @@ export default async function AdminInventarioPage() {
   const hasMaterials = materialList.length > 0
 
   return (
-    <div className="p-16">
-      <div className="mb-16 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div className="p-6">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-light tracking-tight text-slate-900">
+          <h1 className="font-display text-3xl font-bold tracking-wide text-neutral-700">
             Inventario
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm font-medium text-neutral-700/80">
             Materias primas y stock
           </p>
         </div>
         <div className="flex shrink-0 gap-4 sm:mt-0">
-          <Button asChild variant="outline" className="font-medium text-slate-700">
+          <Button asChild variant="outline" className="font-medium text-neutral-700 transition-colors duration-200">
             <Link href="/admin/inventario/lotes">
               <Package className="mr-2 h-4 w-4" />
               Ver Lotes
             </Link>
           </Button>
-          <Button asChild className="shrink-0">
+          <Button asChild className="shrink-0 transition-colors duration-200">
             <Link href="/admin/inventario/nuevo">
               <Plus className="mr-2 h-4 w-4" />
               Nueva materia prima
@@ -54,68 +54,68 @@ export default async function AdminInventarioPage() {
       </div>
 
       {hasMaterials ? (
-        <div className="rounded-xl border border-slate-200/50 bg-white shadow-premium shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)]">
+        <div className="premium-table-wrap">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-200/50 hover:bg-transparent">
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Nombre</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Unidad</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Stock Actual</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Stock Mínimo</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Costo Unitario</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Proveedor</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Estado</TableHead>
-                <TableHead className="text-right py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Acciones</TableHead>
+              <TableRow className="hover:bg-transparent">
+                <TableHead>Nombre</TableHead>
+                <TableHead>Unidad</TableHead>
+                <TableHead>Stock Actual</TableHead>
+                <TableHead>Stock Mínimo</TableHead>
+                <TableHead>Costo Unitario</TableHead>
+                <TableHead>Proveedor</TableHead>
+                <TableHead>Estado</TableHead>
+                <TableHead className="text-right">Acciones</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {materialList.map((m) => {
                 const stockAlert = m.current_stock <= m.min_stock
                 return (
-                  <TableRow key={m.id} className="hover:bg-slate-50/80">
-                    <TableCell className="py-5 font-medium text-slate-900">
+                  <TableRow key={m.id}>
+                    <TableCell className="font-medium text-neutral-700">
                       {m.name}
                     </TableCell>
-                    <TableCell className="py-5 font-mono text-[12px] uppercase text-slate-500">
+                    <TableCell className="font-mono text-xs uppercase text-neutral-700/80">
                       {m.unit}
                     </TableCell>
-                    <TableCell className="py-5">
+                    <TableCell>
                       {stockAlert ? (
-                        <Badge className="bg-red-500/10 text-red-800 border-red-200/50 hover:bg-red-500/10">
+                        <Badge variant="pill" className="bg-danger/10 text-danger border-0">
                           {m.current_stock}
                         </Badge>
                       ) : (
-                        <span className="font-semibold tracking-tighter text-slate-700">{m.current_stock}</span>
+                        <span className="font-semibold tracking-tight text-neutral-700">{m.current_stock}</span>
                       )}
                     </TableCell>
-                    <TableCell className="py-5 text-slate-700">
+                    <TableCell className="text-neutral-700">
                       {m.min_stock}
                     </TableCell>
-                    <TableCell className="py-5 font-mono tabular-nums text-slate-700">
+                    <TableCell className="font-mono tabular-nums text-neutral-700">
                       ${Number(m.unit_cost).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                     </TableCell>
-                    <TableCell className="py-5 text-slate-600">
+                    <TableCell className="text-neutral-700">
                       {m.supplier ?? '—'}
                     </TableCell>
-                    <TableCell className="py-5">
+                    <TableCell>
                       <Badge
-                        variant={m.is_active ? 'default' : 'secondary'}
+                        variant="pill"
                         className={
                           m.is_active
-                            ? 'bg-emerald-500/10 text-emerald-800 border-emerald-200/50 hover:bg-emerald-500/10'
-                            : 'bg-slate-500/10 text-slate-600 border-slate-200/50 hover:bg-slate-500/10'
+                            ? 'bg-success/10 text-success border-0'
+                            : 'bg-neutral-200/80 text-neutral-700 border-0'
                         }
                       >
                         {m.is_active ? 'Activo' : 'Inactivo'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="py-5 text-right">
-                      <div className="flex items-center justify-end gap-1">
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-0.5">
                         <TooltipTrigger content="Editar">
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                            className="h-8 w-8 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 transition-colors duration-200"
                             asChild
                           >
                             <Link href={`/admin/inventario/${m.id}/editar`}>

@@ -85,14 +85,14 @@ export default async function PedidosPage({
     <div className="p-6 space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold">Pedidos</h1>
-          <p className="text-muted-foreground text-sm">
+          <h1 className="font-display text-3xl font-bold tracking-wide text-neutral-700">Pedidos</h1>
+          <p className="text-sm font-medium text-neutral-700/80 mt-1">
             {pedidos?.length ?? 0} pedido{pedidos?.length !== 1 ? 's' : ''}
           </p>
         </div>
-        <Button asChild>
+        <Button asChild className="rounded-2xl transition-all duration-300">
           <Link href="/admin/pedidos/nuevo">
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="w-5 h-5 mr-2" />
             Nuevo Pedido
           </Link>
         </Button>
@@ -105,6 +105,7 @@ export default async function PedidosPage({
             <Button
               variant={filtroStatus === tab.key ? 'default' : 'outline'}
               size="sm"
+              className="transition-colors duration-200"
             >
               {tab.label}
             </Button>
@@ -120,65 +121,65 @@ export default async function PedidosPage({
           description="Comienza creando uno nuevo."
         />
       ) : (
-        <div className="border rounded-lg overflow-hidden">
+        <div className="premium-table-wrap">
           <table className="w-full text-sm">
-            <thead className="bg-muted/50">
+            <thead className="bg-gradient-to-r from-primary/10 to-accent-miel/5">
               <tr>
-                <th className="text-left p-3 font-medium">Pedido</th>
-                <th className="text-left p-3 font-medium">Cliente</th>
-                <th className="text-left p-3 font-medium">Estado</th>
-                <th className="text-left p-3 font-medium">Pago</th>
-                <th className="text-right p-3 font-medium">Total</th>
-                <th className="text-right p-3 font-medium">Por cobrar</th>
-                <th className="text-left p-3 font-medium">Entrega</th>
-                <th className="text-left p-3 font-medium"></th>
+                <th className="text-left p-4 font-semibold text-neutral-700">Pedido</th>
+                <th className="text-left p-4 font-semibold text-neutral-700">Cliente</th>
+                <th className="text-left p-4 font-semibold text-neutral-700">Estado</th>
+                <th className="text-left p-4 font-semibold text-neutral-700">Pago</th>
+                <th className="text-right p-4 font-semibold text-neutral-700">Total</th>
+                <th className="text-right p-4 font-semibold text-neutral-700">Por cobrar</th>
+                <th className="text-left p-4 font-semibold text-neutral-700">Entrega</th>
+                <th className="text-left p-4 font-semibold text-neutral-700"></th>
               </tr>
             </thead>
-            <tbody className="divide-y">
+            <tbody className="divide-y divide-neutral-200">
               {pedidos.map((pedido: PedidoRow) => {
                 return (
-                  <tr key={pedido.id} className="hover:bg-muted/30 transition-colors">
-                    <td className="p-3 font-mono text-xs font-medium">
+                  <tr key={pedido.id} className="border-b border-neutral-200 transition-all duration-300 hover:bg-neutral-50/80">
+                    <td className="p-4 font-mono text-xs font-medium text-neutral-700">
                       {pedido.order_number}
                     </td>
-                    <td className="p-3">
+                    <td className="p-4 text-neutral-700">
                       {pedido.customers?.business_name ?? '—'}
                     </td>
-                    <td className="p-3">
+                    <td className="p-4">
                       <Badge variant={statusColor[pedido.status]}>
                         {statusLabel[pedido.status]}
                       </Badge>
                     </td>
-                    <td className="p-3">
+                    <td className="p-4">
                       {pedido.status === 'cancelado' ? (
-                        <span className="text-muted-foreground text-sm">—</span>
+                        <span className="text-neutral-700/80 text-sm">—</span>
                       ) : (
                         <Badge variant={paymentColor[pedido.payment_status] ?? 'default'}>
                           {paymentLabel[pedido.payment_status] ?? pedido.payment_status}
                         </Badge>
                       )}
                     </td>
-                    <td className="p-3 text-right font-medium">
+                    <td className="p-4 text-right font-medium text-neutral-700">
                       ${Number(pedido.total).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                     </td>
-                    <td className="p-3 text-right">
+                    <td className="p-4 text-right">
                       {pedido.status === 'cancelado' ? (
-                        <span className="text-muted-foreground">—</span>
+                        <span className="text-neutral-700/80">—</span>
                       ) : pedido.payment_status === 'pagado' ? (
-                        <span className="text-green-600 font-medium">Pagado</span>
+                        <span className="text-success font-medium">Pagado</span>
                       ) : (
-                        <span className="text-destructive font-medium">
+                        <span className="text-danger font-medium">
                           ${(Number(pedido.total) - Number(pedido.paid_amount)).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                         </span>
                       )}
                     </td>
-                    <td className="p-3 text-muted-foreground">
+                    <td className="p-4 text-neutral-700/80">
                       {pedido.delivery_date
                         ? new Date(pedido.delivery_date + 'T00:00:00').toLocaleDateString('es-MX')
                         : '—'}
                     </td>
-                    <td className="p-3">
-                      <Button asChild variant="ghost" size="sm">
+                    <td className="p-4">
+                      <Button asChild variant="ghost" size="sm" className="transition-colors duration-200">
                         <Link href={`/admin/pedidos/${pedido.id}`}>Ver</Link>
                       </Button>
                     </td>

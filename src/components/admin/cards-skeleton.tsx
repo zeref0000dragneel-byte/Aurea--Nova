@@ -14,7 +14,7 @@ export function CardsSkeleton({
   return (
     <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
       {Array.from({ length: count }).map((_, i) => (
-        <Card key={i} className="border-slate-200/50">
+        <Card key={i} className="border-neutral-200/50">
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
               {withIcon && (

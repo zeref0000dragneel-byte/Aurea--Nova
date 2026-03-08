@@ -28,7 +28,7 @@ export function BotonEliminarCliente({ customerId }: { customerId: string }) {
         type="button"
         variant="ghost"
         size="icon"
-        className="h-8 w-8 text-gray-500 hover:bg-red-50 hover:text-red-600"
+        className="h-8 w-8 text-zinc-400 hover:bg-red-50/80 hover:text-red-600"
         onClick={handleClick}
       >
         <Trash2 className="h-4 w-4" />

@@ -24,21 +24,21 @@ export function EmptyState({
   return (
     <div
       className={cn(
-        'flex flex-col items-center justify-center',
+        'flex flex-col items-center justify-center rounded-2xl',
         isCell
           ? 'py-12'
-          : 'rounded-xl border border-dashed border-slate-200/50 bg-slate-50/50 py-20',
+          : 'border border-accent-miel/30 bg-gradient-to-br from-neutral-50 to-white/80 shadow-lg',
         className
       )}
     >
       <div className={cn(
-        'flex items-center justify-center rounded-full bg-slate-100/80',
+        'flex items-center justify-center rounded-2xl bg-primary/5',
         isCell ? 'h-12 w-12' : 'h-16 w-16'
       )}>
-        <Icon className={cn('text-slate-500 opacity-10', isCell ? 'h-6 w-6' : 'h-8 w-8')} strokeWidth={1.25} aria-hidden />
+        <Icon className={cn('text-primary/40', isCell ? 'h-6 w-6' : 'h-8 w-8')} strokeWidth={1.25} aria-hidden />
       </div>
-      <p className="mt-5 text-sm font-medium text-slate-600">{title}</p>
-      <p className="mt-1 text-xs text-slate-500">{description}</p>
+      <p className="mt-5 text-sm font-medium text-neutral-700">{title}</p>
+      <p className="mt-1 text-xs font-medium text-neutral-700/80">{description}</p>
     </div>
   )
 }

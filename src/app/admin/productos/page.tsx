@@ -36,17 +36,17 @@ export default async function AdminProductosPage() {
   const hasProducts = productList.length > 0
 
   return (
-    <div className="p-16">
-      <div className="mb-16 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div className="p-6">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-light tracking-tight text-slate-900">
+          <h1 className="font-display text-3xl font-bold tracking-wide text-neutral-700">
             Productos
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm font-medium text-neutral-700/80">
             Gestión del catálogo
           </p>
         </div>
-        <Button asChild className="shrink-0 sm:mt-0">
+        <Button asChild className="shrink-0 sm:mt-0 transition-colors duration-200">
           <Link href="/admin/productos/nuevo">
             <Plus className="mr-2 h-4 w-4" />
             Nuevo producto
@@ -56,18 +56,18 @@ export default async function AdminProductosPage() {
 
       {/* Table or empty state */}
       {hasProducts ? (
-        <div className="rounded-xl border border-slate-200/50 bg-white shadow-premium shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)]">
+        <div className="premium-table-wrap">
           <Table>
             <TableHeader>
-              <TableRow className="border-slate-200/50 hover:bg-transparent">
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">SKU</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Nombre</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Categoría</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Precio Base</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Unidad</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Stock Mínimo</TableHead>
-                <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Estado</TableHead>
-                <TableHead className="text-right py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Acciones</TableHead>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="text-neutral-700">SKU</TableHead>
+                <TableHead className="text-neutral-700">Nombre</TableHead>
+                <TableHead className="text-neutral-700">Categoría</TableHead>
+                <TableHead className="text-neutral-700">Precio Base</TableHead>
+                <TableHead className="text-neutral-700">Unidad</TableHead>
+                <TableHead className="text-neutral-700">Stock Mínimo</TableHead>
+                <TableHead className="text-neutral-700">Estado</TableHead>
+                <TableHead className="text-right text-neutral-700">Acciones</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -84,44 +84,44 @@ export default async function AdminProductosPage() {
                 }
                 const categoryName = product.product_categories?.name ?? '—'
                 return (
-                  <TableRow key={product.id} className="hover:bg-slate-50/80">
-                    <TableCell className="py-5 font-mono text-[12px] text-slate-500">
+                  <TableRow key={product.id}>
+                    <TableCell className="font-mono text-xs text-neutral-700/80">
                       {product.sku ?? '—'}
                     </TableCell>
-                    <TableCell className="py-5 font-medium text-slate-900">
+                    <TableCell className="font-medium text-neutral-700">
                       {product.name}
                     </TableCell>
-                    <TableCell className="py-5 text-slate-600">
+                    <TableCell className="text-neutral-700">
                       {categoryName}
                     </TableCell>
-                    <TableCell className="py-5 font-mono tabular-nums text-slate-700">
+                    <TableCell className="font-mono tabular-nums text-neutral-700">
                       ${Number(product.base_price).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                     </TableCell>
-                    <TableCell className="py-5 font-mono text-[12px] uppercase text-slate-500">
+                    <TableCell className="font-mono text-xs uppercase text-neutral-700/80">
                       {product.unit}
                     </TableCell>
-                    <TableCell className="py-5 text-slate-700 font-mono tabular-nums">
+                    <TableCell className="font-mono tabular-nums text-neutral-700">
                       {product.min_stock}
                     </TableCell>
-                    <TableCell className="py-5">
+                    <TableCell>
                       <Badge
-                        variant={product.is_active ? 'default' : 'secondary'}
+                        variant="pill"
                         className={
                           product.is_active
-                            ? 'bg-emerald-500/10 text-emerald-800 border-emerald-200/50 hover:bg-emerald-500/10'
-                            : 'bg-slate-500/10 text-slate-600 border-slate-200/50 hover:bg-slate-500/10'
+                            ? 'bg-success/10 text-success border-0'
+                            : 'bg-neutral-200/80 text-neutral-700 border-0'
                         }
                       >
                         {product.is_active ? 'Activo' : 'Inactivo'}
                       </Badge>
                     </TableCell>
-                    <TableCell className="py-5 text-right">
-                      <div className="flex items-center justify-end gap-1">
+                    <TableCell className="text-right">
+                      <div className="flex items-center justify-end gap-0.5">
                         <TooltipTrigger content="Editar">
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                            className="h-8 w-8 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 transition-colors duration-200"
                             asChild
                           >
                             <Link href={`/admin/productos/${product.id}/editar`}>

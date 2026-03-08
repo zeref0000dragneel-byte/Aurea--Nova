@@ -18,7 +18,7 @@ import { darAccesoCliente, type DarAccesoClienteState } from './actions'
 function BotonDarAcceso() {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" className="bg-amber-500 font-medium text-white hover:bg-amber-600" disabled={pending}>
+    <Button type="submit" className="bg-primary font-medium text-primary-foreground hover:bg-primary/90" disabled={pending}>
       <Key className="mr-2 h-4 w-4" />
       {pending ? 'Guardando...' : 'Dar Acceso'}
     </Button>
@@ -63,7 +63,7 @@ export function FormDarAccesoCliente({
     <form
       ref={formRef}
       action={formAction}
-      className="space-y-4 rounded-lg border border-gray-200 bg-gray-50/50 p-6"
+      className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50/50 p-6"
     >
       <input type="hidden" name="customer_id" value={customerId} />
       {state?.success && (
@@ -80,7 +80,7 @@ export function FormDarAccesoCliente({
         <div className="space-y-2">
           <Label>Cliente</Label>
           <Select value={customerId} onValueChange={setCustomerId} required>
-            <SelectTrigger className="border-gray-200 bg-white">
+            <SelectTrigger className="border-neutral-200 bg-white">
               <SelectValue placeholder="Selecciona un cliente..." />
             </SelectTrigger>
             <SelectContent>
@@ -99,7 +99,7 @@ export function FormDarAccesoCliente({
             name="full_name"
             required
             placeholder="Nombre de contacto"
-            className="border-gray-200 bg-white"
+            className="border-neutral-200 bg-white"
           />
         </div>
         <div className="space-y-2 sm:col-span-2">
@@ -112,7 +112,7 @@ export function FormDarAccesoCliente({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Debe coincidir con el email registrado del cliente"
-            className="border-gray-200 bg-white"
+            className="border-neutral-200 bg-white"
           />
           <p className="text-xs text-gray-500">
             Debe coincidir con el email registrado del cliente
@@ -127,7 +127,7 @@ export function FormDarAccesoCliente({
             required
             minLength={8}
             placeholder="••••••••"
-            className="border-gray-200 bg-white"
+            className="border-neutral-200 bg-white"
           />
         </div>
       </div>

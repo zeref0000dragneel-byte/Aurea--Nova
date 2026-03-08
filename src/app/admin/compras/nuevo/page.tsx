@@ -20,7 +20,7 @@ export default async function NuevaCompraPage() {
 
   return (
     <div className="p-8 max-w-2xl">
-      <h1 className="mb-6 text-2xl font-bold tracking-tight text-gray-900">
+      <h1 className="mb-6 text-2xl font-bold tracking-tight text-neutral-800">
         Nueva Compra
       </h1>
       <FormNuevaCompra materiasPrimas={materiasPrimas} />

@@ -61,7 +61,7 @@ export default async function ClientePreciosPage({ params }: Props) {
           <nav className="mb-2 flex items-center gap-2 text-sm text-gray-500">
             <Link
               href="/admin/clientes"
-              className="transition-colors hover:text-amber-600"
+              className="transition-colors hover:text-primary"
             >
               Clientes
             </Link>
@@ -74,7 +74,7 @@ export default async function ClientePreciosPage({ params }: Props) {
           </nav>
           <Link
             href="/admin/clientes"
-            className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-amber-600"
+            className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-primary"
           >
             <ArrowLeft className="h-4 w-4" />
             Volver al cliente

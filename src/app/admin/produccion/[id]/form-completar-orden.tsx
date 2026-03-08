@@ -114,7 +114,7 @@ export function FormCompletarOrden({
       />
       {error && <p className="text-red-600 text-sm">{error}</p>}
       {!hasConsumos && (
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm font-medium text-amber-800">
+        <div className="rounded-lg border border-primary/30 bg-primary/10 px-4 py-3 text-sm font-medium text-primary">
           No hay materias primas registradas. Agrega al menos un consumo antes de completar la orden.
         </div>
       )}
@@ -174,7 +174,7 @@ export function FormCompletarOrden({
             name="waste_photo_file"
             type="file"
             accept="image/*"
-            className="border-gray-200 file:mr-3 file:rounded-md file:border-0 file:bg-amber-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-amber-800"
+            className="border-gray-200 file:mr-3 file:rounded-md file:border-0 file:bg-primary/10 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-primary"
             onChange={handleFileChange}
           />
           {isUploading && (
@@ -185,7 +185,7 @@ export function FormCompletarOrden({
               </div>
               <div className="w-full bg-stone-200 rounded-full h-2">
                 <div
-                  className="bg-amber-500 h-2 rounded-full transition-all duration-200"
+                  className="bg-primary h-2.5 rounded-full transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
                 />
               </div>

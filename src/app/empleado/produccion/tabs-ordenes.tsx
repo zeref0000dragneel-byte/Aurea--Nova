@@ -24,7 +24,7 @@ const STATUS_BADGE_CLASS: Record<OrderStatus, string> = {
   pendiente: 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-100',
   en_proceso: 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-100',
   completada: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-100',
-  cancelada: 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-100',
+  cancelada: 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-100',
 }
 
 const STATUS_LABEL: Record<OrderStatus, string> = {
@@ -48,22 +48,22 @@ export function TabsOrdenes({ ordenes }: { ordenes: OrderRow[] }) {
 
   return (
     <div className="p-8">
-      <h1 className="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+      <h1 className="mb-2 text-2xl font-bold tracking-tight text-neutral-800">
         Mis órdenes de producción
       </h1>
       <p className="mb-6 text-sm text-gray-500">
         Órdenes asignadas a ti
       </p>
 
-      <div className="mb-6 flex gap-1 rounded-lg border border-gray-200 p-1 bg-gray-50/50">
+      <div className="mb-6 flex gap-1 rounded-lg border border-neutral-200 p-1 bg-neutral-50/50">
         <button
           type="button"
           onClick={() => setActiveTab('activas')}
           className={cn(
             'flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors',
             activeTab === 'activas'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+              ? 'bg-white text-neutral-800 shadow-sm'
+              : 'text-neutral-700 hover:text-neutral-800'
           )}
         >
           Activas
@@ -74,8 +74,8 @@ export function TabsOrdenes({ ordenes }: { ordenes: OrderRow[] }) {
           className={cn(
             'flex-1 rounded-md px-4 py-2 text-sm font-medium transition-colors',
             activeTab === 'historial'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+              ? 'bg-white text-neutral-800 shadow-sm'
+              : 'text-neutral-700 hover:text-neutral-800'
           )}
         >
           Historial
@@ -101,11 +101,11 @@ export function TabsOrdenes({ ordenes }: { ordenes: OrderRow[] }) {
                 return (
                   <Card
                     key={row.id}
-                    className="border-gray-200 transition-shadow hover:shadow-md"
+                    className="border-neutral-200 transition-shadow hover:shadow-md"
                   >
                     <CardContent className="p-5">
-                      <p className="font-medium text-gray-900">{productName}</p>
-                      <p className="mt-1 text-sm text-gray-600">
+                      <p className="font-medium text-neutral-800">{productName}</p>
+                      <p className="mt-1 text-sm text-neutral-700">
                         Cantidad planificada:{' '}
                         {Number(row.planned_quantity).toLocaleString('es-MX')}
                       </p>
@@ -136,11 +136,11 @@ export function TabsOrdenes({ ordenes }: { ordenes: OrderRow[] }) {
               })}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-gray-50/50 py-16">
-              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-neutral-200 bg-neutral-50/50 py-16">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full bg-neutral-100">
                 <Factory className="h-7 w-7 text-gray-400" />
               </div>
-              <p className="mt-4 text-sm font-medium text-gray-600">
+              <p className="mt-4 text-sm font-medium text-neutral-700">
                 No tienes órdenes activas
               </p>
               <p className="mt-1 text-xs text-gray-500">
@@ -174,11 +174,11 @@ export function TabsOrdenes({ ordenes }: { ordenes: OrderRow[] }) {
                 return (
                   <Card
                     key={row.id}
-                    className="border-gray-200 transition-shadow hover:shadow-md"
+                    className="border-neutral-200 transition-shadow hover:shadow-md"
                   >
                     <CardContent className="p-5">
-                      <p className="font-medium text-gray-900">{productName}</p>
-                      <p className="mt-1 text-sm text-gray-600">
+                      <p className="font-medium text-neutral-800">{productName}</p>
+                      <p className="mt-1 text-sm text-neutral-700">
                         Cantidad producida: {cantidadReal}
                       </p>
                       <div className="mt-2">
@@ -209,8 +209,8 @@ export function TabsOrdenes({ ordenes }: { ordenes: OrderRow[] }) {
               })}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-gray-50/50 py-16">
-              <p className="text-sm font-medium text-gray-600">
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-neutral-200 bg-neutral-50/50 py-16">
+              <p className="text-sm font-medium text-neutral-700">
                 No hay órdenes en el historial
               </p>
               <p className="mt-1 text-xs text-gray-500">

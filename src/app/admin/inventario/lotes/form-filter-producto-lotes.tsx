@@ -15,7 +15,7 @@ export function FormFilterProductoLotes({
 
   return (
     <form ref={formRef} method="get" action="/admin/inventario/lotes" className="mb-6">
-      <label htmlFor="product_id" className="mr-2 text-sm font-medium text-gray-700">
+      <label htmlFor="product_id" className="mr-2 text-sm font-medium text-neutral-700">
         Filtrar por producto:
       </label>
       <select
@@ -23,7 +23,7 @@ export function FormFilterProductoLotes({
         name="product_id"
         defaultValue={currentProductId}
         onChange={() => formRef.current?.requestSubmit()}
-        className="rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
+        className="rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm text-neutral-800 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
       >
         <option value="">Todos los productos</option>
         {productOptions.map((p) => (

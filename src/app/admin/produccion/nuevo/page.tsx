@@ -33,24 +33,24 @@ export default async function NuevaOrdenProduccionPage() {
   }))
 
   return (
-    <div className="p-8">
+    <div className="p-6">
       <div className="mb-6">
         <Link
           href="/admin/produccion"
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-amber-600"
+          className="inline-flex items-center gap-2 text-sm font-medium text-neutral-700 transition-colors duration-200 hover:text-primary"
         >
           <ArrowLeft className="h-4 w-4" />
           Volver
         </Link>
       </div>
-      <h1 className="mb-8 text-2xl font-bold tracking-tight text-gray-900">
+      <h1 className="mb-6 text-3xl font-semibold tracking-tight text-neutral-700">
         Nueva orden de producción
       </h1>
-      <Card className="max-w-2xl border-gray-200">
-        <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">Datos de la orden</h2>
+      <Card className="max-w-2xl rounded-lg border border-neutral-200 shadow-md">
+        <CardHeader className="p-6 pb-0">
+          <h2 className="text-lg font-semibold text-neutral-700">Datos de la orden</h2>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6">
           <FormNuevaOrden productos={productos} empleados={empleadosList} />
         </CardContent>
       </Card>

@@ -57,7 +57,7 @@ export function FormAgregarPrecio({ customerId, productos }: Props) {
 
   if (productos.length === 0) {
     return (
-      <p className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+      <p className="rounded-xl border border-primary/30 bg-primary/10 px-4 py-3 text-sm text-primary">
         Todos los productos ya tienen precio personalizado para este cliente.
       </p>
     )
@@ -112,7 +112,7 @@ export function FormAgregarPrecio({ customerId, productos }: Props) {
               name="tipo"
               checked={tipoPrecio === 'fijo'}
               onChange={() => setTipoPrecio('fijo')}
-              className="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500"
+              className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
             />
             <span className="text-sm font-medium">Precio fijo</span>
           </label>
@@ -122,7 +122,7 @@ export function FormAgregarPrecio({ customerId, productos }: Props) {
               name="tipo"
               checked={tipoPrecio === 'descuento'}
               onChange={() => setTipoPrecio('descuento')}
-              className="h-4 w-4 border-gray-300 text-amber-600 focus:ring-amber-500"
+              className="h-4 w-4 border-gray-300 text-primary focus:ring-primary"
             />
             <span className="text-sm font-medium">Descuento %</span>
           </label>

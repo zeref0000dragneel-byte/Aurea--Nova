@@ -43,7 +43,7 @@ export async function loginAction(formData: FormData) {
     case 'admin':
       redirect('/admin/dashboard')
     case 'empleado':
-      redirect('/empleado/pedidos')
+      redirect('/empleado')
     case 'cliente':
       redirect('/cliente/dashboard')
     default:

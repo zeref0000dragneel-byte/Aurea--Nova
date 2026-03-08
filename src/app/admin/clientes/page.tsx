@@ -28,17 +28,17 @@ export default async function AdminClientesPage() {
   const hasCustomers = customerList.length > 0
 
   return (
-    <div className="p-8">
+    <div className="p-6">
       <div className="mb-8 flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+          <h1 className="font-display text-3xl font-bold tracking-wide text-neutral-700">
             Clientes
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm font-medium text-neutral-700/80 mt-1">
             Gestión de clientes mayoristas
           </p>
         </div>
-        <Button asChild className="mt-2 shrink-0 sm:mt-0">
+        <Button asChild className="mt-2 shrink-0 sm:mt-0 transition-colors duration-200">
           <Link href="/admin/clientes/nuevo">
             <Plus className="mr-2 h-4 w-4" />
             Nuevo cliente
@@ -47,60 +47,60 @@ export default async function AdminClientesPage() {
       </div>
 
       {hasCustomers ? (
-        <div className="rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
+        <div className="premium-table-wrap">
           <Table>
-            <TableHeader className="bg-muted/50">
-              <TableRow className="border-gray-200 hover:bg-transparent">
-                <TableHead className="h-11 font-semibold text-gray-700">Empresa</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Contacto</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Email</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Teléfono</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Días de Crédito</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Límite de Crédito</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">Estado</TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700 text-right">Acciones</TableHead>
+            <TableHeader>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="text-neutral-700">Empresa</TableHead>
+                <TableHead className="text-neutral-700">Contacto</TableHead>
+                <TableHead className="text-neutral-700">Email</TableHead>
+                <TableHead className="text-neutral-700">Teléfono</TableHead>
+                <TableHead className="text-neutral-700">Días de Crédito</TableHead>
+                <TableHead className="text-neutral-700">Límite de Crédito</TableHead>
+                <TableHead className="text-neutral-700">Estado</TableHead>
+                <TableHead className="text-right text-neutral-700">Acciones</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody className="divide-y">
+            <TableBody>
               {customerList.map((c) => (
-                <TableRow key={c.id} className="border-gray-100 hover:bg-muted/30">
-                  <TableCell className="font-medium text-gray-900">
+                <TableRow key={c.id}>
+                  <TableCell className="font-medium text-neutral-700">
                     {c.business_name}
                   </TableCell>
-                  <TableCell className="text-gray-600">
+                  <TableCell className="text-neutral-700">
                     {c.contact_name ?? '—'}
                   </TableCell>
-                  <TableCell className="text-gray-600">
+                  <TableCell className="text-neutral-700">
                     {c.email ?? '—'}
                   </TableCell>
-                  <TableCell className="text-gray-600">
+                  <TableCell className="text-neutral-700">
                     {c.phone ?? '—'}
                   </TableCell>
-                  <TableCell className="text-gray-700">
+                  <TableCell className="text-neutral-700">
                     {c.credit_days}
                   </TableCell>
-                  <TableCell className="text-gray-700">
+                  <TableCell className="text-neutral-700">
                     ${Number(c.credit_limit).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                   </TableCell>
                   <TableCell>
                     <Badge
-                      variant={c.is_active ? 'default' : 'secondary'}
+                      variant="pill"
                       className={
                         c.is_active
-                          ? 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
-                          : 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-100'
+                          ? 'bg-success/10 text-success border-0'
+                          : 'bg-neutral-200/80 text-neutral-700 border-0'
                       }
                     >
                       {c.is_active ? 'Activo' : 'Inactivo'}
                     </Badge>
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-1">
+                    <div className="flex items-center justify-end gap-0.5">
                       <TooltipTrigger content="Precios">
                         <Button
                           variant="ghost"
-                          size="sm"
-                          className="text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                          size="icon"
+                          className="h-8 w-8 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 transition-colors duration-200"
                           asChild
                         >
                           <Link href={`/admin/clientes/${c.id}/precios`}>
@@ -112,7 +112,7 @@ export default async function AdminClientesPage() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                          className="h-8 w-8 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 transition-colors duration-200"
                           asChild
                         >
                           <Link href={`/admin/clientes/${c.id}/editar`}>

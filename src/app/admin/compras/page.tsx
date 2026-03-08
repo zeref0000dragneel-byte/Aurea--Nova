@@ -33,7 +33,7 @@ type PurchaseRow = {
 type ReceptionFilter = 'todas' | 'pendientes' | 'recibidas' | 'canceladas'
 
 const RECEPTION_BADGE: Record<string, { className: string; label: string }> = {
-  pendiente: { className: 'bg-amber-500/10 text-amber-800 border-amber-200/50 hover:bg-amber-500/10', label: '⏳ Pendiente de recibir' },
+  pendiente: { className: 'bg-primary/10 text-primary border-primary/30 hover:bg-primary/10', label: '⏳ Pendiente de recibir' },
   recibido_completo: { className: 'bg-emerald-500/10 text-emerald-800 border-emerald-200/50 hover:bg-emerald-500/10', label: '✓ Recibido completo' },
   recibido_parcial: { className: 'bg-blue-500/10 text-blue-800 border-blue-200/50 hover:bg-blue-500/10', label: '⚠ Recibido parcial' },
   cancelado: { className: 'bg-red-500/10 text-red-800 border-red-200/50 hover:bg-red-500/10', label: '✗ Cancelado' },
@@ -41,9 +41,9 @@ const RECEPTION_BADGE: Record<string, { className: string; label: string }> = {
 
 const PAYMENT_BADGE: Record<string, { variant: 'destructive' | 'secondary' | 'default'; className: string }> = {
   pendiente: { variant: 'destructive', className: 'bg-red-500/10 text-red-800 border-red-200/50 hover:bg-red-500/10' },
-  parcial: { variant: 'secondary', className: 'bg-amber-500/10 text-amber-800 border-amber-200/50 hover:bg-amber-500/10' },
+  parcial: { variant: 'secondary', className: 'bg-primary/10 text-primary border-primary/30 hover:bg-primary/10' },
   pagado: { variant: 'default', className: 'bg-emerald-500/10 text-emerald-800 border-emerald-200/50 hover:bg-emerald-500/10' },
-  cancelado: { variant: 'destructive', className: 'bg-slate-500/10 text-slate-600 border-slate-200/50 hover:bg-slate-500/10' },
+  cancelado: { variant: 'destructive', className: 'bg-neutral-200/80 text-neutral-700 border-0' },
 }
 
 const PAYMENT_LABEL: Record<string, string> = {
@@ -137,17 +137,17 @@ export default async function AdminComprasPage({
   ]
 
   return (
-    <div className="p-16">
-      <div className="mb-16 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div className="p-6">
+      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-4xl font-light tracking-tight text-slate-900">
+          <h1 className="font-display text-3xl font-bold tracking-wide text-neutral-700">
             Compras a Proveedores
           </h1>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-2 text-sm font-medium text-neutral-700/80">
             Registro de compras de materias primas
           </p>
         </div>
-        <Button asChild className="shrink-0 sm:mt-0">
+        <Button asChild className="shrink-0 sm:mt-0 transition-colors duration-200">
           <Link href="/admin/compras/nuevo">
             <ShoppingBag className="mr-2 h-4 w-4" />
             Nueva Compra
@@ -155,70 +155,70 @@ export default async function AdminComprasPage({
         </Button>
       </div>
 
-      <div className="mb-16 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-slate-200/50">
+      <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl">
           <CardContent className="pt-6">
-            <p className="text-[11px] font-medium uppercase tracking-widest text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-700/80">
               Total Comprado este Mes
             </p>
-            <p className="mt-1 text-2xl font-mono tabular-nums text-slate-900">
+            <p className="mt-1 text-2xl font-mono tabular-nums text-neutral-700">
               ${totalCompradoEsteMes.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
             </p>
           </CardContent>
         </Card>
-        <Card className={cn('border-slate-200/50', deudaTotal > 0 && 'border-red-200/50')}>
+        <Card className={cn('rounded-3xl border shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl', deudaTotal > 0 && 'border-danger/30')}>
           <CardContent className="pt-6">
-            <p className="text-[11px] font-medium uppercase tracking-widest text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-700/80">
               Deuda con Proveedores
             </p>
             <p
               className={cn(
                 'mt-1 text-2xl font-mono tabular-nums',
-                deudaTotal > 0 ? 'text-red-600' : 'text-slate-900'
+                deudaTotal > 0 ? 'text-danger' : 'text-neutral-700'
               )}
             >
               ${deudaTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
             </p>
           </CardContent>
         </Card>
-        <Card className="border-slate-200/50">
+        <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl">
           <CardContent className="pt-6">
-            <p className="text-[11px] font-medium uppercase tracking-widest text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-wide text-neutral-700/80">
               Compras este Mes
             </p>
-            <p className="mt-1 text-2xl font-mono tabular-nums text-slate-900">
+            <p className="mt-1 text-2xl font-mono tabular-nums text-neutral-700">
               {comprasEsteMes.length}
             </p>
           </CardContent>
         </Card>
         <Card
           className={cn(
-            'border-slate-200/50',
-            pendientesRecibirCount > 0 && 'border-amber-200/50 bg-amber-500/5'
+            'rounded-3xl border shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl',
+            pendientesRecibirCount > 0 ? 'border-primary/30 bg-primary/5' : 'border-accent-miel/30'
           )}
         >
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
-              <Clock className={`h-5 w-5 ${pendientesRecibirCount > 0 ? 'text-amber-600' : 'text-slate-400'}`} />
+              <Clock className={`h-5 w-5 transition-colors duration-200 ${pendientesRecibirCount > 0 ? 'text-primary' : 'text-neutral-400'}`} />
               <div>
-                <p className="text-2xl font-mono tabular-nums text-slate-900">{pendientesRecibirCount}</p>
-                <p className="text-xs font-medium text-slate-500">Pendientes de recibir</p>
+                <p className="text-2xl font-mono tabular-nums text-neutral-700">{pendientesRecibirCount}</p>
+                <p className="text-sm font-medium text-neutral-700/80">Pendientes de recibir</p>
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      <div className="mb-6 flex gap-1 rounded-xl border border-slate-200/50 bg-slate-50/80 p-1">
+      <div className="mb-6 flex gap-1 rounded-2xl border border-accent-miel/30 bg-neutral-50/80 p-1">
         {filterLinks.map(({ value, label }) => (
           <Link
             key={value}
             href={value === 'todas' ? '/admin/compras' : `/admin/compras?status=${value}`}
             className={cn(
-              'rounded-lg px-4 py-2 text-sm font-medium transition-colors',
+              'rounded-lg px-4 py-2 text-sm font-medium transition-colors duration-200',
               statusFilter === value
-                ? 'bg-white text-slate-900 shadow-sm'
-                : 'text-slate-600 hover:bg-white/60 hover:text-slate-900'
+                ? 'bg-white text-neutral-700 shadow-sm'
+                : 'text-neutral-700 hover:bg-white/60 hover:text-neutral-900'
             )}
           >
             {label}
@@ -226,22 +226,22 @@ export default async function AdminComprasPage({
         ))}
       </div>
 
-      <div className="mb-16 rounded-xl border border-slate-200/50 bg-white shadow-premium shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)]">
+      <div className="mb-8 premium-table-wrap">
         <Table>
           <TableHeader>
-            <TableRow className="border-slate-200/50 hover:bg-transparent">
-              <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Fecha</TableHead>
-              <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Materia Prima</TableHead>
-              <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Proveedor</TableHead>
-              <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Cantidad</TableHead>
-              <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Recepción</TableHead>
-              <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Costo Unit.</TableHead>
-              <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Total</TableHead>
-              <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Pagado</TableHead>
-              <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Por pagar</TableHead>
-              <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Estado pago</TableHead>
-              <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Factura</TableHead>
-              <TableHead className="text-right py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Acciones</TableHead>
+            <TableRow className="hover:bg-transparent">
+              <TableHead>Fecha</TableHead>
+              <TableHead>Materia Prima</TableHead>
+              <TableHead>Proveedor</TableHead>
+              <TableHead>Cantidad</TableHead>
+              <TableHead>Recepción</TableHead>
+              <TableHead>Costo Unit.</TableHead>
+              <TableHead>Total</TableHead>
+              <TableHead>Pagado</TableHead>
+              <TableHead>Por pagar</TableHead>
+              <TableHead>Estado pago</TableHead>
+              <TableHead>Factura</TableHead>
+              <TableHead className="text-right">Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -258,57 +258,61 @@ export default async function AdminComprasPage({
                 const receptionStatus = (p.reception_status ?? 'pendiente') as keyof typeof RECEPTION_BADGE
                 const receptionConf = RECEPTION_BADGE[receptionStatus] ?? RECEPTION_BADGE.pendiente
                 return (
-                  <TableRow key={p.id} className="hover:bg-slate-50/80">
-                    <TableCell className="py-5 text-slate-700">
+                  <TableRow key={p.id}>
+                    <TableCell className="text-neutral-700">
                       {new Date(p.purchase_date).toLocaleDateString('es-MX', {
                         day: '2-digit',
                         month: 'short',
                         year: 'numeric',
                       })}
                     </TableCell>
-                    <TableCell className="py-5 font-medium text-slate-900">
+                    <TableCell className="font-medium text-neutral-800">
                       {p.raw_materials?.name ?? '—'}
                     </TableCell>
-                    <TableCell className="py-5 text-slate-700">{p.supplier}</TableCell>
-                    <TableCell className="py-5 text-slate-700">
+                    <TableCell className="text-neutral-700">{p.supplier}</TableCell>
+                    <TableCell className="text-neutral-700">
                       {Number(p.quantity).toLocaleString('es-MX')}{' '}
-                      <span className="font-mono text-[12px] uppercase text-slate-500">{p.raw_materials?.unit ?? ''}</span>
+                      <span className="font-mono text-[12px] uppercase text-zinc-500">{p.raw_materials?.unit ?? ''}</span>
                     </TableCell>
-                    <TableCell className="py-5">
-                      <Badge variant="outline" className={cn('border', receptionConf.className)}>
+                    <TableCell>
+                      <Badge variant="pill" className={cn('border-0', receptionConf.className)}>
                         {receptionConf.label}
                       </Badge>
                     </TableCell>
-                    <TableCell className="py-5 font-semibold tracking-tighter text-slate-700">
+                    <TableCell className="font-semibold tracking-tight text-neutral-700">
                       ${Number(p.unit_cost).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                     </TableCell>
-                    <TableCell className="py-5 font-mono tabular-nums text-slate-900">
+                    <TableCell className="font-mono tabular-nums text-neutral-800">
                       ${Number(p.total).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                     </TableCell>
-                    <TableCell className="py-5 text-slate-700 font-mono tabular-nums">
+                    <TableCell className="font-mono tabular-nums text-neutral-700">
                       ${Number(p.paid_amount).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                     </TableCell>
                     <TableCell
                       className={cn(
-                        'py-5 font-mono tabular-nums',
-                        porPagar > 0 && 'text-red-600'
+                        'font-mono tabular-nums',
+                        porPagar > 0 && 'text-danger'
                       )}
                     >
                       ${porPagar.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                     </TableCell>
-                    <TableCell className="py-5">
-                      <Badge variant={statusConf.variant} className={cn('border', statusConf.className)}>
+                    <TableCell>
+                      <Badge variant="pill" className={cn('border-0', statusConf.className)}>
                         {PAYMENT_LABEL[p.payment_status] ?? p.payment_status}
                       </Badge>
                     </TableCell>
-                    <TableCell className="py-5 font-mono text-[12px] text-slate-500">
+                    <TableCell className="font-mono text-[12px] text-zinc-500">
                       {p.invoice_number ?? '—'}
                     </TableCell>
-                    <TableCell className="py-5 text-right">
-                      <Button variant="ghost" size="sm" asChild>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 transition-colors duration-200"
+                        asChild
+                      >
                         <Link href={`/admin/compras/${p.id}`}>
-                          <Eye className="mr-1 h-4 w-4" />
-                          Ver
+                          <Eye className="h-4 w-4" />
                         </Link>
                       </Button>
                     </TableCell>
@@ -320,11 +324,11 @@ export default async function AdminComprasPage({
         </Table>
       </div>
 
-      <Card className="border-slate-200/50">
+      <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl">
         <CardContent className="pt-6">
-          <h2 className="mb-6 text-2xl font-light tracking-tight text-slate-900">Deuda por Proveedor</h2>
+          <h2 className="font-display mb-6 text-2xl font-bold tracking-wide text-neutral-700">Deuda por Proveedor</h2>
           {proveedoresConDeuda.length === 0 ? (
-            <p className="rounded-xl border border-emerald-200/50 bg-emerald-500/10 px-4 py-3 text-sm font-medium text-emerald-800">
+            <p className="rounded-lg border border-success/20 bg-success/10 px-4 py-3 text-sm font-medium text-success">
               Sin deuda con proveedores
             </p>
           ) : (
@@ -332,10 +336,10 @@ export default async function AdminComprasPage({
               {proveedoresConDeuda.map(({ supplier, amount }) => (
                 <li
                   key={supplier}
-                  className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/50 px-4 py-2"
+                  className="flex items-center justify-between rounded-lg border border-neutral-200 bg-neutral-50/50 px-4 py-2"
                 >
-                  <span className="font-medium text-slate-900">{supplier}</span>
-                  <span className="font-mono tabular-nums text-red-600">
+                  <span className="font-medium text-neutral-700">{supplier}</span>
+                  <span className="font-mono tabular-nums text-danger">
                     ${amount.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                   </span>
                 </li>

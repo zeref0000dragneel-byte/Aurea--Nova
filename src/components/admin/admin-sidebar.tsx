@@ -1,9 +1,9 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 import {
-  Hexagon,
   LayoutDashboard,
   TrendingUp,
   Package,
@@ -36,16 +36,23 @@ export function AdminSidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="fixed left-0 top-0 z-10 flex h-screen w-64 flex-col border-r border-slate-200/50 bg-white/80 backdrop-blur-md">
+    <aside className="fixed left-0 top-0 z-10 flex h-screen w-64 flex-col border-r border-[#FFE082]/20 bg-[#FEF9F2]/95 shadow-lg backdrop-blur-sm">
       <header className="flex items-center gap-3 px-4 py-5">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#B45309] drop-shadow-md">
-          <Hexagon className="h-5 w-5 text-white fill-white" strokeWidth={1.5} />
+        <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-2xl bg-white shadow-md">
+          <Image
+            src="/logo.png"
+            alt="Colmena OS"
+            fill
+            className="object-cover"
+            sizes="40px"
+            priority
+          />
         </div>
-        <span className="text-lg font-bold tracking-widest text-slate-900 drop-shadow-sm">
+        <span className="font-display text-lg font-semibold tracking-wide text-neutral-700">
           Colmena OS
         </span>
       </header>
-      <hr className="border-slate-200/50" />
+      <hr className="border-accent-miel/30" />
       <nav className="flex-1 space-y-0.5 px-3 py-4">
         {navItems.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href || (href !== '/admin/dashboard' && pathname.startsWith(href + '/'))
@@ -53,10 +60,10 @@ export function AdminSidebar() {
             <Link
               key={href}
               href={href}
-              className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
+              className={`flex items-center gap-3 rounded-2xl px-4 py-2.5 text-sm font-medium transition-all duration-300 ease-in-out ${
                 isActive
-                  ? 'border-l-2 border-l-[#B45309] bg-slate-50/80 text-[#B45309]'
-                  : 'border-l-2 border-l-transparent text-slate-600 hover:bg-slate-50/60 hover:text-slate-900'
+                  ? 'bg-gradient-to-r from-primary/20 to-accent-miel/10 text-primary font-semibold border-l-2 border-l-primary scale-105 shadow-sm'
+                  : 'border-l-2 border-l-transparent text-neutral-700 hover:bg-neutral-100/80 hover:text-neutral-800'
               }`}
             >
               <Icon className="h-5 w-5 shrink-0" {...iconProps} />
@@ -65,9 +72,9 @@ export function AdminSidebar() {
           )
         })}
       </nav>
-      <div className="border-t border-slate-200/50 p-3">
+      <div className="border-t border-accent-miel/30 p-3">
         <form action={logoutAction}>
-          <BotonCerrarSesion className="flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-medium text-red-600 transition-colors hover:bg-red-50" />
+          <BotonCerrarSesion className="flex w-full items-center gap-3 rounded-2xl px-4 py-2.5 text-sm font-medium text-danger transition-all duration-200 hover:bg-danger/10 hover:shadow-md" />
         </form>
       </div>
     </aside>

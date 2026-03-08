@@ -28,34 +28,34 @@ export default async function AdminConfiguracionPage() {
   const hasCategories = categoryList.length > 0
 
   return (
-    <div className="p-16">
-      <div className="mb-16">
-        <h1 className="text-4xl font-light tracking-tight text-slate-900">
+    <div className="p-6">
+      <div className="mb-8">
+        <h1 className="font-display text-3xl font-bold tracking-wide text-neutral-700">
           Configuración
         </h1>
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-sm font-medium text-neutral-700/80">
           Administración del sistema
         </p>
       </div>
 
       {/* Enlaces de configuración como Cards de Ajustes */}
-      <section className="mb-16">
-        <h2 className="mb-6 text-2xl font-light tracking-tight text-slate-900">
+      <section className="mb-8">
+        <h2 className="font-display mb-6 text-2xl font-bold tracking-wide text-neutral-700">
           Ajustes
         </h2>
         <div className="space-y-3">
           <Link
             href="/admin/configuracion/telegram"
-            className="flex items-center gap-4 rounded-xl border border-slate-200/50 bg-white px-6 py-5 shadow-premium shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)] transition-colors hover:bg-slate-50/80"
+            className="flex items-center gap-4 rounded-2xl border border-accent-miel/30 bg-gradient-to-br from-neutral-50 to-white px-6 py-5 shadow-xl transition-all duration-300 hover:shadow-2xl hover:bg-neutral-50/80"
           >
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
-              <MessageCircle className="h-5 w-5" strokeWidth={1.5} />
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <MessageCircle className="h-6 w-6" strokeWidth={1.5} />
             </div>
             <div className="min-w-0 flex-1">
-              <p className="font-medium text-slate-900">Telegram</p>
-              <p className="text-sm text-slate-500">Notificaciones y mensajes del bot</p>
+              <p className="font-medium text-neutral-700">Telegram</p>
+              <p className="text-sm text-neutral-700/80">Notificaciones y mensajes del bot</p>
             </div>
-            <span className="text-sm font-medium text-slate-600">Ver →</span>
+            <span className="text-sm font-medium text-neutral-600">Ver →</span>
           </Link>
         </div>
       </section>
@@ -63,10 +63,10 @@ export default async function AdminConfiguracionPage() {
       {/* Categorías de Productos */}
       <section className="space-y-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-          <h2 className="text-2xl font-light tracking-tight text-slate-900">
+          <h2 className="font-display text-2xl font-bold tracking-wide text-neutral-700">
             Categorías de Productos
           </h2>
-          <Button asChild className="shrink-0">
+          <Button asChild className="shrink-0 transition-colors duration-200">
             <Link href="#agregar-categoria">
               <Plus className="mr-2 h-4 w-4" />
               Nueva categoría
@@ -75,27 +75,27 @@ export default async function AdminConfiguracionPage() {
         </div>
 
         {hasCategories ? (
-          <div className="rounded-xl border border-slate-200/50 bg-white shadow-premium shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)]">
+          <div className="premium-table-wrap">
             <Table>
               <TableHeader>
-                <TableRow className="border-slate-200/50 hover:bg-transparent">
-                  <TableHead>Orden</TableHead>
-                  <TableHead>Nombre</TableHead>
-                  <TableHead>Descripción</TableHead>
-                  <TableHead>Estado</TableHead>
-                  <TableHead className="text-right">Acciones</TableHead>
+                <TableRow className="border-neutral-200 hover:bg-transparent">
+                  <TableHead className="text-neutral-700">Orden</TableHead>
+                  <TableHead className="text-neutral-700">Nombre</TableHead>
+                  <TableHead className="text-neutral-700">Descripción</TableHead>
+                  <TableHead className="text-neutral-700">Estado</TableHead>
+                  <TableHead className="text-right text-neutral-700">Acciones</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {categoryList.map((cat) => (
                   <TableRow key={cat.id}>
-                    <TableCell className="font-mono text-[12px] text-slate-500">
+                    <TableCell className="font-mono text-xs text-neutral-700/80">
                       {cat.sort_order}
                     </TableCell>
-                    <TableCell className="font-medium text-slate-900">
+                    <TableCell className="font-medium text-neutral-700">
                       {cat.name}
                     </TableCell>
-                    <TableCell className="max-w-xs truncate text-slate-600">
+                    <TableCell className="max-w-xs truncate text-neutral-700">
                       {cat.description ?? '—'}
                     </TableCell>
                     <TableCell>
@@ -103,8 +103,8 @@ export default async function AdminConfiguracionPage() {
                         variant={cat.is_active ? 'default' : 'secondary'}
                         className={
                           cat.is_active
-                            ? 'bg-emerald-500/10 text-emerald-800 border-emerald-200/50 hover:bg-emerald-500/10'
-                            : 'bg-slate-500/10 text-slate-600 border-slate-200/50 hover:bg-slate-500/10'
+                            ? 'bg-success/10 text-success border-0'
+                            : 'bg-neutral-200/80 text-neutral-700 border-0'
                         }
                       >
                         {cat.is_active ? 'Activo' : 'Inactivo'}
@@ -116,7 +116,7 @@ export default async function AdminConfiguracionPage() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="h-8 w-8 text-slate-500 hover:bg-slate-100 hover:text-slate-900"
+                            className="h-8 w-8 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 transition-colors duration-200"
                             asChild
                           >
                             <Link href={`/admin/configuracion/categorias/${cat.id}/editar`}>

@@ -50,9 +50,9 @@ type PaymentRow = {
 
 const PAYMENT_BADGE: Record<string, { variant: 'destructive' | 'secondary' | 'default'; className: string }> = {
   pendiente: { variant: 'destructive', className: 'bg-red-100 text-red-800 border-red-200 hover:bg-red-100' },
-  parcial: { variant: 'secondary', className: 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-100' },
+  parcial: { variant: 'secondary', className: 'bg-primary/10 text-primary border-primary/30 hover:bg-primary/10' },
   pagado: { variant: 'default', className: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-100' },
-  cancelado: { variant: 'destructive', className: 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-100' },
+  cancelado: { variant: 'destructive', className: 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-100' },
 }
 
 const PAYMENT_LABEL: Record<string, string> = {
@@ -63,7 +63,7 @@ const PAYMENT_LABEL: Record<string, string> = {
 }
 
 const RECEPTION_BADGE: Record<string, { className: string; label: string }> = {
-  pendiente: { className: 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-100', label: '⏳ Pendiente de recibir' },
+  pendiente: { className: 'bg-primary/10 text-primary border-primary/30 hover:bg-primary/10', label: '⏳ Pendiente de recibir' },
   recibido_completo: { className: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-100', label: '✓ Recibido completo' },
   recibido_parcial: { className: 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-100', label: '⚠ Recibido parcial' },
   cancelado: { className: 'bg-red-100 text-red-800 border-red-200 hover:bg-red-100', label: '✗ Cancelado' },
@@ -150,7 +150,7 @@ export function DetalleCompra({
       <div className="mb-6">
         <Link
           href="/admin/compras"
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-amber-600"
+          className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-primary"
         >
           ← Volver a Compras
         </Link>
@@ -160,13 +160,13 @@ export function DetalleCompra({
         {/* Columna izquierda: 2/3 */}
         <div className="space-y-6 lg:col-span-2">
           {/* Card 1 — Cabecera */}
-          <Card className="border-gray-200">
+          <Card className="border-neutral-200">
             <CardHeader>
-              <h2 className="text-xl font-semibold text-gray-900">{materialName}</h2>
-              <p className="text-lg font-bold text-gray-900">{compra.supplier}</p>
+              <h2 className="text-xl font-semibold text-neutral-800">{materialName}</h2>
+              <p className="text-lg font-bold text-neutral-800">{compra.supplier}</p>
               <p className="text-sm text-gray-600">{fechaCompra}</p>
               {compra.invoice_number && (
-                <Badge variant="secondary" className="mt-1 w-fit bg-gray-100 text-gray-700 border-gray-200">
+                <Badge variant="secondary" className="mt-1 w-fit bg-neutral-100 text-neutral-700 border-neutral-200">
                   No. factura: {compra.invoice_number}
                 </Badge>
               )}
@@ -187,47 +187,47 @@ export function DetalleCompra({
           </Card>
 
           {/* Card 2 — Detalle de la compra */}
-          <Card className="border-gray-200">
+          <Card className="border-neutral-200">
             <CardHeader>
-              <h3 className="text-lg font-semibold text-gray-900">Detalle de la compra</h3>
+              <h3 className="text-lg font-semibold text-neutral-800">Detalle de la compra</h3>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
-                  <TableRow className="border-gray-200 hover:bg-transparent">
-                    <TableHead className="w-[50%] font-semibold text-gray-700"></TableHead>
-                    <TableHead className="font-semibold text-gray-700"></TableHead>
+                  <TableRow className="border-neutral-200 hover:bg-transparent">
+                    <TableHead className="w-[50%] font-semibold text-neutral-700"></TableHead>
+                    <TableHead className="font-semibold text-neutral-700"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  <TableRow className="border-gray-100">
+                  <TableRow className="border-neutral-200">
                     <TableCell className="text-muted-foreground">Cantidad pedida</TableCell>
                     <TableCell className="font-medium">
                       {Number(compra.quantity).toLocaleString('es-MX')} {unit}
                     </TableCell>
                   </TableRow>
                   {receivedQty != null && (
-                    <TableRow className="border-gray-100">
+                    <TableRow className="border-neutral-200">
                       <TableCell className="text-muted-foreground">Cantidad recibida</TableCell>
                       <TableCell
                         className={cn(
                           'font-medium',
-                          receivedQty >= Number(compra.quantity) ? 'text-emerald-600' : 'text-amber-600'
+                          receivedQty >= Number(compra.quantity) ? 'text-emerald-600' : 'text-primary'
                         )}
                       >
                         {receivedQty.toLocaleString('es-MX')} {unit}
                       </TableCell>
                     </TableRow>
                   )}
-                  <TableRow className="border-gray-100">
+                  <TableRow className="border-neutral-200">
                     <TableCell className="text-muted-foreground">Costo unitario</TableCell>
                     <TableCell className="font-medium">
                       {formatMoney(Number(compra.unit_cost))}
                     </TableCell>
                   </TableRow>
-                  <TableRow className="border-gray-100">
+                  <TableRow className="border-neutral-200">
                     <TableCell className="text-muted-foreground">Total de la compra</TableCell>
-                    <TableCell className="font-bold text-gray-900">
+                    <TableCell className="font-bold text-neutral-800">
                       {formatMoney(total)}
                     </TableCell>
                   </TableRow>
@@ -240,9 +240,9 @@ export function DetalleCompra({
           </Card>
 
           {/* Card — Recepción de Mercancía */}
-          <Card className="border-gray-200">
+          <Card className="border-neutral-200">
             <CardHeader>
-              <h3 className="text-lg font-semibold text-gray-900">Recepción de Mercancía</h3>
+              <h3 className="text-lg font-semibold text-neutral-800">Recepción de Mercancía</h3>
             </CardHeader>
             <CardContent>
               {receptionStatus === 'cancelado' && (
@@ -266,7 +266,7 @@ export function DetalleCompra({
                 <form action={formActionRecepcion} className="space-y-4">
                   <input type="hidden" name="purchase_id" value={compra.id} />
                   <input type="hidden" name="reception_status" value={receptionStatus} />
-                  <h4 className="font-medium text-gray-900">Registrar Recepción</h4>
+                  <h4 className="font-medium text-neutral-800">Registrar Recepción</h4>
                   {receptionStatus === 'recibido_parcial' && receivedQty != null && (
                     <p className="text-sm text-muted-foreground">
                       Recepción anterior: {receivedQty.toLocaleString('es-MX')} {unit}
@@ -294,7 +294,7 @@ export function DetalleCompra({
                       step="any"
                       required
                       placeholder={String(Number(compra.quantity))}
-                      className="border-gray-200"
+                      className="border-neutral-200"
                     />
                     <p className="text-xs text-muted-foreground">
                       Ingresa la cantidad que físicamente llegó
@@ -307,7 +307,7 @@ export function DetalleCompra({
                       name="reception_notes"
                       placeholder="Diferencias, daños, faltantes, aclaraciones con proveedor..."
                       rows={3}
-                      className="resize-none border-gray-200"
+                      className="resize-none border-neutral-200"
                     />
                   </div>
                   <SubmitRecepcionButton />
@@ -317,9 +317,9 @@ export function DetalleCompra({
           </Card>
 
           {/* Card 3 — Historial de pagos */}
-          <Card className="border-gray-200">
+          <Card className="border-neutral-200">
             <CardHeader>
-              <h3 className="text-lg font-semibold text-gray-900">Pagos registrados</h3>
+              <h3 className="text-lg font-semibold text-neutral-800">Pagos registrados</h3>
             </CardHeader>
             <CardContent>
               {pagos.length === 0 ? (
@@ -328,34 +328,34 @@ export function DetalleCompra({
                 <>
                   <Table>
                     <TableHeader>
-                      <TableRow className="border-gray-200 hover:bg-transparent">
-                        <TableHead className="font-semibold text-gray-700">Fecha</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Método</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Referencia</TableHead>
-                        <TableHead className="font-semibold text-gray-700 text-right">Monto</TableHead>
+                      <TableRow className="border-neutral-200 hover:bg-transparent">
+                        <TableHead className="font-semibold text-neutral-700">Fecha</TableHead>
+                        <TableHead className="font-semibold text-neutral-700">Método</TableHead>
+                        <TableHead className="font-semibold text-neutral-700">Referencia</TableHead>
+                        <TableHead className="font-semibold text-neutral-700 text-right">Monto</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {pagos.map((p) => (
-                        <TableRow key={p.id} className="border-gray-100">
-                          <TableCell className="text-gray-700">
+                        <TableRow key={p.id} className="border-neutral-200">
+                          <TableCell className="text-neutral-700">
                             {formatDate(p.created_at)}
                           </TableCell>
-                          <TableCell className="text-gray-700">
+                          <TableCell className="text-neutral-700">
                             {capitalizeMethod(p.payment_method)}
                           </TableCell>
                           <TableCell className="text-gray-600">
                             {p.reference ?? '—'}
                           </TableCell>
-                          <TableCell className="text-right font-medium text-gray-900">
+                          <TableCell className="text-right font-medium text-neutral-800">
                             {formatMoney(Number(p.amount))}
                           </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
                   </Table>
-                  <div className="mt-4 space-y-1 border-t border-gray-100 pt-4">
-                    <p className="font-bold text-gray-900">
+                  <div className="mt-4 space-y-1 border-t border-neutral-200 pt-4">
+                    <p className="font-bold text-neutral-800">
                       Total pagado: {formatMoney(totalPagadoFromPagos)}
                     </p>
                     <p
@@ -376,18 +376,18 @@ export function DetalleCompra({
         {/* Columna derecha: 1/3 */}
         <div className="space-y-6">
           {/* Card 1 — Resumen financiero */}
-          <Card className="border-gray-200">
+          <Card className="border-neutral-200">
             <CardHeader>
-              <h3 className="text-lg font-semibold text-gray-900">Resumen financiero</h3>
+              <h3 className="text-lg font-semibold text-neutral-800">Resumen financiero</h3>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Total de la compra</span>
-                <span className="font-medium text-gray-900">{formatMoney(total)}</span>
+                <span className="font-medium text-neutral-800">{formatMoney(total)}</span>
               </div>
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">Total pagado</span>
-                <span className="font-medium text-gray-900">{formatMoney(paid)}</span>
+                <span className="font-medium text-neutral-800">{formatMoney(paid)}</span>
               </div>
               {compra.payment_status === 'cancelado' ? (
                 <div className="text-sm">
@@ -425,9 +425,9 @@ export function DetalleCompra({
               </CardContent>
             </Card>
           ) : compra.payment_status !== 'cancelado' ? (
-            <Card className="border-gray-200">
+            <Card className="border-neutral-200">
               <CardHeader>
-                <h3 className="text-lg font-semibold text-gray-900">Registrar Pago</h3>
+                <h3 className="text-lg font-semibold text-neutral-800">Registrar Pago</h3>
               </CardHeader>
               <CardContent>
                 <form action={formAction} className="space-y-4">
@@ -452,7 +452,7 @@ export function DetalleCompra({
                       step="0.01"
                       required
                       placeholder="0.00"
-                      className="border-gray-200"
+                      className="border-neutral-200"
                     />
                   </div>
                   <div className="space-y-2">
@@ -462,8 +462,8 @@ export function DetalleCompra({
                       name="payment_method"
                       defaultValue="efectivo"
                       className={cn(
-                        'flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm',
-                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2'
+                        'flex h-10 w-full rounded-md border border-neutral-200 bg-white px-3 py-2 text-sm',
+                        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
                       )}
                     >
                       <option value="efectivo">Efectivo</option>
@@ -479,7 +479,7 @@ export function DetalleCompra({
                       name="reference"
                       type="text"
                       placeholder="Opcional"
-                      className="border-gray-200"
+                      className="border-neutral-200"
                     />
                   </div>
                   <div className="space-y-2">
@@ -489,7 +489,7 @@ export function DetalleCompra({
                       name="notes"
                       type="text"
                       placeholder="Opcional"
-                      className="border-gray-200"
+                      className="border-neutral-200"
                     />
                   </div>
                   <SubmitPagoButton />

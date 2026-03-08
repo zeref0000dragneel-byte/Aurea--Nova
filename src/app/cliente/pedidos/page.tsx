@@ -107,7 +107,7 @@ export default async function ClientePedidosPage({
   return (
     <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Mis Pedidos</h1>
+        <h1 className="text-2xl font-bold text-neutral-800">Mis Pedidos</h1>
         <p className="text-muted-foreground text-sm mt-1">
           {list.length} pedido{list.length !== 1 ? 's' : ''}
         </p>
@@ -127,32 +127,32 @@ export default async function ClientePedidosPage({
       </div>
 
       {list.length === 0 ? (
-        <Card className="border-gray-200">
+        <Card className="border-neutral-200">
           <CardContent className="flex flex-col items-center justify-center py-20 text-muted-foreground gap-2">
             <ShoppingCart className="w-10 h-10" />
             <p>No hay pedidos en esta categoría</p>
           </CardContent>
         </Card>
       ) : (
-        <Card className="border-gray-200">
+        <Card className="border-neutral-200">
           <CardContent className="p-0">
             <div className="rounded-lg overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-gray-200 hover:bg-transparent bg-muted/50">
-                    <TableHead className="font-semibold text-gray-700">Pedido</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Estado</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Pago</TableHead>
-                    <TableHead className="font-semibold text-gray-700 text-right">Total</TableHead>
-                    <TableHead className="font-semibold text-gray-700 text-right">Por pagar</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Fecha entrega</TableHead>
-                    <TableHead className="font-semibold text-gray-700 w-[100px]"></TableHead>
+                  <TableRow className="border-neutral-200 hover:bg-transparent bg-muted/50">
+                    <TableHead className="font-semibold text-neutral-700">Pedido</TableHead>
+                    <TableHead className="font-semibold text-neutral-700">Estado</TableHead>
+                    <TableHead className="font-semibold text-neutral-700">Pago</TableHead>
+                    <TableHead className="font-semibold text-neutral-700 text-right">Total</TableHead>
+                    <TableHead className="font-semibold text-neutral-700 text-right">Por pagar</TableHead>
+                    <TableHead className="font-semibold text-neutral-700">Fecha entrega</TableHead>
+                    <TableHead className="font-semibold text-neutral-700 w-[100px]"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {list.map((pedido) => {
                     return (
-                      <TableRow key={pedido.id} className="border-gray-100 hover:bg-muted/30">
+                      <TableRow key={pedido.id} className="border-neutral-200 hover:bg-muted/30">
                         <TableCell className="font-mono text-sm font-medium">
                           {pedido.order_number}
                         </TableCell>

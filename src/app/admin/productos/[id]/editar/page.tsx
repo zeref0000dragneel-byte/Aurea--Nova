@@ -33,7 +33,7 @@ export default async function EditarProductoPage({ params }: Props) {
       <div className="mb-6">
         <Link
           href="/admin/productos"
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-amber-600"
+          className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-primary"
         >
           <ArrowLeft className="h-4 w-4" />
           Volver

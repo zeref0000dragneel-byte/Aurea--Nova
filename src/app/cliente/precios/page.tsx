@@ -105,7 +105,7 @@ export default async function ClientePreciosPage() {
   return (
     <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Mis Precios</h1>
+        <h1 className="text-2xl font-bold text-neutral-800">Mis Precios</h1>
         <p className="text-muted-foreground text-sm mt-1">
           Precios personalizados para tu cuenta
         </p>
@@ -113,18 +113,20 @@ export default async function ClientePreciosPage() {
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((item) => (
-          <Card key={item.id} className="border-gray-200">
+          <Card key={item.id} className="border-neutral-200">
             <CardHeader className="pb-2">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <h2 className="font-semibold text-gray-900">{item.name}</h2>
+                  <h2 className="font-semibold text-neutral-800">{item.name}</h2>
                   {item.sku && (
                     <p className="text-xs text-muted-foreground font-mono mt-0.5">{item.sku}</p>
                   )}
                   <p className="text-xs text-muted-foreground uppercase mt-0.5">{item.unit}</p>
                 </div>
                 {item.hasPersonalizado ? (
-                  <Badge className="bg-green-600 hover:bg-green-600">Precio especial</Badge>
+                  <Badge className="bg-primary text-primary-foreground hover:bg-primary-dark hover:text-primary-foreground">
+                    Precio especial
+                  </Badge>
                 ) : (
                   <Badge variant="secondary">Precio estándar</Badge>
                 )}
@@ -137,7 +139,7 @@ export default async function ClientePreciosPage() {
                     ${item.basePrice.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                   </span>
                 )}
-                <span className="text-xl font-bold text-gray-900">
+                <span className="text-xl font-bold text-neutral-800">
                   ${item.finalPrice.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                 </span>
                 {item.discountPct != null && item.discountPct > 0 && (

@@ -48,10 +48,10 @@ type ConsumoRow = {
 type RawMaterialOption = { id: string; name: string; unit: string }
 
 const STATUS_BADGE_CLASS: Record<OrderStatus, string> = {
-  pendiente: 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-100',
+  pendiente: 'bg-primary/10 text-primary border-primary/30 hover:bg-primary/10',
   en_proceso: 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-100',
   completada: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-100',
-  cancelada: 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-100',
+  cancelada: 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-gray-100',
 }
 
 const STATUS_LABEL: Record<OrderStatus, string> = {
@@ -129,7 +129,7 @@ export default async function OrdenProduccionDetallePage({
       <div className="mb-6">
         <Link
           href="/admin/produccion"
-          className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-amber-600"
+          className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition-colors hover:text-primary"
         >
           <ArrowLeft className="h-4 w-4" />
           Volver a órdenes
@@ -137,9 +137,9 @@ export default async function OrdenProduccionDetallePage({
       </div>
 
       {/* Sección 1 — Cabecera de la orden */}
-      <Card className="mb-8 border-gray-200">
+      <Card className="mb-8 border-neutral-200">
         <CardHeader>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+          <h1 className="text-2xl font-bold tracking-tight text-neutral-800">
             Orden de producción
           </h1>
         </CardHeader>
@@ -150,14 +150,14 @@ export default async function OrdenProduccionDetallePage({
                 <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                   Número de orden
                 </p>
-                <p className="mt-0.5 font-medium text-gray-900">{orden.order_number}</p>
+                <p className="mt-0.5 font-medium text-neutral-800">{orden.order_number}</p>
               </div>
             )}
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                 Producto
               </p>
-              <p className="mt-0.5 font-medium text-gray-900">{productName}</p>
+              <p className="mt-0.5 font-medium text-neutral-800">{productName}</p>
             </div>
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
@@ -176,7 +176,7 @@ export default async function OrdenProduccionDetallePage({
               <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                 Cantidad planificada
               </p>
-              <p className="mt-0.5 font-medium text-gray-900">
+              <p className="mt-0.5 font-medium text-neutral-800">
                 {Number(orden.planned_quantity).toLocaleString('es-MX')}
               </p>
             </div>
@@ -184,13 +184,13 @@ export default async function OrdenProduccionDetallePage({
               <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                 Asignado a
               </p>
-              <p className="mt-0.5 text-gray-900">{assignedName}</p>
+              <p className="mt-0.5 text-neutral-800">{assignedName}</p>
             </div>
             <div>
               <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                 Fecha creación
               </p>
-              <p className="mt-0.5 text-gray-900">{createdDate}</p>
+              <p className="mt-0.5 text-neutral-800">{createdDate}</p>
             </div>
           </div>
           {orden.notes && (
@@ -198,32 +198,32 @@ export default async function OrdenProduccionDetallePage({
               <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                 Notas
               </p>
-              <p className="mt-0.5 text-gray-700 whitespace-pre-wrap">{orden.notes}</p>
+              <p className="mt-0.5 text-neutral-700 whitespace-pre-wrap">{orden.notes}</p>
             </div>
           )}
         </CardContent>
       </Card>
 
       {/* Sección 2 — Materias primas a consumir */}
-      <Card className="mb-8 border-gray-200">
+      <Card className="mb-8 border-neutral-200">
         <CardHeader>
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold text-neutral-800">
             Materias primas a consumir
           </h2>
         </CardHeader>
         <CardContent className="space-y-6">
           {consumosList.length > 0 ? (
-            <div className="rounded-lg border border-gray-200">
+            <div className="rounded-lg border border-neutral-200">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-gray-200 hover:bg-transparent">
-                    <TableHead className="font-semibold text-gray-700">Nombre</TableHead>
-                    <TableHead className="font-semibold text-gray-700">
+                  <TableRow className="border-neutral-200 hover:bg-transparent">
+                    <TableHead className="font-semibold text-neutral-700">Nombre</TableHead>
+                    <TableHead className="font-semibold text-neutral-700">
                       Cantidad a usar
                     </TableHead>
-                    <TableHead className="font-semibold text-gray-700">Unidad</TableHead>
+                    <TableHead className="font-semibold text-neutral-700">Unidad</TableHead>
                     {puedeEditar && (
-                      <TableHead className="w-14 font-semibold text-gray-700 text-right">
+                      <TableHead className="w-14 font-semibold text-neutral-700 text-right">
                         Acciones
                       </TableHead>
                     )}
@@ -231,11 +231,11 @@ export default async function OrdenProduccionDetallePage({
                 </TableHeader>
                 <TableBody>
                   {consumosList.map((c) => (
-                    <TableRow key={c.id} className="border-gray-100">
-                      <TableCell className="font-medium text-gray-900">
+                    <TableRow key={c.id} className="border-neutral-200">
+                      <TableCell className="font-medium text-neutral-800">
                         {c.raw_materials?.name ?? '—'}
                       </TableCell>
-                      <TableCell className="text-gray-700">
+                      <TableCell className="text-neutral-700">
                         {Number(c.planned_quantity).toLocaleString('es-MX')}
                       </TableCell>
                       <TableCell className="text-gray-600 uppercase">
@@ -270,9 +270,9 @@ export default async function OrdenProduccionDetallePage({
 
       {/* Sección 3 — Completar orden o resumen */}
       {status === 'en_proceso' && (
-        <Card className="mb-8 border-gray-200">
+        <Card className="mb-8 border-neutral-200">
           <CardHeader>
-            <h2 className="text-lg font-semibold text-gray-900">Completar orden</h2>
+            <h2 className="text-lg font-semibold text-neutral-800">Completar orden</h2>
           </CardHeader>
           <CardContent>
             <FormCompletarOrden
@@ -284,9 +284,9 @@ export default async function OrdenProduccionDetallePage({
       )}
 
       {isFinished && (
-        <Card className="mb-8 border-gray-200">
+        <Card className="mb-8 border-neutral-200">
           <CardHeader>
-            <h2 className="text-lg font-semibold text-gray-900">Resumen</h2>
+            <h2 className="text-lg font-semibold text-neutral-800">Resumen</h2>
           </CardHeader>
           <CardContent className="space-y-4">
             {status === 'completada' && (
@@ -296,7 +296,7 @@ export default async function OrdenProduccionDetallePage({
                     <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                       Cantidad real producida
                     </p>
-                    <p className="mt-0.5 font-medium text-gray-900">
+                    <p className="mt-0.5 font-medium text-neutral-800">
                       {orden.actual_quantity != null
                         ? Number(orden.actual_quantity).toLocaleString('es-MX')
                         : '—'}
@@ -306,7 +306,7 @@ export default async function OrdenProduccionDetallePage({
                     <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                       Merma
                     </p>
-                    <p className="mt-0.5 font-medium text-gray-900">
+                    <p className="mt-0.5 font-medium text-neutral-800">
                       {orden.waste_quantity != null
                         ? Number(orden.waste_quantity).toLocaleString('es-MX')
                         : '0'}
@@ -318,7 +318,7 @@ export default async function OrdenProduccionDetallePage({
                     <p className="text-xs font-medium uppercase tracking-wide text-gray-500">
                       Notas de merma
                     </p>
-                    <p className="mt-0.5 text-gray-700 whitespace-pre-wrap">
+                    <p className="mt-0.5 text-neutral-700 whitespace-pre-wrap">
                       {orden.waste_notes}
                     </p>
                   </div>

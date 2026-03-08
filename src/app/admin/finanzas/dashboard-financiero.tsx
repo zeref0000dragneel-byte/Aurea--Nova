@@ -109,57 +109,57 @@ export function DashboardFinanciero({
       : 1
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-6 space-y-8">
       {/* Sección 1 — Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+          <h1 className="font-display text-3xl font-bold tracking-wide text-neutral-700">
             Dashboard Financiero
           </h1>
-          <p className="text-sm text-gray-500">{mesAnioLabel}</p>
+          <p className="text-sm font-medium text-neutral-700/80">{mesAnioLabel}</p>
         </div>
-        <Badge className="bg-emerald-500/90 text-white border-0 hover:bg-emerald-500">
+        <Badge className="bg-success/90 text-white border-0 rounded-2xl">
           En tiempo real
         </Badge>
       </div>
 
       {/* Sección 2 — Cards métricas principales */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
-        <Card className="border-gray-200">
-          <CardContent className="pt-6">
-            <p className="text-2xl font-bold text-gray-900">
+        <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white p-0 transition-all duration-300 hover:shadow-2xl">
+          <CardContent className="p-6">
+            <p className="text-3xl font-semibold font-mono tabular-nums tracking-tight text-neutral-700">
               {formatMoneda(ventasMesActual)}
             </p>
-            <p className="text-xs font-medium text-gray-500 mt-1">
+            <p className="mt-1 text-sm font-medium text-neutral-700/80">
               Ventas del Mes
             </p>
-            <p className="text-xs mt-0.5">
+            <p className="mt-0.5 text-xs text-neutral-700/80">
               {variacionVentas === null ? (
-                <span className="text-gray-500">Primer registro</span>
+                <span>Primer registro</span>
               ) : variacionVentas > 0 ? (
-                <span className="text-emerald-600">
+                <span className="text-success">
                   ↑ {variacionVentas.toFixed(1)}% vs mes anterior
                 </span>
               ) : variacionVentas < 0 ? (
-                <span className="text-red-600">
+                <span className="text-danger">
                   ↓ {Math.abs(variacionVentas).toFixed(1)}% vs mes anterior
                 </span>
               ) : (
-                <span className="text-gray-500">Sin variación</span>
+                <span>Sin variación</span>
               )}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200">
-          <CardContent className="pt-6">
-            <p className="text-2xl font-bold text-gray-900">
+        <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white p-0 transition-all duration-300 hover:shadow-2xl">
+          <CardContent className="p-6">
+            <p className="text-3xl font-semibold font-mono tabular-nums tracking-tight text-neutral-700">
               {formatMoneda(totalCobrado)}
             </p>
-            <p className="text-xs font-medium text-gray-500 mt-1">
+            <p className="mt-1 text-sm font-medium text-neutral-700/80">
               Cobrado este Mes
             </p>
-            <p className="text-xs mt-0.5 text-gray-600">
+            <p className="mt-0.5 text-xs text-neutral-700/80">
               De {formatMoneda(ventasMesActual)} en ventas
               {ventasMesActual > 0 && (
                 <> ({porcentajeCobrado.toFixed(0)}% cobrado)</>
@@ -168,34 +168,39 @@ export function DashboardFinanciero({
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200">
-          <CardContent className="pt-6">
+        <Card
+          className={cn(
+            'rounded-3xl border p-0 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl',
+            deudaTotal > 0 ? 'border-danger/30 bg-danger/5' : 'border-success/30 bg-success/5'
+          )}
+        >
+          <CardContent className="p-6">
             <p
               className={cn(
-                'text-2xl font-bold',
-                deudaTotal > 0 ? 'text-red-600' : 'text-emerald-600'
+                'text-3xl font-semibold font-mono tabular-nums tracking-tight',
+                deudaTotal > 0 ? 'text-neutral-700' : 'text-success'
               )}
             >
-              {formatMoneda(deudaTotal)}
+              {deudaTotal > 0 ? formatMoneda(deudaTotal) : 'Al día'}
             </p>
-            <p className="text-xs font-medium text-gray-500 mt-1">
+            <p className="mt-1 text-sm font-medium text-neutral-700/80">
               Deuda Total
             </p>
-            <p className="text-xs mt-0.5 text-gray-600">
+            <p className="mt-0.5 text-xs text-neutral-700/80">
               {pedidosPendientesPago} pedidos sin cobrar
             </p>
           </CardContent>
         </Card>
 
-        <Card className="border-gray-200">
-          <CardContent className="pt-6">
-            <p className="text-2xl font-bold text-gray-900">
+        <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white p-0 transition-all duration-300 hover:shadow-2xl">
+          <CardContent className="p-6">
+            <p className="text-3xl font-semibold font-mono tabular-nums tracking-tight text-neutral-700">
               {formatMoneda(ticketPromedio)}
             </p>
-            <p className="text-xs font-medium text-gray-500 mt-1">
+            <p className="mt-1 text-sm font-medium text-neutral-700/80">
               Ticket Promedio
             </p>
-            <p className="text-xs mt-0.5 text-gray-600">
+            <p className="mt-0.5 text-xs text-neutral-700/80">
               {pedidosMesActual} pedidos este mes
             </p>
           </CardContent>
@@ -205,33 +210,33 @@ export function DashboardFinanciero({
       {/* Sección 3 — Dos columnas */}
       <div className="grid gap-6 grid-cols-1 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <Card className="border-gray-200">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-lg">Últimos Pedidos</CardTitle>
+          <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6 pb-2">
+              <CardTitle className="font-display text-lg font-bold tracking-wide text-neutral-700">Últimos Pedidos</CardTitle>
               <Link
                 href="/admin/pedidos"
-                className="text-sm font-medium text-amber-600 hover:text-amber-700"
+                className="text-sm font-medium text-primary hover:text-primary/90 transition-colors duration-200"
               >
                 Ver todos
               </Link>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6 pt-0">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-gray-200 hover:bg-transparent">
-                    <TableHead className="font-semibold text-gray-700">
+                  <TableRow className="border-neutral-200 hover:bg-transparent">
+                    <TableHead className="font-semibold text-neutral-700">
                       Pedido
                     </TableHead>
-                    <TableHead className="font-semibold text-gray-700">
+                    <TableHead className="font-semibold text-neutral-700">
                       Cliente
                     </TableHead>
-                    <TableHead className="font-semibold text-gray-700">
+                    <TableHead className="font-semibold text-neutral-700">
                       Estado
                     </TableHead>
-                    <TableHead className="font-semibold text-gray-700">
+                    <TableHead className="font-semibold text-neutral-700">
                       Pago
                     </TableHead>
-                    <TableHead className="font-semibold text-gray-700 text-right">
+                    <TableHead className="font-semibold text-neutral-700 text-right">
                       Total
                     </TableHead>
                   </TableRow>
@@ -239,17 +244,17 @@ export function DashboardFinanciero({
                 <TableBody>
                   {pedidosRecientes.length === 0 ? (
                     <TableRow>
-                      <TableCell colSpan={5} className="text-center text-gray-500">
+                      <TableCell colSpan={5} className="text-center text-neutral-700/80">
                         No hay pedidos recientes
                       </TableCell>
                     </TableRow>
                   ) : (
                     pedidosRecientes.map((p) => (
-                      <TableRow key={p.order_number} className="border-gray-100">
-                        <TableCell className="font-mono text-xs">
+                      <TableRow key={p.order_number} className="border-neutral-200">
+                        <TableCell className="font-mono text-xs text-neutral-700">
                           {p.order_number}
                         </TableCell>
-                        <TableCell className="text-gray-700">
+                        <TableCell className="text-neutral-700">
                           {(p.customers as { business_name: string } | null)?.business_name ?? '—'}
                         </TableCell>
                         <TableCell>
@@ -259,14 +264,14 @@ export function DashboardFinanciero({
                         </TableCell>
                         <TableCell>
                           {p.status === 'cancelado' ? (
-                            <span className="text-muted-foreground">—</span>
+                            <span className="text-neutral-700/80">—</span>
                           ) : (
                             <Badge variant={paymentVariant[p.payment_status] ?? 'default'}>
                               {paymentLabel[p.payment_status] ?? p.payment_status}
                             </Badge>
                           )}
                         </TableCell>
-                        <TableCell className="text-right font-medium">
+                        <TableCell className="text-right font-medium text-neutral-700">
                           {formatMoneda(Number(p.total))}
                         </TableCell>
                       </TableRow>
@@ -279,23 +284,23 @@ export function DashboardFinanciero({
         </div>
 
         <div className="lg:col-span-1">
-          <Card className="border-gray-200">
-            <CardHeader>
-              <CardTitle className="text-lg">Mayor Deuda por Cliente</CardTitle>
+          <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl">
+            <CardHeader className="p-6 pb-2">
+              <CardTitle className="font-display text-lg font-bold tracking-wide text-neutral-700">Mayor Deuda por Cliente</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="p-6 pt-0">
               {deudaPorCliente.length === 0 ? (
-                <p className="text-sm text-emerald-600 font-medium">
+                <p className="text-sm font-medium text-success">
                   Sin deuda pendiente
                 </p>
               ) : (
                 <ul className="space-y-3">
                   {deudaPorCliente.map((c, idx) => (
                     <li key={idx} className="flex flex-col gap-0.5">
-                      <span className="font-semibold text-gray-900">
+                      <span className="font-semibold text-neutral-700">
                         {c.business_name}
                       </span>
-                      <span className="text-sm text-red-600 font-medium">
+                      <span className="text-sm font-medium text-danger">
                         {formatMoneda(c.deuda)}
                       </span>
                     </li>
@@ -308,29 +313,29 @@ export function DashboardFinanciero({
       </div>
 
       {/* Sección 4 — Productos más vendidos */}
-      <Card className="border-gray-200">
-        <CardHeader>
-          <CardTitle className="text-lg">
+      <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl">
+        <CardHeader className="p-6 pb-2">
+          <CardTitle className="font-display text-lg font-bold tracking-wide text-neutral-700">
             Productos Más Vendidos — {mesAnioLabel}
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="p-6 pt-0">
           {productosMasVendidos.length === 0 ? (
-            <p className="text-sm text-gray-500">No hay ventas este mes.</p>
+            <p className="text-sm text-neutral-700/80">No hay ventas este mes.</p>
           ) : (
             <Table>
               <TableHeader>
-                <TableRow className="border-gray-200 hover:bg-transparent">
-                  <TableHead className="font-semibold text-gray-700">
+                <TableRow className="border-neutral-200 hover:bg-transparent">
+                  <TableHead className="font-semibold text-neutral-700">
                     Producto
                   </TableHead>
-                  <TableHead className="font-semibold text-gray-700">
+                  <TableHead className="font-semibold text-neutral-700">
                     Unidades vendidas
                   </TableHead>
-                  <TableHead className="font-semibold text-gray-700">
+                  <TableHead className="font-semibold text-neutral-700">
                     Ingresos generados
                   </TableHead>
-                  <TableHead className="font-semibold text-gray-700 w-40">
+                  <TableHead className="font-semibold text-neutral-700 w-40">
                     Progreso
                   </TableHead>
                 </TableRow>
@@ -339,20 +344,20 @@ export function DashboardFinanciero({
                 {productosMasVendidos.map((p) => {
                   const pct = maxQuantity > 0 ? (p.quantity / maxQuantity) * 100 : 0
                   return (
-                    <TableRow key={p.product_id} className="border-gray-100">
-                      <TableCell className="font-medium text-gray-900">
+                    <TableRow key={p.product_id} className="border-neutral-200">
+                      <TableCell className="font-medium text-neutral-700">
                         {p.name}
                       </TableCell>
-                      <TableCell className="text-gray-700">
+                      <TableCell className="text-neutral-700">
                         {p.quantity.toLocaleString('es-MX')} {p.unit}
                       </TableCell>
-                      <TableCell className="text-gray-700">
+                      <TableCell className="text-neutral-700">
                         {formatMoneda(p.subtotal)}
                       </TableCell>
                       <TableCell>
                         <div className="w-full rounded-full h-2 bg-primary/20">
                           <div
-                            className="h-2 rounded-full bg-primary"
+                            className="h-2.5 rounded-full bg-primary transition-all duration-300"
                             style={{ width: `${pct}%` }}
                           />
                         </div>

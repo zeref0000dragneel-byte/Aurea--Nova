@@ -18,7 +18,7 @@ function SubmitButton() {
     <Button
       type="submit"
       disabled={pending}
-      className="disabled:opacity-60"
+      className="transition-colors duration-200 disabled:opacity-60"
     >
       {pending ? 'Guardando…' : 'Crear orden'}
     </Button>
@@ -41,20 +41,20 @@ export function FormNuevaOrden({
   return (
     <form action={formAction} className="space-y-6">
       {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+        <div className="rounded-lg border border-danger/20 bg-danger/10 px-4 py-3 text-sm font-medium text-danger">
           {error}
         </div>
       )}
       <div className="grid gap-6 sm:grid-cols-2">
-        <div className="space-y-2 sm:col-span-2">
+        <div className="space-y-2 sm:col-span-2 mb-4">
           <Label htmlFor="product_id">Producto *</Label>
           <select
             id="product_id"
             name="product_id"
             required
             className={cn(
-              'flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2'
+              'flex h-10 w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm transition-colors duration-200',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-50 focus-visible:border-primary'
             )}
           >
             <option value="">Selecciona un producto</option>
@@ -65,7 +65,7 @@ export function FormNuevaOrden({
             ))}
           </select>
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 mb-4">
           <Label htmlFor="planned_quantity">Cantidad Planificada *</Label>
           <Input
             id="planned_quantity"
@@ -75,17 +75,16 @@ export function FormNuevaOrden({
             step="1"
             required
             placeholder="0"
-            className="border-gray-200"
           />
         </div>
-        <div className="space-y-2">
+        <div className="space-y-2 mb-4">
           <Label htmlFor="assigned_to">Asignar a</Label>
           <select
             id="assigned_to"
             name="assigned_to"
             className={cn(
-              'flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm',
-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2'
+              'flex h-10 w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm transition-colors duration-200',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-opacity-50 focus-visible:border-primary'
             )}
           >
             <option value="">Ninguno</option>
@@ -96,20 +95,20 @@ export function FormNuevaOrden({
             ))}
           </select>
         </div>
-        <div className="space-y-2 sm:col-span-2">
+        <div className="space-y-2 sm:col-span-2 mb-4">
           <Label htmlFor="notes">Notas</Label>
           <Textarea
             id="notes"
             name="notes"
             placeholder="Notas opcionales"
             rows={3}
-            className="resize-none border-gray-200"
+            className="resize-none border-neutral-200 rounded-lg"
           />
         </div>
       </div>
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3 pt-2">
         <SubmitButton />
-        <Button type="button" variant="outline" asChild>
+        <Button type="button" variant="outline" asChild className="transition-colors duration-200">
           <Link href="/admin/produccion">Cancelar</Link>
         </Button>
       </div>

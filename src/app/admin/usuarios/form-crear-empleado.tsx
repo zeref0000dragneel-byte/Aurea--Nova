@@ -11,7 +11,7 @@ import { crearEmpleado, type CrearEmpleadoState } from './actions'
 function BotonCrearEmpleado() {
   const { pending } = useFormStatus()
   return (
-    <Button type="submit" className="bg-amber-500 font-medium text-white hover:bg-amber-600" disabled={pending}>
+    <Button type="submit" className="bg-primary font-medium text-primary-foreground hover:bg-primary/90" disabled={pending}>
       <UserPlus className="mr-2 h-4 w-4" />
       {pending ? 'Creando...' : 'Crear Empleado'}
     </Button>
@@ -34,7 +34,7 @@ export function FormCrearEmpleado({ visible }: { visible: boolean }) {
     <form
       ref={formRef}
       action={formAction}
-      className="space-y-4 rounded-lg border border-gray-200 bg-gray-50/50 p-6"
+      className="space-y-4 rounded-lg border border-neutral-200 bg-neutral-50/50 p-6"
     >
       {state?.success && (
         <p className="text-sm font-medium text-emerald-700" role="alert">
@@ -54,7 +54,7 @@ export function FormCrearEmpleado({ visible }: { visible: boolean }) {
             name="full_name"
             required
             placeholder="Nombre completo"
-            className="border-gray-200 bg-white"
+            className="border-neutral-200 bg-white"
           />
         </div>
         <div className="space-y-2">
@@ -65,7 +65,7 @@ export function FormCrearEmpleado({ visible }: { visible: boolean }) {
             type="email"
             required
             placeholder="correo@ejemplo.com"
-            className="border-gray-200 bg-white"
+            className="border-neutral-200 bg-white"
           />
         </div>
         <div className="space-y-2">
@@ -77,7 +77,7 @@ export function FormCrearEmpleado({ visible }: { visible: boolean }) {
             required
             minLength={8}
             placeholder="••••••••"
-            className="border-gray-200 bg-white"
+            className="border-neutral-200 bg-white"
           />
         </div>
         <div className="space-y-2">
@@ -86,7 +86,7 @@ export function FormCrearEmpleado({ visible }: { visible: boolean }) {
             id="empleado-phone"
             name="phone"
             placeholder="Teléfono"
-            className="border-gray-200 bg-white"
+            className="border-neutral-200 bg-white"
           />
         </div>
       </div>

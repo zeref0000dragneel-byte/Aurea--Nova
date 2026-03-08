@@ -29,10 +29,10 @@ export function FormCrearCategoriaInline() {
     <form
       ref={formRef}
       action={formAction}
-      className="flex flex-wrap items-end gap-3 rounded-lg border border-gray-200 bg-gray-50/50 p-4"
+      className="flex flex-wrap items-end gap-3 rounded-lg border border-neutral-200 bg-neutral-50/50 p-4"
     >
       <div className="flex-1 min-w-[200px]">
-        <label htmlFor="nombre-inline" className="mb-1 block text-xs font-medium text-gray-600">
+        <label htmlFor="nombre-inline" className="mb-1 block text-xs font-medium text-neutral-700">
           Nombre
         </label>
         <Input
@@ -44,7 +44,7 @@ export function FormCrearCategoriaInline() {
         />
       </div>
       <div className="flex-1 min-w-[200px]">
-        <label htmlFor="descripcion-inline" className="mb-1 block text-xs font-medium text-gray-600">
+        <label htmlFor="descripcion-inline" className="mb-1 block text-xs font-medium text-neutral-700">
           Descripción
         </label>
         <Input

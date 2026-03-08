@@ -24,7 +24,7 @@ export default async function RootPage() {
     case 'admin':
       redirect('/admin/dashboard')
     case 'empleado':
-      redirect('/empleado/pedidos')
+      redirect('/empleado')
     case 'cliente':
       redirect('/cliente/dashboard')
     default:

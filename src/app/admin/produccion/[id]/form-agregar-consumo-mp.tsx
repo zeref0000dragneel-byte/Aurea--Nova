@@ -16,7 +16,7 @@ function SubmitButton() {
       type="submit"
       disabled={pending}
       size="sm"
-      className="bg-amber-500 text-white hover:bg-amber-600 disabled:opacity-60"
+      className="bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-60"
     >
       {pending ? 'Agregando…' : 'Agregar'}
     </Button>
@@ -54,7 +54,7 @@ export function FormAgregarConsumoMP({
           required
           className={cn(
             'flex h-9 w-full min-w-[200px] rounded-md border border-gray-200 bg-white px-3 py-2 text-sm',
-            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2'
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2'
           )}
         >
           <option value="">Selecciona una MP</option>

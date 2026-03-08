@@ -101,7 +101,7 @@ export default function FormNuevoPedido({
       )} />
 
       {state?.error && (
-        <div className="bg-destructive/10 text-destructive text-sm px-4 py-3 rounded-md border border-destructive/20">
+        <div className="rounded-lg border border-danger/20 bg-danger/10 px-4 py-3 text-sm font-medium text-danger">
           {state.error}
         </div>
       )}
@@ -207,7 +207,7 @@ export default function FormNuevoPedido({
               </thead>
               <tbody className="divide-y">
                 {cart.map(item => (
-                  <tr key={item.product_id}>
+                  <tr key={item.product_id} className="relative border-b border-zinc-100/80 transition-all duration-200 hover:z-10 hover:bg-white hover:shadow-md hover:-translate-y-px hover:border-neutral-200">
                     <td className="p-3 font-medium">{item.name}</td>
                     <td className="p-3 text-right">
                       {item.quantity} {item.unit}

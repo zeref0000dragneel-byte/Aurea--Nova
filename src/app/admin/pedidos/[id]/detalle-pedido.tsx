@@ -261,7 +261,7 @@ export default function DetallePedido({
                             {item.lot_id && item.inventory_lots?.lot_number ? (
                               item.inventory_lots.lot_number
                             ) : (
-                              <Badge variant="secondary" className="bg-amber-100 text-amber-800 border-amber-200">
+                              <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/30">
                                 Sin asignar
                               </Badge>
                             )}
@@ -336,7 +336,7 @@ export default function DetallePedido({
         <div className="space-y-6">
           {/* Sección 1 — Confirmar pedido (solo borrador) */}
           {order.status === 'borrador' && (
-            <Card className="bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-800">
+            <Card className="bg-primary/5 dark:bg-primary/10 border-primary/30 dark:border-primary/20">
               <CardHeader>
                 <h2 className="text-lg font-semibold">Confirmar pedido</h2>
                 <p className="text-sm text-muted-foreground">

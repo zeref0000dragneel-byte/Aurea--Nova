@@ -28,10 +28,10 @@ type ProductionOrderRow = {
 }
 
 const STATUS_BADGE_CLASS: Record<OrderStatus, string> = {
-  pendiente: 'bg-amber-100 text-amber-800 border-amber-200 hover:bg-amber-100',
-  en_proceso: 'bg-blue-100 text-blue-800 border-blue-200 hover:bg-blue-100',
-  completada: 'bg-emerald-100 text-emerald-800 border-emerald-200 hover:bg-emerald-100',
-  cancelada: 'bg-gray-100 text-gray-600 border-gray-200 hover:bg-gray-100',
+  pendiente: 'bg-warning/10 text-warning border-0',
+  en_proceso: 'bg-primary/10 text-primary border-0',
+  completada: 'bg-success/10 text-success border-0',
+  cancelada: 'bg-neutral-200/80 text-neutral-700 border-0',
 }
 
 const STATUS_LABEL: Record<OrderStatus, string> = {
@@ -81,39 +81,39 @@ export default async function AdminProduccionPage({
   ]
 
   return (
-    <div className="p-8">
+    <div className="p-6">
       {/* Header */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+          <h1 className="font-display text-3xl font-bold tracking-wide text-neutral-700">
             Órdenes de Producción
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm font-medium text-neutral-700/80 mt-1">
             Gestiona y completa órdenes de producción
           </p>
         </div>
         <Button
           asChild
-          className="shrink-0"
+          className="shrink-0 rounded-2xl transition-all duration-300"
         >
           <Link href="/admin/produccion/nuevo">
-            <Plus className="mr-2 h-4 w-4" />
+            <Plus className="mr-2 h-5 w-5" />
             Nueva Orden
           </Link>
         </Button>
       </div>
 
       {/* Filtro tipo tabs */}
-      <div className="mb-6 flex gap-1 rounded-lg border border-gray-200 bg-gray-50/80 p-1">
+      <div className="mb-6 flex gap-1 rounded-2xl border border-accent-miel/30 bg-neutral-50/80 p-1">
         {filterLinks.map(({ value, label }) => (
           <Link
             key={value}
             href={value === 'todos' ? '/admin/produccion' : `/admin/produccion?filter=${value}`}
             className={cn(
-              'rounded-md px-4 py-2 text-sm font-medium transition-colors',
+              'rounded-xl px-4 py-2 text-sm font-medium transition-all duration-200',
               filter === value
-                ? 'bg-white text-gray-900 shadow-sm'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-white/60'
+                ? 'bg-white text-neutral-700 shadow-sm'
+                : 'text-neutral-700 hover:text-neutral-900 hover:bg-white/60'
             )}
           >
             {label}
@@ -123,32 +123,20 @@ export default async function AdminProduccionPage({
 
       {/* Tabla o estado vacío */}
       {error ? (
-        <div className="rounded-xl border border-red-200 bg-red-50/50 px-6 py-8 text-center text-sm text-red-700">
+        <div className="rounded-lg border border-danger/20 bg-danger/10 px-6 py-8 text-center text-sm font-medium text-danger">
           Error al cargar órdenes: {error.message}
         </div>
       ) : hasOrders ? (
-        <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
+        <div className="premium-table-wrap">
           <Table>
             <TableHeader>
-              <TableRow className="border-gray-200 hover:bg-transparent">
-                <TableHead className="h-11 font-semibold text-gray-700">
-                  Producto
-                </TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">
-                  Cantidad Planificada
-                </TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">
-                  Estado
-                </TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">
-                  Asignado a
-                </TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700">
-                  Fecha creación
-                </TableHead>
-                <TableHead className="h-11 font-semibold text-gray-700 text-right">
-                  Acciones
-                </TableHead>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="text-neutral-700">Producto</TableHead>
+                <TableHead className="text-neutral-700">Cantidad Planificada</TableHead>
+                <TableHead className="text-neutral-700">Estado</TableHead>
+                <TableHead className="text-neutral-700">Asignado a</TableHead>
+                <TableHead className="text-neutral-700">Fecha creación</TableHead>
+                <TableHead className="text-right text-neutral-700">Acciones</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -164,40 +152,36 @@ export default async function AdminProduccionPage({
                     })
                   : '—'
                 return (
-                  <TableRow key={orden.id} className="border-gray-100">
-                    <TableCell className="font-medium text-gray-900">
+                  <TableRow key={orden.id}>
+                    <TableCell className="font-medium text-neutral-700">
                       {productName}
                     </TableCell>
-                    <TableCell className="text-gray-700">
+                    <TableCell className="text-neutral-700">
                       {Number(orden.planned_quantity).toLocaleString('es-MX')}
                     </TableCell>
                     <TableCell>
                       <Badge
-                        variant="outline"
-                        className={cn(
-                          'border font-medium',
-                          STATUS_BADGE_CLASS[status]
-                        )}
+                        variant="pill"
+                        className={cn('font-medium', STATUS_BADGE_CLASS[status])}
                       >
                         {STATUS_LABEL[status]}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-gray-600">
+                    <TableCell className="text-neutral-700">
                       {assignedDisplay}
                     </TableCell>
-                    <TableCell className="text-gray-600">
+                    <TableCell className="text-neutral-700">
                       {createdDate}
                     </TableCell>
                     <TableCell className="text-right">
                       <Button
                         variant="ghost"
-                        size="sm"
-                        className="text-amber-600 hover:bg-amber-50 hover:text-amber-700"
+                        size="icon"
+                        className="h-8 w-8 text-neutral-500 hover:bg-neutral-100 hover:text-neutral-700 transition-colors duration-200"
                         asChild
                       >
                         <Link href={`/admin/produccion/${orden.id}`}>
-                          <CheckCircle className="mr-1.5 h-4 w-4" />
-                          Ver / Completar
+                          <CheckCircle className="h-4 w-4" />
                         </Link>
                       </Button>
                     </TableCell>

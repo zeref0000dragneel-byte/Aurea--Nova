@@ -26,12 +26,12 @@ export function TableSkeleton({
     <div
       className={
         className ??
-        'rounded-xl border border-slate-200/50 bg-white shadow-premium shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)]'
+        'rounded-xl border border-neutral-200/50 bg-white shadow-premium shadow-[inset_0_1px_1px_rgba(255,255,255,0.6)]'
       }
     >
       <Table>
         <TableHeader>
-          <TableRow className="border-slate-200/50 hover:bg-transparent">
+          <TableRow className="border-neutral-200/50 hover:bg-transparent">
             {Array.from({ length: columns }).map((_, i) => (
               <TableHead key={i} className="py-5">
                 <Skeleton className="h-3 w-16" />

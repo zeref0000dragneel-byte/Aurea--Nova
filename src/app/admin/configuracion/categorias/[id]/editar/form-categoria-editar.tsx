@@ -76,7 +76,7 @@ export function FormCategoriaEditar({ category }: { category: Category }) {
           id="estado"
           name="estado"
           defaultValue={category.is_active ? 'activo' : 'inactivo'}
-          className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:ring-offset-2"
+          className="flex h-10 w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <option value="activo">Activo</option>
           <option value="inactivo">Inactivo</option>

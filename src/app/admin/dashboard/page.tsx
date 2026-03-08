@@ -102,83 +102,99 @@ export default async function AdminDashboardPage() {
   const lotsExpiringCount = lotesPorVencer.length
 
   return (
-    <div className="p-16">
-      <div className="mb-16">
-        <h1 className="text-4xl font-light tracking-tight text-slate-900">
+    <div className="p-6">
+      <div className="mb-8">
+        <h1 className="font-display text-3xl font-bold tracking-wide text-neutral-700">
           Dashboard
         </h1>
-        <p className="mt-2 text-sm text-slate-500">
+        <p className="mt-2 text-sm font-medium text-neutral-700/80">
           Resumen operativo
         </p>
       </div>
 
       {/* Fila de 4 Cards métricas */}
-      <div className="mb-16 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-        <Card className="border-slate-200/50 shadow-premium">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <Factory className="h-5 w-5 text-slate-400" strokeWidth={1.5} />
-              <div>
-                <p className="text-2xl font-semibold font-mono tabular-nums tracking-tighter text-slate-900">{ordersCount}</p>
-                <p className="text-xs font-medium text-slate-500">Órdenes Activas</p>
-              </div>
+      <div className="mb-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white p-0 transition-all duration-300 hover:shadow-2xl hover:rotate-0 rotate-1">
+          <CardContent className="flex items-center gap-4 p-6">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <Factory className="h-6 w-6" strokeWidth={1.5} />
+            </div>
+            <div className="min-w-0">
+              <p className="text-3xl font-semibold font-mono tabular-nums tracking-tight text-neutral-700">{ordersCount}</p>
+              <p className="text-sm font-medium text-neutral-700/80">Órdenes Activas</p>
             </div>
           </CardContent>
         </Card>
 
         <Card
           className={cn(
-            'border-slate-200/50 shadow-premium',
-            mpAlertaCount > 0 ? 'border-red-200/50' : 'border-emerald-200/50'
+            'rounded-3xl border shadow-xl bg-gradient-to-br from-neutral-50 to-white p-0 transition-all duration-300 hover:shadow-2xl hover:rotate-0 rotate-1',
+            mpAlertaCount > 0 ? 'border-danger/30 bg-danger/5' : 'border-accent-miel/30'
           )}
         >
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <AlertTriangle className={`h-5 w-5 ${mpAlertaCount > 0 ? 'text-red-600' : 'text-emerald-600'}`} strokeWidth={1.5} />
-              <div>
-                <p className="text-2xl font-semibold font-mono tabular-nums tracking-tighter text-slate-900">{mpAlertaCount}</p>
-                <p className="text-xs font-medium text-slate-500">MP en Alerta</p>
+          <CardContent className="flex items-center gap-4 p-6">
+            <div
+              className={cn(
+                'flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl',
+                mpAlertaCount > 0 ? 'bg-danger/10 text-danger' : 'bg-success/10 text-success'
+              )}
+            >
+              <AlertTriangle className="h-6 w-6" strokeWidth={1.5} />
+            </div>
+            <div className="min-w-0">
+              <p className="text-3xl font-semibold font-mono tabular-nums tracking-tight text-neutral-700">{mpAlertaCount}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-medium text-neutral-700/80">MP en Alerta</p>
+                {mpAlertaCount > 0 && (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-danger/10 px-2 py-0.5 text-xs font-medium text-danger">
+                    <span className="relative flex h-1.5 w-1.5">
+                      <span className="absolute inline-flex h-full w-full animate-pulse rounded-full bg-danger opacity-75" />
+                      <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-danger" />
+                    </span>
+                    Urgente
+                  </span>
+                )}
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200/50 shadow-premium">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <Package className="h-5 w-5 text-slate-400" strokeWidth={1.5} />
-              <div>
-                <p className="text-2xl font-semibold font-mono tabular-nums tracking-tighter text-slate-900">{lotsStockCount}</p>
-                <p className="text-xs font-medium text-slate-500">Lotes en Stock</p>
-              </div>
+        <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white p-0 transition-all duration-300 hover:shadow-2xl hover:rotate-0 rotate-1">
+          <CardContent className="flex items-center gap-4 p-6">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <Package className="h-6 w-6" strokeWidth={1.5} />
+            </div>
+            <div className="min-w-0">
+              <p className="text-3xl font-semibold font-mono tabular-nums tracking-tight text-neutral-700">{lotsStockCount}</p>
+              <p className="text-sm font-medium text-neutral-700/80">Lotes en Stock</p>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-slate-200/50 shadow-premium">
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-4">
-              <Clock className="h-5 w-5 text-slate-400" strokeWidth={1.5} />
-              <div>
-                <p className="text-2xl font-semibold font-mono tabular-nums tracking-tighter text-slate-900">{lotsExpiringCount}</p>
-                <p className="text-xs font-medium text-slate-500">Lotes por Vencer</p>
-              </div>
+        <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white p-0 transition-all duration-300 hover:shadow-2xl hover:rotate-0 rotate-1">
+          <CardContent className="flex items-center gap-4 p-6">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <Clock className="h-6 w-6" strokeWidth={1.5} />
+            </div>
+            <div className="min-w-0">
+              <p className="text-3xl font-semibold font-mono tabular-nums tracking-tight text-neutral-700">{lotsExpiringCount}</p>
+              <p className="text-sm font-medium text-neutral-700/80">Lotes por Vencer</p>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Links rápidos — solo un CTA dorado (acento 5%) */}
-      <div className="mb-16 flex flex-wrap gap-4">
-        <Button asChild>
+      {/* Links rápidos */}
+      <div className="mb-8 flex flex-wrap gap-4">
+        <Button asChild className="transition-all duration-300 rounded-2xl">
           <Link href="/admin/produccion">
-            <Factory className="mr-2 h-4 w-4" />
+            <Factory className="mr-2 h-5 w-5" />
             Ver Producción
           </Link>
         </Button>
-        <Button asChild variant="outline">
+        <Button asChild variant="outline" className="transition-all duration-300 rounded-2xl">
           <Link href="/admin/inventario/lotes">
-            <Package className="mr-2 h-4 w-4" />
+            <Package className="mr-2 h-5 w-5" />
             Ver Inventario
           </Link>
         </Button>
@@ -186,33 +202,50 @@ export default async function AdminDashboardPage() {
 
       {/* Materias Primas en Alerta */}
       {mpEnAlerta.length > 0 && (
-        <Card className="mb-16 border-slate-200/50 shadow-premium">
-          <CardHeader>
-            <h2 className="text-2xl font-light tracking-tight text-slate-900">
-              Materias Primas en Alerta
-            </h2>
-            <p className="text-sm text-slate-500">
+        <Card className="mb-8 rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl">
+          <CardHeader className="p-6 pb-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h2 className="font-display text-2xl font-bold tracking-wide text-neutral-700">
+                Materias Primas en Alerta
+              </h2>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-danger/10 px-2.5 py-1 text-sm font-medium text-danger">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-pulse rounded-full bg-danger opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-danger" />
+                </span>
+                Stock bajo mínimo
+              </span>
+            </div>
+            <p className="mt-1 text-sm font-medium text-neutral-700/80">
               Stock actual ≤ stock mínimo
             </p>
           </CardHeader>
-          <CardContent>
-            <div className="rounded-xl border border-slate-200/50">
+          <CardContent className="p-6">
+            <div className="rounded-2xl border border-accent-miel/30 overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-b border-slate-200/50 hover:bg-transparent">
-                    <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Nombre</TableHead>
-                    <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Stock actual</TableHead>
-                    <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Stock mínimo</TableHead>
-                    <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Unidad</TableHead>
+                  <TableRow className="border-b border-neutral-200 hover:bg-transparent">
+                    <TableHead className="py-4 text-neutral-700">Nombre</TableHead>
+                    <TableHead className="py-4 text-neutral-700">Stock actual</TableHead>
+                    <TableHead className="py-4 text-neutral-700">Stock mínimo</TableHead>
+                    <TableHead className="py-4 text-neutral-700">Unidad</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {mpEnAlerta.map((mp) => (
-                    <TableRow key={mp.id} className="border-b border-slate-100 hover:bg-slate-50/80">
-                      <TableCell className="py-5 font-medium text-slate-900">{mp.name}</TableCell>
-                      <TableCell className="py-5 font-mono tabular-nums text-red-600">{mp.current_stock}</TableCell>
-                      <TableCell className="py-5 font-mono tabular-nums text-slate-700">{mp.min_stock}</TableCell>
-                      <TableCell className="py-5 font-mono text-[12px] uppercase text-slate-500">{mp.unit}</TableCell>
+                    <TableRow key={mp.id} className="border-b border-neutral-100 transition-colors duration-200 hover:bg-neutral-50">
+                      <TableCell className="py-4 font-medium text-neutral-700">{mp.name}</TableCell>
+                      <TableCell className="py-4">
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-danger/10 px-2 py-0.5 font-mono tabular-nums text-sm font-medium text-danger">
+                          <span className="relative flex h-1.5 w-1.5">
+                            <span className="absolute inline-flex h-full w-full animate-pulse rounded-full bg-danger opacity-70" />
+                            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-danger" />
+                          </span>
+                          {mp.current_stock}
+                        </span>
+                      </TableCell>
+                      <TableCell className="py-4 font-mono tabular-nums text-neutral-700">{mp.min_stock}</TableCell>
+                      <TableCell className="py-4 font-mono text-xs uppercase text-neutral-700/80">{mp.unit}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -224,34 +257,34 @@ export default async function AdminDashboardPage() {
 
       {/* Lotes próximos a vencer */}
       {lotesPorVencer.length > 0 && (
-        <Card className="mb-16 border-slate-200/50 shadow-premium">
-          <CardHeader>
-            <h2 className="text-2xl font-light tracking-tight text-slate-900">
+        <Card className="mb-8 rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl">
+          <CardHeader className="p-6 pb-0">
+            <h2 className="font-display text-2xl font-bold tracking-wide text-neutral-700">
               Lotes próximos a vencer
             </h2>
-            <p className="text-sm text-slate-500">
+            <p className="text-sm font-medium text-neutral-700/80">
               Vencen en los próximos 30 días
             </p>
           </CardHeader>
-          <CardContent>
-            <div className="rounded-xl border border-slate-200/50">
+          <CardContent className="p-6">
+            <div className="rounded-2xl border border-accent-miel/30 overflow-hidden">
               <Table>
                 <TableHeader>
-                  <TableRow className="border-b border-slate-200/50 hover:bg-transparent">
-                    <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Producto</TableHead>
-                    <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Lote</TableHead>
-                    <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Fecha vencimiento</TableHead>
-                    <TableHead className="py-5 text-[11px] font-medium uppercase tracking-widest text-slate-500">Cantidad disponible</TableHead>
+                  <TableRow className="border-b border-neutral-200 hover:bg-transparent">
+                    <TableHead className="py-4 text-neutral-700">Producto</TableHead>
+                    <TableHead className="py-4 text-neutral-700">Lote</TableHead>
+                    <TableHead className="py-4 text-neutral-700">Fecha vencimiento</TableHead>
+                    <TableHead className="py-4 text-neutral-700">Cantidad disponible</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {lotesPorVencer.map((lot) => (
-                    <TableRow key={lot.id} className="border-b border-slate-100 hover:bg-slate-50/80">
-                      <TableCell className="py-5 font-medium text-slate-900">
+                    <TableRow key={lot.id} className="border-b border-neutral-100 transition-colors duration-200 hover:bg-neutral-50">
+                      <TableCell className="py-4 font-medium text-neutral-700">
                         {lot.products?.name ?? '—'}
                       </TableCell>
-                      <TableCell className="py-5 font-mono text-[12px] text-slate-500">{lot.lot_number ?? '—'}</TableCell>
-                      <TableCell className="py-5 text-slate-600">
+                      <TableCell className="py-4 font-mono text-xs text-neutral-700/80">{lot.lot_number ?? '—'}</TableCell>
+                      <TableCell className="py-4 text-neutral-700">
                         {lot.expiry_date
                           ? new Date(lot.expiry_date).toLocaleDateString('es-MX', {
                               day: '2-digit',
@@ -260,7 +293,7 @@ export default async function AdminDashboardPage() {
                             })
                           : '—'}
                       </TableCell>
-                      <TableCell className="py-5 font-mono tabular-nums text-slate-700">
+                      <TableCell className="py-4 font-mono tabular-nums text-neutral-700">
                         {Number(lot.current_quantity).toLocaleString('es-MX')}
                       </TableCell>
                     </TableRow>
@@ -273,50 +306,60 @@ export default async function AdminDashboardPage() {
       )}
 
       {/* Resumen Financiero */}
-      <div className="mb-16">
-        <h2 className="mb-6 text-2xl font-light tracking-tight text-slate-900">Resumen Financiero</h2>
-        <div className="grid gap-12 sm:grid-cols-2">
+      <div className="mb-8">
+        <h2 className="font-display mb-6 text-2xl font-bold tracking-wide text-neutral-700">Resumen Financiero</h2>
+        <div className="grid gap-6 sm:grid-cols-2">
           <Card
             className={cn(
-              'border-slate-200/50 shadow-premium',
-              deudaProveedores > 0 ? 'border-red-200/50' : 'border-emerald-200/50'
+              'rounded-3xl border shadow-xl bg-gradient-to-br from-neutral-50 to-white p-0 transition-all duration-300 hover:shadow-2xl',
+              deudaProveedores > 0 ? 'border-danger/30 bg-danger/5' : 'border-accent-miel/30'
             )}
           >
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <TrendingDown className={`h-5 w-5 ${deudaProveedores > 0 ? 'text-red-600' : 'text-emerald-600'}`} strokeWidth={1.5} />
-                <div>
-                  {deudaProveedores > 0 ? (
-                    <p className="text-2xl font-semibold font-mono tabular-nums tracking-tighter text-red-600">
-                      ${deudaProveedores.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
-                    </p>
-                  ) : (
-                    <p className="text-lg font-mono text-emerald-700">Al día</p>
-                  )}
-                  <p className="text-xs font-medium text-slate-500">Deuda con Proveedores</p>
-                </div>
+            <CardContent className="flex items-center gap-4 p-6">
+              <div
+                className={cn(
+                  'flex h-11 w-11 shrink-0 items-center justify-center rounded-lg',
+                  deudaProveedores > 0 ? 'bg-danger/10 text-danger' : 'bg-success/10 text-success'
+                )}
+              >
+                <TrendingDown className="h-5 w-5" strokeWidth={1.5} />
+              </div>
+              <div className="min-w-0">
+                {deudaProveedores > 0 ? (
+                  <p className="text-3xl font-semibold font-mono tabular-nums tracking-tight text-neutral-700">
+                    ${deudaProveedores.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
+                  </p>
+                ) : (
+                  <p className="text-xl font-semibold font-mono text-success">Al día</p>
+                )}
+                <p className="text-sm font-medium text-neutral-700/80">Deuda con Proveedores</p>
               </div>
             </CardContent>
           </Card>
           <Card
             className={cn(
-              'border-slate-200/50 shadow-premium',
-              deudaClientes > 0 ? 'border-red-200/50' : 'border-emerald-200/50'
+              'rounded-3xl border shadow-xl bg-gradient-to-br from-neutral-50 to-white p-0 transition-all duration-300 hover:shadow-2xl',
+              deudaClientes > 0 ? 'border-danger/30 bg-danger/5' : 'border-accent-miel/30'
             )}
           >
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-4">
-                <TrendingUp className={`h-5 w-5 ${deudaClientes > 0 ? 'text-red-600' : 'text-emerald-600'}`} strokeWidth={1.5} />
-                <div>
-                  {deudaClientes > 0 ? (
-                    <p className="text-2xl font-semibold font-mono tabular-nums tracking-tighter text-red-600">
-                      ${deudaClientes.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
-                    </p>
-                  ) : (
-                    <p className="text-lg font-mono text-emerald-700">Sin deuda</p>
-                  )}
-                  <p className="text-xs font-medium text-slate-500">Por Cobrar a Clientes</p>
-                </div>
+            <CardContent className="flex items-center gap-4 p-6">
+              <div
+                className={cn(
+                  'flex h-11 w-11 shrink-0 items-center justify-center rounded-lg',
+                  deudaClientes > 0 ? 'bg-danger/10 text-danger' : 'bg-success/10 text-success'
+                )}
+              >
+                <TrendingUp className="h-5 w-5" strokeWidth={1.5} />
+              </div>
+              <div className="min-w-0">
+                {deudaClientes > 0 ? (
+                  <p className="text-3xl font-semibold font-mono tabular-nums tracking-tight text-neutral-700">
+                    ${deudaClientes.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
+                  </p>
+                ) : (
+                  <p className="text-xl font-semibold font-mono text-success">Sin deuda</p>
+                )}
+                <p className="text-sm font-medium text-neutral-700/80">Por Cobrar a Clientes</p>
               </div>
             </CardContent>
           </Card>
@@ -326,15 +369,15 @@ export default async function AdminDashboardPage() {
       {/* Alertas Operativas */}
       {(deudaProveedores > 0 || mpEnAlerta.length > 0 || lotesVencenEn7Dias.length > 0) && (
         <div className="space-y-6">
-          <h2 className="text-2xl font-light tracking-tight text-slate-900">Alertas Operativas</h2>
+          <h2 className="font-display text-2xl font-bold tracking-wide text-neutral-700">Alertas Operativas</h2>
           {deudaProveedores > 0 && (
-            <div className="rounded-xl border border-amber-200/50 bg-amber-500/10 px-5 py-4">
-              <p className="text-sm font-medium text-amber-800">
+            <div className="rounded-2xl border border-primary/30 bg-primary/10 px-5 py-4 transition-all duration-300">
+              <p className="text-sm font-medium text-primary">
                 Tienes deuda pendiente con proveedores por $
                 {deudaProveedores.toLocaleString('es-MX', { minimumFractionDigits: 2 })}.{' '}
                 <Link
                   href="/admin/compras"
-                  className="font-medium text-slate-700 underline hover:no-underline"
+                  className="font-medium text-neutral-700 underline hover:no-underline transition-colors duration-200"
                 >
                   Ve a Compras
                 </Link>{' '}
@@ -343,13 +386,13 @@ export default async function AdminDashboardPage() {
             </div>
           )}
           {mpEnAlerta.length > 0 && (
-            <div className="rounded-xl border border-red-200/50 bg-red-500/10 px-5 py-4">
-              <p className="text-sm font-medium text-red-800">
+            <div className="rounded-2xl border border-danger/20 bg-danger/10 px-5 py-4 transition-all duration-300">
+              <p className="text-sm font-medium text-danger">
                 {mpEnAlerta.length} materia{mpEnAlerta.length === 1 ? '' : 's'} prima
                 {mpEnAlerta.length === 1 ? ' está' : 's están'} bajo el stock mínimo.{' '}
                 <Link
                   href="/admin/inventario"
-                  className="font-medium text-slate-700 underline hover:no-underline"
+                  className="font-medium text-neutral-700 underline hover:no-underline transition-colors duration-200"
                 >
                   Ver Inventario
                 </Link>
@@ -357,13 +400,13 @@ export default async function AdminDashboardPage() {
             </div>
           )}
           {lotesVencenEn7Dias.length > 0 && (
-            <div className="rounded-xl border border-red-200/50 bg-red-500/10 px-5 py-4">
-              <p className="text-sm font-medium text-red-800">
+            <div className="rounded-2xl border border-danger/20 bg-danger/10 px-5 py-4 transition-all duration-300">
+              <p className="text-sm font-medium text-danger">
                 {lotesVencenEn7Dias.length} lote{lotesVencenEn7Dias.length === 1 ? '' : 's'}{' '}
                 vence{lotesVencenEn7Dias.length === 1 ? '' : 'n'} en menos de 7 días.{' '}
                 <Link
                   href="/admin/inventario/lotes"
-                  className="font-medium text-slate-700 underline hover:no-underline"
+                  className="font-medium text-neutral-700 underline hover:no-underline transition-colors duration-200"
                 >
                   Ver Lotes
                 </Link>

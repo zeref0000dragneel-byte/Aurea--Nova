@@ -12,7 +12,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { ShoppingCart, DollarSign, Package } from 'lucide-react'
+import {
+  ShoppingCart,
+  Tag,
+  DollarSign,
+  Package,
+  ArrowRight,
+  Sparkles,
+} from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const statusLabel: Record<string, string> = {
@@ -39,7 +46,7 @@ const paymentColor: Record<string, string> = {
   pagado: 'default',
 }
 
-export default async function ClienteDashboardPage() {
+export default async function ClienteWelcomePage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user?.email) redirect('/login')
@@ -80,7 +87,8 @@ export default async function ClienteDashboardPage() {
       .select('id, order_number, status, payment_status, total, paid_amount, delivery_date')
       .eq('customer_id', customerId)
       .in('status', ['borrador', 'confirmado', 'en_preparacion', 'listo'])
-      .order('created_at', { ascending: false }),
+      .order('created_at', { ascending: false })
+      .limit(5),
     supabase
       .from('orders')
       .select('total, paid_amount, payment_status')
@@ -114,16 +122,21 @@ export default async function ClienteDashboardPage() {
 
   return (
     <div className="p-6 md:p-8 max-w-5xl mx-auto space-y-8">
-      <div>
-        <h1 className="font-display text-2xl font-bold tracking-wide text-neutral-700">
+      {/* Hero bienvenida */}
+      <div className="text-center md:text-left">
+        <div className="inline-flex items-center gap-2 rounded-2xl bg-primary/10 px-4 py-1.5 text-sm font-medium text-primary mb-4">
+          <Sparkles className="h-4 w-4" />
+          Portal Cliente
+        </div>
+        <h1 className="font-display text-3xl md:text-4xl font-bold tracking-wide text-neutral-800">
           Bienvenido, {customer.business_name}
         </h1>
-        <p className="text-neutral-700/80 text-sm font-medium mt-1">
-          Resumen de tu portal
+        <p className="text-neutral-600 mt-2 text-base font-medium max-w-xl">
+          Aquí puedes ver tu resumen, pedidos y precios. Usa los accesos rápidos para ir a cada sección.
         </p>
       </div>
 
-      {/* Tres cards de resumen */}
+      {/* Resumen en números */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl">
           <CardContent className="pt-6">
@@ -133,7 +146,7 @@ export default async function ClienteDashboardPage() {
               </div>
               <div>
                 <p className="text-2xl font-bold text-neutral-700">{activos.length}</p>
-                <p className="text-xs font-medium text-neutral-700/80">Pedidos Activos</p>
+                <p className="text-xs font-medium text-neutral-700/80">Pedidos activos</p>
               </div>
             </div>
           </CardContent>
@@ -164,7 +177,7 @@ export default async function ClienteDashboardPage() {
                 >
                   ${deudaTotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                 </p>
-                <p className="text-xs font-medium text-neutral-700/80">Saldo Pendiente</p>
+                <p className="text-xs font-medium text-neutral-700/80">Saldo pendiente</p>
               </div>
             </div>
           </CardContent>
@@ -185,13 +198,64 @@ export default async function ClienteDashboardPage() {
         </Card>
       </div>
 
-      {/* Tabla pedidos activos */}
+      {/* Acciones rápidas */}
       <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl">
         <CardHeader>
-          <h2 className="font-display text-lg font-bold tracking-wide text-neutral-700">Pedidos activos</h2>
+          <h2 className="font-display text-lg font-bold tracking-wide text-neutral-700">
+            Acciones rápidas
+          </h2>
           <p className="text-sm font-medium text-neutral-700/80">
-            Pedidos en curso (no entregados ni cancelados)
+            Accede a tus pedidos y precios personalizados
           </p>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Button asChild variant="outline" size="lg" className="h-auto flex-col gap-2 py-6 rounded-2xl border-2 border-accent-miel/40 hover:border-primary/50 hover:bg-primary/5">
+              <Link href="/cliente/pedidos" className="flex items-center gap-3 w-full">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <ShoppingCart className="h-6 w-6" />
+                </div>
+                <div className="flex-1 text-left">
+                  <span className="font-semibold text-neutral-800 block">Mis pedidos</span>
+                  <span className="text-sm text-neutral-600 font-normal">
+                    Ver estado, filtrar y ver detalle de cada pedido
+                  </span>
+                </div>
+                <ArrowRight className="h-5 w-5 text-primary shrink-0" />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="h-auto flex-col gap-2 py-6 rounded-2xl border-2 border-accent-miel/40 hover:border-primary/50 hover:bg-primary/5">
+              <Link href="/cliente/precios" className="flex items-center gap-3 w-full">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <Tag className="h-6 w-6" />
+                </div>
+                <div className="flex-1 text-left">
+                  <span className="font-semibold text-neutral-800 block">Mis precios</span>
+                  <span className="text-sm text-neutral-600 font-normal">
+                    Precios especiales y catálogo para tu cuenta
+                  </span>
+                </div>
+                <ArrowRight className="h-5 w-5 text-primary shrink-0" />
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Vista previa pedidos activos */}
+      <Card className="rounded-3xl border border-accent-miel/30 shadow-xl bg-gradient-to-br from-neutral-50 to-white transition-all duration-300 hover:shadow-2xl">
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <h2 className="font-display text-lg font-bold tracking-wide text-neutral-700">
+              Pedidos activos
+            </h2>
+            <p className="text-sm font-medium text-neutral-700/80 mt-0.5">
+              Últimos pedidos en curso
+            </p>
+          </div>
+          <Button asChild variant="default" size="sm">
+            <Link href="/cliente/pedidos">Ver todos</Link>
+          </Button>
         </CardHeader>
         <CardContent>
           {activos.length === 0 ? (
@@ -207,8 +271,6 @@ export default async function ClienteDashboardPage() {
                     <TableHead className="font-semibold text-neutral-700">Estado</TableHead>
                     <TableHead className="font-semibold text-neutral-700">Pago</TableHead>
                     <TableHead className="font-semibold text-neutral-700 text-right">Total</TableHead>
-                    <TableHead className="font-semibold text-neutral-700 text-right">Por pagar</TableHead>
-                    <TableHead className="font-semibold text-neutral-700">Fecha entrega</TableHead>
                     <TableHead className="font-semibold text-neutral-700 w-[100px]"></TableHead>
                   </TableRow>
                 </TableHeader>
@@ -232,20 +294,11 @@ export default async function ClienteDashboardPage() {
                         </TableCell>
                         <TableCell className="text-right font-medium">
                           ${Number(pedido.total).toLocaleString('es-MX', { minimumFractionDigits: 2 })}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {porPagar > 0 ? (
-                            <span className="text-danger font-medium">
-                              ${porPagar.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
+                          {porPagar > 0 && (
+                            <span className="text-danger text-xs block">
+                              Por pagar: ${porPagar.toLocaleString('es-MX', { minimumFractionDigits: 2 })}
                             </span>
-                          ) : (
-                            <span className="text-success font-medium">—</span>
                           )}
-                        </TableCell>
-                        <TableCell className="text-muted-foreground text-sm">
-                          {pedido.delivery_date
-                            ? new Date(pedido.delivery_date + 'T00:00:00').toLocaleDateString('es-MX')
-                            : '—'}
                         </TableCell>
                         <TableCell>
                           <Button asChild variant="outline" size="sm">
