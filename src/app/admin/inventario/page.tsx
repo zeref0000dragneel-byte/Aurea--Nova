@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Plus, Warehouse, Pencil, Package } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -16,7 +16,7 @@ import { EmptyState } from '@/components/admin/empty-state'
 import { TooltipTrigger } from '@/components/ui/tooltip'
 
 export default async function AdminInventarioPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const { data: materials } = await supabase
     .from('raw_materials')

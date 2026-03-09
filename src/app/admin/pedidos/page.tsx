@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import Link from 'next/link'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -54,7 +54,7 @@ export default async function PedidosPage({
   searchParams: Promise<{ status?: string }>
 }) {
   const params = await searchParams
-  const supabase = await createClient()
+  const supabase = createAdminClient()
   const filtroStatus = params.status || 'todos'
 
   let query = supabase

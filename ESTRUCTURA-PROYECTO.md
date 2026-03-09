@@ -1,9 +1,9 @@
-# Estructura del proyecto Colmena OS
+# Estructura del proyecto HiveCore
 
-Estructura actual del proyecto. Raíz: repositorio Colmena-OS. Excluye `node_modules/`, `.next/`, `.git/`. Las rutas de admin incluyen listados, formularios nuevo/editar y Server Actions donde aplica.
+Estructura actual del proyecto. Raíz: repositorio HiveCore. Excluye `node_modules/`, `.next/`, `.git/`. Las rutas de admin incluyen listados, formularios nuevo/editar y Server Actions donde aplica.
 
 ```
-(raíz Colmena-OS)/
+(raíz HiveCore)/
 ├── .env.local
 ├── .eslintrc.json
 ├── .gitignore

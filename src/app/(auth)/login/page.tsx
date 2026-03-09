@@ -34,7 +34,7 @@ export default function LoginPage() {
           <div className="relative mx-auto h-20 w-20 overflow-hidden rounded-3xl bg-white shadow-xl mb-6">
             <Image
               src="/logo.png"
-              alt="Colmena OS"
+              alt="HiveCore"
               fill
               className="object-cover"
               sizes="80px"
@@ -42,10 +42,10 @@ export default function LoginPage() {
             />
           </div>
           <h1 className="font-display text-3xl font-bold tracking-wide text-neutral-700">
-            Colmena OS
+            HiveCore
           </h1>
           <p className="text-neutral-700/80 mt-2 text-sm font-medium">
-            Colmena OS — Amor de Colmena
+            HiveCore — Amor de Colmena
           </p>
         </div>
 

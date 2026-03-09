@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { Plus, Factory, CheckCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -50,7 +50,7 @@ export default async function AdminProduccionPage({
 }) {
   const filter = (searchParams?.filter as FilterValue) ?? 'todos'
 
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   let query = supabase
     .from('production_orders')

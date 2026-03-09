@@ -41,7 +41,7 @@ export function AdminSidebar() {
         <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-2xl bg-white shadow-md">
           <Image
             src="/logo.png"
-            alt="Colmena OS"
+            alt="HiveCore"
             fill
             className="object-cover"
             sizes="40px"
@@ -49,7 +49,7 @@ export function AdminSidebar() {
           />
         </div>
         <span className="font-display text-lg font-semibold tracking-wide text-neutral-700">
-          Colmena OS
+          HiveCore
         </span>
       </header>
       <hr className="border-accent-miel/30" />

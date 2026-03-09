@@ -5,7 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
 export const metadata: Metadata = {
-  title: 'Colmena OS — Amor de Colmena',
+  title: 'HiveCore — Amor de Colmena',
   description: 'Sistema de gestión para Amor de Colmena',
 }
 

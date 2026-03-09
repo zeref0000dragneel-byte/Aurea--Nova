@@ -26,7 +26,7 @@ export default function ClienteLayout({
           <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-2xl bg-white shadow-md">
             <Image
               src="/logo.png"
-              alt="Colmena OS"
+              alt="HiveCore"
               fill
               className="object-cover"
               sizes="40px"

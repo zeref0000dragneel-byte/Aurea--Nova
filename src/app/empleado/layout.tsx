@@ -41,13 +41,13 @@ export default async function EmpleadoLayout({
           <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-2xl bg-white shadow-md">
             <Image
               src="/logo.png"
-              alt="Colmena OS"
+              alt="HiveCore"
               fill
               className="object-cover"
               sizes="40px"
             />
           </div>
-          <span className="font-display text-lg font-bold tracking-wide text-neutral-700">Colmena OS</span>
+          <span className="font-display text-lg font-bold tracking-wide text-neutral-700">HiveCore</span>
         </header>
         <div className="px-4 pb-2">
           <p className="text-xs font-medium text-neutral-700/80 truncate" title={nombreEmpleado}>

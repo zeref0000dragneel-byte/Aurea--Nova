@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { DashboardFinanciero } from './dashboard-financiero'
 
 const now = new Date()
@@ -7,7 +7,7 @@ const inicioMesAnterior = new Date(now.getFullYear(), now.getMonth() - 1, 1).toI
 const finMesAnterior = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59).toISOString()
 
 export default async function FinanzasPage() {
-  const supabase = await createClient()
+  const supabase = createAdminClient()
 
   const [
     { data: ordersMesActual },

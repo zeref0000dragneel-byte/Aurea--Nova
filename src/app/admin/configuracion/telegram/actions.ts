@@ -9,7 +9,7 @@ export async function testTelegram(): Promise<{ success: true } | { error: strin
   try {
     const fecha = new Date().toLocaleString('es-MX')
     await sendTelegram(
-      `🧪 <b>Prueba Colmena OS</b>\nConexión con Telegram funcionando correctamente ✅\n📅 ${fecha}`
+      `🧪 <b>Prueba HiveCore</b>\nConexión con Telegram funcionando correctamente ✅\n📅 ${fecha}`
     )
     return { success: true }
   } catch (e) {
