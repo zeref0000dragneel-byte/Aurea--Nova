@@ -44,32 +44,37 @@ type PedidoRow = {
   paid_amount: number
   delivery_date: string | null
   created_at: string
+  customer_id: string
   customers: { business_name: string } | null
 }
 
 export default async function PedidosPage({
   searchParams,
 }: {
-  searchParams: { status?: string }
+  searchParams: Promise<{ status?: string }>
 }) {
+  const params = await searchParams
   const supabase = await createClient()
-  const filtroStatus = searchParams.status || 'todos'
+  const filtroStatus = params.status || 'todos'
 
   let query = supabase
     .from('orders')
-    .select(`
-      id, order_number, status, payment_status,
-      total, paid_amount, delivery_date, created_at,
-      customers(business_name)
-    `)
+    .select('id, order_number, status, payment_status, total, paid_amount, delivery_date, created_at, customer_id')
     .order('created_at', { ascending: false })
 
   if (filtroStatus !== 'todos') {
     query = query.eq('status', filtroStatus)
   }
 
-  const { data: pedidosData } = await query
-  const pedidos = (pedidosData ?? []) as unknown as PedidoRow[]
+  const { data: ordersData } = await query
+  const { data: customersData } = await supabase
+    .from('customers')
+    .select('id, business_name')
+
+  const pedidos: PedidoRow[] = (ordersData ?? []).map((order) => ({
+    ...order,
+    customers: customersData?.find((c) => c.id === order.customer_id) ?? null,
+  }))
 
   const tabs = [
     { key: 'todos', label: 'Todos' },

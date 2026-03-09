@@ -27,7 +27,7 @@ type PurchaseRow = {
   purchase_date: string
   invoice_number: string | null
   reception_status: 'pendiente' | 'recibido_completo' | 'recibido_parcial' | 'cancelado' | null
-  raw_materials: { name: string; unit: string } | null
+  raw_materials: { name: string; unit: string; purchase_unit?: string; operative_unit?: string } | null
 }
 
 type ReceptionFilter = 'todas' | 'pendientes' | 'recibidas' | 'canceladas'
@@ -56,35 +56,27 @@ const PAYMENT_LABEL: Record<string, string> = {
 export default async function AdminComprasPage({
   searchParams,
 }: {
-  searchParams?: { status?: string }
+  searchParams: Promise<{ status?: string }>
 }) {
+  const params = await searchParams
   const supabase = createAdminClient()
-  const statusFilter = (searchParams?.status as ReceptionFilter) ?? 'todas'
+  const statusFilter = (params.status as ReceptionFilter) ?? 'todas'
 
-  const [
-    { data: purchasesData },
-  ] = await Promise.all([
-    supabase
-      .from('purchases')
-      .select(`
-        id,
-        raw_material_id,
-        supplier,
-        quantity,
-        unit_cost,
-        total,
-        paid_amount,
-        payment_status,
-        purchase_date,
-        invoice_number,
-        created_at,
-        reception_status,
-        raw_materials(name, unit)
-      `)
-      .order('created_at', { ascending: false }),
-  ])
+  const { data: purchasesData } = await supabase
+    .from('purchases')
+    .select('id, supplier, quantity, unit_cost, total, paid_amount, payment_status, purchase_date, invoice_number, received_quantity, reception_status, raw_material_id, conversion_factor, operative_quantity, created_at')
+    .order('created_at', { ascending: false })
 
-  let purchases = (purchasesData ?? []) as unknown as PurchaseRow[]
+  const { data: rawMatsData } = await supabase
+    .from('raw_materials')
+    .select('id, name, unit, purchase_unit, operative_unit')
+
+  const allPurchases: PurchaseRow[] = (purchasesData ?? []).map((p) => ({
+    ...p,
+    raw_materials: rawMatsData?.find((r) => r.id === p.raw_material_id) ?? null,
+  }))
+
+  let purchases = allPurchases
 
   if (statusFilter === 'pendientes') {
     purchases = purchases.filter((p) => (p.reception_status ?? 'pendiente') === 'pendiente')
@@ -96,7 +88,6 @@ export default async function AdminComprasPage({
     purchases = purchases.filter((p) => p.reception_status === 'cancelado')
   }
 
-  const allPurchases = (purchasesData ?? []) as unknown as PurchaseRow[]
   const pendientesRecibirCount = allPurchases.filter(
     (p) => (p.reception_status ?? 'pendiente') === 'pendiente'
   ).length
